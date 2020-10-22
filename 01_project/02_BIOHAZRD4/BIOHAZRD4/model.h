@@ -19,6 +19,7 @@ public:
 	void Draw(void);
 
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
+	D3DXVECTOR3 GetRot(void) { return m_rot; }
 private:
 	static LPD3DXMESH m_pMesh;
 	static LPD3DXBUFFER m_pBuffMat;

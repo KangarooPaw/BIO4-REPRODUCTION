@@ -3,6 +3,7 @@
 
 #include "main.h"
 
+#define PI	(3.1415926535)
 #define MOVE_RATE 80
 class CCamera
 {
@@ -20,6 +21,7 @@ private:
 	D3DXMATRIX	mtxProjection;
 	D3DXMATRIX	mtxView;
 	D3DXVECTOR3 rot;
+	float m_fCameraAngle;
 };
 
 #endif

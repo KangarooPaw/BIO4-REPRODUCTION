@@ -120,12 +120,12 @@ void CModel::Update(void)
 	//左スティックを左に倒す
 	if (pStick.lX <= -500)
 	{
-		m_rot.y -= 0.01f;
+		m_rot.x -= 0.01f;
 	}
 	//左スティックを右に倒す
 	if (pStick.lX >= 500)
 	{
-		m_rot.y += 0.01f;
+		m_rot.x += 0.01f;
 	}
 	//左スティックを前に倒す	
 	if (pStick.lY <= -500)
@@ -149,7 +149,7 @@ void CModel::Draw(void)
 	D3DMATERIAL9 matDef;
 	D3DXMATERIAL*pMat;
 	D3DXMatrixIdentity(&m_mtxWorld);
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.x, m_rot.y, m_rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);

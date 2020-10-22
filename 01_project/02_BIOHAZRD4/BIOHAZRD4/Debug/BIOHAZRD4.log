@@ -1,5 +1,7 @@
-﻿  manager.cpp
-  camera.cpp
-  コードを生成中...
+﻿  camera.cpp
+c:\users\gsp026\desktop\02_biohazrd4\biohazrd4\camera.cpp(93): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\gsp026\desktop\02_biohazrd4\biohazrd4\camera.cpp(97): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\gsp026\desktop\02_biohazrd4\biohazrd4\camera.cpp(105): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\gsp026\desktop\02_biohazrd4\biohazrd4\camera.cpp(109): warning C4244: '=': 'double' から 'float' への変換です。データが失われる可能性があります。
   BIOHAZRD4.vcxproj -> C:\Users\gsp026\Desktop\02_BIOHAZRD4\Debug\BIOHAZRD4.exe
   BIOHAZRD4.vcxproj -> C:\Users\gsp026\Desktop\02_BIOHAZRD4\Debug\BIOHAZRD4.pdb (Full PDB)
