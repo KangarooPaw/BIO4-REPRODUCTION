@@ -9,6 +9,9 @@
 #include "renderer.h"
 #include "camera.h"
 #include "keyboard.h"
+#include "joystick.h"
+#include "model.h"
+
 //--------------------------------------
 //インクリメント
 //--------------------------------------
@@ -17,7 +20,6 @@ CCamera::CCamera()
 	posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	vecU = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	fDistance		 = 0.0f;
 }
 
 //--------------------------------------
@@ -45,7 +47,7 @@ CCamera * CCamera::Create(void)
 void CCamera::Init(void)
 {
 	posV = D3DXVECTOR3(0, 100, 100);
-	posR = D3DXVECTOR3(0, 0, 0);
+	posR = D3DXVECTOR3(0, 50, 0);
 	vecU = D3DXVECTOR3(0, 1, 0);
 }
 
@@ -62,43 +64,53 @@ void CCamera::Uninit(void)
 //--------------------------------------
 void CCamera::Update(void)
 {	
+	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice= CManager::GetRenderer()->GetDevice();
-	//キーボード取得
-	CInputKeyboard *pKeyborad = CManager::GetInput();	
-
-	if (pKeyborad->GetKeyPress(DIK_W))
+	//モデル場所の取得
+	D3DXVECTOR3 pModelPos = CManager::GetModel()->GetPos();;
+	//キーボードの取得
+	CInputKeyboard *pKeyborad = CManager::GetInputKeyboard();	
+	//コントローラーの取得処理
+	DIJOYSTATE pStick;
+	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
+	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
+	if (pJoystickDevice != NULL)
 	{
-		posV.z += -5.0f;
-	}
-	if (pKeyborad->GetKeyPress(DIK_S))
-	{
-		posV.z += 5.0f;
-	}
-	if (pKeyborad->GetKeyPress(DIK_A))
-	{
-		posV.x += 5.0f;
-	}
-	if (pKeyborad->GetKeyPress(DIK_D))
-	{
-		posV.x += -5.0f;
+		pJoystickDevice->Poll();
+		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
 	}
 
-	if (pKeyborad->GetKeyPress(DIK_UP))
+	//--------------------------
+	//移動
+	//--------------------------
+	//左スティックを左に倒す
+	if (pStick.lX <= -500)
 	{
-		posR.y += 5.0f;
+
 	}
-	if (pKeyborad->GetKeyPress(DIK_DOWN))
+	//左スティックを右に倒す
+	if (pStick.lX >= 500)
 	{
-		posR.y += -5.0f;
+
 	}
-	if (pKeyborad->GetKeyPress(DIK_LEFT))
+	//左スティックを前に倒す
+	if (pStick.lY <= -500)
 	{
-		posR.x += 5.0f;
+		posV.z -= 0.5f;
 	}
-	if (pKeyborad->GetKeyPress(DIK_RIGHT))
+	//左スティックを後ろに倒す
+	if (pStick.lY >= 500)
 	{
-		posR.x += -5.0f;
+		posV.x = pModelPos.x - 50;
+		posV.z = pModelPos.z - 100;
 	}
+	//視点
+	posV.x = pModelPos.x - 100;
+	posV.z = pModelPos.z + 100;
+	//注視点
+	posR.x = pModelPos.x - 50;
+	//posR.z = pModelPos.z-25;
+
 
 	D3DXMatrixIdentity(&mtxView);
 	D3DXMatrixLookAtLH(&mtxView, &posV, &posR, &vecU);

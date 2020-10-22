@@ -1,8 +1,6 @@
 #ifndef _INPUT_H_
 #define _INPUT_H_
 
-#include "main.h"
-
 class CInput
 {
 public:
@@ -16,4 +14,5 @@ protected:
 	LPDIRECTINPUTDEVICE8 m_pInputDevice;
 
 };
+
 #endif // !_INPUT_H_

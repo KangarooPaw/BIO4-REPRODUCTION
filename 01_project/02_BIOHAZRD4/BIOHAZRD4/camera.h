@@ -1,6 +1,8 @@
 #ifndef _CAMERA_H_
 #define _CAMERA_H_
+
 #include "main.h"
+
 #define MOVE_RATE 80
 class CCamera
 {
@@ -18,7 +20,6 @@ private:
 	D3DXMATRIX	mtxProjection;
 	D3DXMATRIX	mtxView;
 	D3DXVECTOR3 rot;
-	float		fDistance;
 };
 
 #endif

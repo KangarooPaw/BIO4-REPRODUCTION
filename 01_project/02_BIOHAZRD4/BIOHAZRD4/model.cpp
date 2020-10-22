@@ -1,33 +1,55 @@
+//****************************************
+//モデル処理
+//****************************************
+
+//----------------------------------------
+//インクルードファイル
+//----------------------------------------
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
+#include "joystick.h"
 #include "model.h"
 
+//----------------------------------------
+//静的メンバ変数
+//----------------------------------------
 LPD3DXMESH CModel::m_pMesh = NULL;
 LPD3DXBUFFER CModel::m_pBuffMat = NULL;
 DWORD CModel::m_nNumMat = 0;
 
+//----------------------------------------
+//インクリメント
+//----------------------------------------
 CModel::CModel()
 {
 
 }
 
+//----------------------------------------
+//デクリメント
+//----------------------------------------
 CModel::~CModel()
 {
 
 }
 
-CModel * CModel::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
+//----------------------------------------
+//生成処理
+//----------------------------------------
+CModel * CModel::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 {
 	CModel *pModel;
 	pModel = new CModel;
 	pModel->m_pos = pos;
 	pModel->m_rot = rot;
-	pModel->m_size = size;
 	pModel->Init();
 	return pModel;
 }
 
+//----------------------------------------
+//モデルの読み込み
+//----------------------------------------
 HRESULT CModel::Load(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -45,20 +67,29 @@ HRESULT CModel::Load(void)
 	return E_NOTIMPL;
 }
 
+//----------------------------------------
+//モデルの破棄
+//----------------------------------------
 void CModel::Unload(void)
 {
+	if (m_pMesh != NULL)
+	{
+		m_pMesh->Release();
+		m_pMesh = NULL;
+	}
 }
 
+//----------------------------------------
+//初期化処理
+//----------------------------------------
 HRESULT CModel::Init(void)
 {	
-	CScene3d::SetPosition(m_pos);
-	CScene3d::SetRotation(m_rot);
-	CScene3d::SetSize(m_size);
-	CScene3d::Init();
-
 	return S_OK;
 }
 
+//----------------------------------------
+//終了処理
+//----------------------------------------
 void CModel::Uninit(void)
 {
 	if (m_pBuffMat != NULL)
@@ -66,19 +97,51 @@ void CModel::Uninit(void)
 		m_pBuffMat->Release();
 		m_pBuffMat = NULL;
 	}
-	if (m_pMesh != NULL)
-	{
-		m_pMesh->Release();
-		m_pMesh = NULL;
-	}
 	CScene3d::Uninit();
 }
 
+//----------------------------------------
+//更新処理
+//----------------------------------------
 void CModel::Update(void)
 {
-
+	//コントローラーの取得処理
+	DIJOYSTATE pStick;
+	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
+	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
+	if (pJoystickDevice != NULL)
+	{
+		pJoystickDevice->Poll();
+		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
+	}
+	//--------------------------
+	//移動
+	//--------------------------
+	//左スティックを左に倒す
+	if (pStick.lX <= -500)
+	{
+		m_rot.y -= 0.01f;
+	}
+	//左スティックを右に倒す
+	if (pStick.lX >= 500)
+	{
+		m_rot.y += 0.01f;
+	}
+	//左スティックを前に倒す	
+	if (pStick.lY <= -500)
+	{
+		m_pos.z -= 0.5f;
+	}
+	//左スティックを後ろに倒す
+	if (pStick.lY >= 500)
+	{
+		m_pos.z += 0.5f;
+	}
 }
 
+//----------------------------------------
+//描画処理
+//----------------------------------------
 void CModel::Draw(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();

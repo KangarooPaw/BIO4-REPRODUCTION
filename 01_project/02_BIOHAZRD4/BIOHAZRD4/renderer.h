@@ -5,7 +5,7 @@
 class CRenderer
 {
 public:
-	LPDIRECT3DDEVICE9 GetDevice(void) { return m_pD3DDevice; }
+
 	CRenderer();	//コンストラクタ
 	~CRenderer();	//デストラクタ
 	HRESULT Init(HWND hWnd, bool bWindow);	//初期化処理
@@ -13,6 +13,7 @@ public:
 	void Update(void);						//更新処理
 	void Draw(void);						//描画処理
 
+	LPDIRECT3DDEVICE9 GetDevice(void) { return m_pD3DDevice; }
 private:
 
 	void DrawFPS(void);

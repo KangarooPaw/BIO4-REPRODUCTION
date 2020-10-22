@@ -9,7 +9,7 @@ public:
 	CModel();
 	~CModel();
 
-	static CModel *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);
+	static CModel *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot);
 	static HRESULT Load(void);
 	static void Unload(void);
 
@@ -17,13 +17,14 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
+	D3DXVECTOR3 GetPos(void) { return m_pos; }
 private:
 	static LPD3DXMESH m_pMesh;
 	static LPD3DXBUFFER m_pBuffMat;
 	static DWORD m_nNumMat;
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_rot;
-	D3DXVECTOR3 m_size;
 	D3DXMATRIX m_mtxWorld;
 };
 

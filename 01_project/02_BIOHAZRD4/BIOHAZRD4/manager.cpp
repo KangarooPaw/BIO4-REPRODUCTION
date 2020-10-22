@@ -11,6 +11,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "keyboard.h"
+#include "joystick.h"
 #include "scene.h"
 #include "scene2d.h"
 #include "scene3d.h"
@@ -25,10 +26,12 @@
 //スタティック変数初期化
 //=============================================================================
 CRenderer *CManager::m_pRenderer = NULL;
-CPlayer *CManager::m_pPlayer = NULL;
 CInputKeyboard *CManager::m_pInputKeyboard = NULL;
+CInputJoystick *CManager::m_pInputJoystick = NULL;
 CCamera *CManager::m_pCamera = NULL;
 CLight *CManager::m_pLight = NULL;
+CPlayer *CManager::m_pPlayer = NULL;
+CModel *CManager::m_pModel = NULL;
 CDebugProc *CManager::m_pDebugProc = NULL;
 
 //=============================================================================
@@ -52,27 +55,30 @@ CManager::~CManager()
 //=============================================================================
 HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindouw)
 {
-	//レンダリングクラス生成	// 初期化処理	
+	//クラス生成と初期化	
+	//レンダラー
 	m_pRenderer = new CRenderer;
 	m_pRenderer->Init(hWnd, TRUE);
+	//キーボード
 	m_pInputKeyboard = new CInputKeyboard;
 	m_pInputKeyboard->Init(hInstance, hWnd);
+	//ゲームパッド
+	m_pInputJoystick = new CInputJoystick;
+	m_pInputJoystick->Init(hInstance, hWnd);
+	//デバッグ
 	m_pDebugProc = new CDebugProc;
 	m_pDebugProc->Init();
-
+	//カメラ
 	m_pCamera = CCamera::Create();
+	//ライト
 	m_pLight = CLight::Create();
-	//TEXTUREのロード
-	CPlayer::Load();
-	CPolygon::Load();
-	CModel::Load();
 
-	//CPlayer::Create(D3DXVECTOR3(SCREEN_CENTER_X, SCREEN_CENTER_Y, 0.0f), D3DXVECTOR3(PLAYER_WIDTH, PLAYER_HEIGHT, 0.0f));
-	//CPlayer::Create(D3DXVECTOR3((SCREEN_CENTER_X / 2), SCREEN_CENTER_Y, 0.0f), D3DXVECTOR3(PLAYER_WIDTH, PLAYER_HEIGHT, 0.0f));
-	//CPlayer::Create(D3DXVECTOR3(SCREEN_CENTER_X + (SCREEN_CENTER_X / 2), SCREEN_CENTER_Y, 0.0f), D3DXVECTOR3(PLAYER_WIDTH, PLAYER_HEIGHT, 0.0f));
+	//テクスチャの読み込み
+	LoadAll();
+	//ポリゴン生成
 	CPolygon::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),D3DXVECTOR3(40.0f, 0.0f, -40.0f),0);
 	CPolygon::Create(D3DXVECTOR3(0.0f, 0.0f, 20.0f), D3DXVECTOR3(90.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 0.0f, -20.0f), 0);
-	CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.f, 0.0f, -20.0f));
+	m_pModel = CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	return S_OK;
 }
 
@@ -81,12 +87,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindouw)
 //=============================================================================
 void CManager::Uninit(void)
 {
-	CScene::	ReleaseAll();
-
-	CModel::	Unload();
-	CPolygon::	Unload();
-	CPlayer::	Unload();
-
+	CScene::ReleaseAll();
+	//テクスチャの破棄
+	UnloadAll();
 	//デバッグの終了
 	if (m_pDebugProc != NULL)
 	{
@@ -107,6 +110,13 @@ void CManager::Uninit(void)
 		m_pCamera->Uninit();
 		delete m_pCamera;
 		m_pCamera = NULL;
+	}
+	//ゲームパッドの終了
+	if (m_pInputJoystick != NULL)
+	{
+		m_pInputJoystick->Uninit();
+		delete m_pInputJoystick;
+		m_pInputJoystick = NULL;
 	}
 	//キーボードの終了
 	if (m_pInputKeyboard != NULL)
@@ -130,9 +140,11 @@ void CManager::Uninit(void)
 void CManager::Update(void)
 {
 	m_pInputKeyboard->Update();
+	m_pInputJoystick->Update();
 	m_pRenderer->Update();
 	m_pCamera->Update();
 }
+
 //=============================================================================
 // 描画処理
 //=============================================================================
@@ -141,32 +153,74 @@ void CManager::Draw(void)
 	m_pRenderer->Draw();
 }
 
-CPlayer *CManager::GetPlayer(void)
+//=============================================================================
+//テクスチャの読み込みまとめ
+//=============================================================================
+void CManager::LoadAll(void)
 {
-	return m_pPlayer;
+	CPlayer::Load();
+	CPolygon::Load();
+	CModel::Load();
 }
 
+//=============================================================================
+//テクスチャの破棄まとめ
+//=============================================================================
+void CManager::UnloadAll(void)
+{
+	CModel::Unload();
+	CPolygon::Unload();
+	CPlayer::Unload();
+}
+
+//=============================================================================
+// 受け渡し処理
+//=============================================================================
+//レンダラー
 CRenderer *CManager::GetRenderer(void)
 {
 	return m_pRenderer;	
 }
 
+//キーボード
+CInputKeyboard *CManager::GetInputKeyboard(void)
+{
+	return m_pInputKeyboard;
+}
+
+//ゲームパッド
+CInputJoystick * CManager::GetInputJoystick(void)
+{
+	return m_pInputJoystick;
+}
+
+//カメラ
 CCamera * CManager::GetCamera(void)
 {
 	return m_pCamera;
 }
 
+//ライト
 CLight * CManager::GetLight(void)
 {
 	return m_pLight;
 }
 
+//プレイヤー
+CPlayer *CManager::GetPlayer(void)
+{
+	return m_pPlayer;
+}
+
+//モデル
+CModel * CManager::GetModel(void)
+{
+	return m_pModel;
+}
+
+//デバッグ
 CDebugProc * CManager::GetDebug(void)
 {
 	return m_pDebugProc;
 }
 
-CInputKeyboard *CManager::GetInput(void)
-{
-	return m_pInputKeyboard;
-}

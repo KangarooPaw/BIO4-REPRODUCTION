@@ -1,8 +1,5 @@
-﻿  scene3d.cpp
-  polygon.cpp
+﻿  manager.cpp
+  camera.cpp
   コードを生成中...
-  スキップ中... (関連する変更は検出されませんでした)
-  model.cpp
-  manager.cpp
-  BIOHAZRD4.vcxproj -> C:\Users\gsp026\Documents\Visual Studio 2015\Projects\BIOHAZRD4\Debug\BIOHAZRD4.exe
-  BIOHAZRD4.vcxproj -> C:\Users\gsp026\Documents\Visual Studio 2015\Projects\BIOHAZRD4\Debug\BIOHAZRD4.pdb (Full PDB)
+  BIOHAZRD4.vcxproj -> C:\Users\gsp026\Desktop\02_BIOHAZRD4\Debug\BIOHAZRD4.exe
+  BIOHAZRD4.vcxproj -> C:\Users\gsp026\Desktop\02_BIOHAZRD4\Debug\BIOHAZRD4.pdb (Full PDB)
