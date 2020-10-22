@@ -148,6 +148,7 @@
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="model.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="keyboard.h" />
+    <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="model.h" />
