@@ -1,0 +1,15 @@
+//コントローラー取得
+		DIJOYSTATE js;
+		CInputJoystick * pInputJoystick = CSceneManager::GetInputJoystick();
+		LPDIRECTINPUTDEVICE8 g_lpDIDevice = CInputJoystick::GetDevice();
+
+//なんか初期化てきなやつ
+if (g_lpDIDevice != NULL)
+		{
+			g_lpDIDevice->Poll();
+			g_lpDIDevice->GetDeviceState(sizeof(DIJOYSTATE), &js);
+		}
+//スティック
+if (g_lpDIDevice != NULL &&js.lY >= 500)
+//ボタン
+if (g_lpDIDevice != NULL &&pInputJoystick->GetJoystickTrigger(1)）
