@@ -13,39 +13,119 @@ CScene3d::~CScene3d()
 
 CScene3d * CScene3d::Create(float nPosX, float nPosY)
 {
-	return nullptr;
+	CScene3d *pScene3d;
+	pScene3d = new CScene3d;
+
+	pScene3d->Init();
+	return pScene3d;
+
 }
 
-HRESULT CScene3d::Init(float nPosX, float nPosY, int nPolygonWidth, int nPolygonHeight)
+HRESULT CScene3d::Init(void)
 {
-	return E_NOTIMPL;
+	LPDIRECT3DDEVICE9 pDevice= CManager::GetRenderer()->GetDevice();
+
+	// 頂点バッファの生成
+	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX * MAX_POLYGON,	// 頂点データ用に確保するバッファサイズ(バイト単位)
+		D3DUSAGE_WRITEONLY,			// 頂点バッファの使用法　
+		FVF_VERTEX_2D,				// 使用する頂点フォーマット
+		D3DPOOL_MANAGED,			// リソースのバッファを保持するメモリクラスを指定
+		&m_pVtxBuff,				// 頂点バッファへのポインタ
+		NULL)))						// NULLに設定
+	{
+		return E_FAIL;
+	}
+
+	// 頂点情報を設定
+	VERTEX_3D *pVtx = NULL;
+
+	//頂点バッファのロック
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	//場所の設定
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y - (m_size.y / 2), m_pos.z - (m_size.z / 2));
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y - (m_size.y / 2), m_pos.z - (m_size.z / 2));
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y + (m_size.y / 2), m_pos.z + (m_size.z / 2));
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y + (m_size.y / 2), m_pos.z + (m_size.z / 2));
+
+	//法線の設定
+	pVtx[0].nor = D3DXVECTOR3(0, 1, 0);
+	pVtx[1].nor = D3DXVECTOR3(0, 1, 0);
+	pVtx[2].nor = D3DXVECTOR3(0, 1, 0);
+	pVtx[3].nor = D3DXVECTOR3(0, 1, 0);
+
+	//カラーの設定
+	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+
+	//テクスチャ座標の設定
+	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+
+	//頂点バッファのアンロック
+	m_pVtxBuff->Unlock();
+
+	return S_OK;
 }
 
 void CScene3d::Uninit(void)
 {
+
 }
 
 void CScene3d::Update(void)
 {
+
 }
 
 void CScene3d::Draw(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
-	pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
 	D3DXMATRIX mtxRot, mtxTrans;
-	D3DXMatrixIdentity(&m_Polygon.mtxWorld);
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_Polygon.rot.y, m_Polygon.rot.x, m_Polygon.rot.z);
-	D3DXMatrixMultiply(&m_Polygon.mtxWorld, &m_Polygon.mtxWorld, &mtxRot);
-	D3DXMatrixTranslation(&mtxTrans, m_Polygon.pos.x, m_Polygon.pos.y, m_Polygon.pos.z);
-	D3DXMatrixMultiply(&m_Polygon.mtxWorld, &m_Polygon.mtxWorld, &mtxTrans);
-	pDevice->SetTransform(D3DTS_WORLD, &m_Polygon.mtxWorld);
+	D3DXMatrixIdentity(&m_mtxWorld);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
 	pDevice->SetTexture(0, m_pTexture);
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_3D));
 	pDevice->SetFVF(FVF_VERTEX_3D);
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 }
 
+//================================================================================
+//各種設定
+//================================================================================
+//----------------------------------------
+//場所
+//----------------------------------------
+void CScene3d::SetPosition(D3DXVECTOR3 pos)
+{
+	m_pos = pos;
+}
+//----------------------------------------
+//角度
+//----------------------------------------
+void CScene3d::SetRotation(D3DXVECTOR3 rot)
+{
+	m_rot = rot;
+}
+//----------------------------------------
+//サイズ
+//----------------------------------------
+void CScene3d::SetSize(D3DXVECTOR3 size)
+{
+	m_size = size;
+}
+//----------------------------------------
+//テクスチャ
+//----------------------------------------
 void CScene3d::BindTexture(LPDIRECT3DTEXTURE9 pTexture)
 {
 	m_pTexture = pTexture;

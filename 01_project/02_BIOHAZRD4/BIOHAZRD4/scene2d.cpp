@@ -23,21 +23,14 @@ CScene2D *CScene2D::Create(float nPosX, float nPosY)
 	CScene2D *pScene2D;
 	pScene2D = new CScene2D(3);
 	
-	pScene2D->Init(nPosX, nPosY,PLAYER_WIDTH,PLAYER_HEIGHT);
+	pScene2D->Init();
 	return pScene2D;
 }
 
-HRESULT CScene2D::Init(float nPosX, float nPosY, int nPolygonWidth, int nPolygonHeight)
+HRESULT CScene2D::Init(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;
 	pDevice = CManager::GetRenderer()->GetDevice();
-
-	// ポリゴンの位置を設定
-	m_pos = D3DXVECTOR3(nPosX, nPosY, 0.f);
-	m_PolygonHeight = nPolygonHeight;
-	m_PolygonWidth = nPolygonWidth;
-
-	// 読み込むメモリー
 
 	// 頂点バッファの生成
 	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * NUM_VERTEX * MAX_POLYGON,	// 頂点データ用に確保するバッファサイズ(バイト単位)
@@ -56,23 +49,21 @@ HRESULT CScene2D::Init(float nPosX, float nPosY, int nPolygonWidth, int nPolygon
 	// 頂点バッファをロックし、頂点情報へのポインタを取得
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-
-
 	// 頂点座標の設定
-	pVtx[0].pos.x = m_pos.x - (m_PolygonWidth /2);
-	pVtx[0].pos.y = m_pos.y - (m_PolygonHeight /2);
+	pVtx[0].pos.x = m_pos.x - (m_size.x / 2);
+	pVtx[0].pos.y = m_pos.y - (m_size.y / 2);
 	pVtx[0].pos.z = 0.0f;
 
-	pVtx[1].pos.x = m_pos.x + (m_PolygonWidth /2);
-	pVtx[1].pos.y = m_pos.y - (m_PolygonHeight /2);
+	pVtx[1].pos.x = m_pos.x + (m_size.x / 2);
+	pVtx[1].pos.y = m_pos.y - (m_size.y / 2);
 	pVtx[1].pos.z = 0.0f;
 
-	pVtx[2].pos.x = m_pos.x - (m_PolygonWidth /2);
-	pVtx[2].pos.y = m_pos.y + (m_PolygonHeight /2);
+	pVtx[2].pos.x = m_pos.x - (m_size.x / 2);
+	pVtx[2].pos.y = m_pos.y + (m_size.y / 2);
 	pVtx[2].pos.z = 0.0f;
 
-	pVtx[3].pos.x = m_pos.x + (m_PolygonWidth /2);
-	pVtx[3].pos.y = m_pos.y + (m_PolygonHeight /2);
+	pVtx[3].pos.x = m_pos.x + (m_size.x / 2);
+	pVtx[3].pos.y = m_pos.y + (m_size.y / 2);
 	pVtx[3].pos.z = 0.0f;
 
 	// rhwの設定
@@ -126,20 +117,20 @@ void CScene2D::Update(void)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos.x = m_pos.x - (m_PolygonWidth / 2)	;
-	pVtx[0].pos.y = m_pos.y - (m_PolygonHeight / 2)	;
+	pVtx[0].pos.x = m_pos.x - (m_size.x / 2)	;
+	pVtx[0].pos.y = m_pos.y - (m_size.y / 2)	;
 	pVtx[0].pos.z = 0.0f;
 
-	pVtx[1].pos.x = m_pos.x + (m_PolygonWidth / 2)	;
-	pVtx[1].pos.y = m_pos.y - (m_PolygonHeight / 2)	;
+	pVtx[1].pos.x = m_pos.x + (m_size.x / 2)	;
+	pVtx[1].pos.y = m_pos.y - (m_size.y / 2)	;
 	pVtx[1].pos.z = 0.0f;
 
-	pVtx[2].pos.x = m_pos.x - (m_PolygonWidth / 2)	;
-	pVtx[2].pos.y = m_pos.y + (m_PolygonHeight / 2)	;
+	pVtx[2].pos.x = m_pos.x - (m_size.x / 2)	;
+	pVtx[2].pos.y = m_pos.y + (m_size.y / 2)	;
 	pVtx[2].pos.z = 0.0f;
 
-	pVtx[3].pos.x = m_pos.x + (m_PolygonWidth / 2)	;
-	pVtx[3].pos.y = m_pos.y + (m_PolygonHeight / 2)	;
+	pVtx[3].pos.x = m_pos.x + (m_size.x / 2)	;
+	pVtx[3].pos.y = m_pos.y + (m_size.y / 2)	;
 	pVtx[3].pos.z = 0.0f;
 
 	// rhwの設定
@@ -280,6 +271,11 @@ void CScene2D::SetEnemyTex(float texX1, float texX2, float texY1, float texY2)
 void CScene2D::SetPosition(D3DXVECTOR3 pos)
 {
 	m_pos = pos;
+}
+
+void CScene2D::SetSize(D3DXVECTOR3 size)
+{
+	m_size = size;
 }
 
 D3DXVECTOR3 CScene2D::GetPosition(void)

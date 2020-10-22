@@ -7,6 +7,8 @@
 class CRenderer;
 class CPlayer;
 class CInputKeyboard;
+class CCamera;
+class CLight;
 class CDebugProc;
 
 //マネージャークラス
@@ -23,11 +25,15 @@ public:
 	CPlayer *GetPlayer(void);				//プレイヤー
 	static CInputKeyboard *GetInput(void);	//レンダラー
 	static CRenderer *GetRenderer(void);	//キーボード
+	static CCamera *GetCamera(void);		//カメラ
+	static CLight *GetLight(void);			//ライト
 	static CDebugProc*GetDebug(void);		//デバッグ
 private:								  
 	static CPlayer *m_pPlayer;				//プレイヤー
 	static CRenderer *m_pRenderer;			//レンダラー
 	static CInputKeyboard *m_pInputKeyboard;//キーボード
+	static CCamera *m_pCamera;				//カメラ
+	static CLight *m_pLight;				//ライト
 	static CDebugProc*m_pDebugProc;			//デバッグ
 };	
 
