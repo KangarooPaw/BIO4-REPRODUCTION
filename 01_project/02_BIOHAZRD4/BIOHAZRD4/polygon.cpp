@@ -18,7 +18,7 @@ LPDIRECT3DTEXTURE9 CPolygon::m_pTexture[MAX_TYPE_POLYGON] = {};
 //----------------------------------------
 //ƒCƒ“ƒNƒŠƒƒ“ƒg
 //----------------------------------------
-CPolygon::CPolygon()
+CPolygon::CPolygon(int nPriority) :CScene3d(nPriority)
 {
 
 }
@@ -38,9 +38,9 @@ CPolygon * CPolygon::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot,D3DXVECTOR3 size,in
 {
 	CPolygon *pPolygon;
 	pPolygon = new CPolygon;
-	pPolygon->m_pos=pos;
+	pPolygon->m_pos = pos;
 	pPolygon->m_rot = rot;
-	pPolygon->m_size=size;
+	pPolygon->m_size = size;
 	pPolygon->m_nType=type;
 	pPolygon->Init();
 	return pPolygon;

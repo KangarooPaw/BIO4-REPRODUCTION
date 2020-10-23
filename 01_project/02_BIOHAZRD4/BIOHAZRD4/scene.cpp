@@ -6,6 +6,8 @@ CScene *CScene::m_pTop[PRIORITY] = {};
 CScene *CScene::m_pCur[PRIORITY] = {};
 int CScene::m_nNumAll = 0;
 int CScene::m_nCount = 0;
+int CScene::m_nNext = 0;
+
 CScene::CScene(int nPriority)
 {
 			m_pNext = NULL;
@@ -42,7 +44,31 @@ void CScene::SetObjType(OBJTYPE objType)
 
 CScene * CScene::GetScene(int nPriority)
 {
-	return  m_pCur[nPriority];
+	CScene *pScene = m_pTop[nPriority];
+
+	// m_nNext‚Ì•ª‚¾‚¯‰ñ‚·
+	for (int nCount = 0; nCount < m_nNext; nCount++)
+	{
+		if (pScene != NULL)
+		{
+			// Next‚Ìî•ñ‚Ì•Û
+			CScene *pSceneNext = pScene->m_pNext;
+
+			// Next‚Ìî•ñ‚ğpScene‚É“ü‚ê‚é
+			pScene = pSceneNext;
+		}
+	}
+
+	// m_nNext‚Ì‰ÁZ
+	m_nNext++;
+
+	// pScene‚ªNULL‚Ì
+	if (pScene == NULL)
+	{
+		m_nNext = 0;
+	}
+
+	return pScene;
 }
 
 void CScene::ReleaseAll(void)

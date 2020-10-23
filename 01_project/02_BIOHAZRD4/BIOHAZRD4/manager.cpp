@@ -21,6 +21,8 @@
 #include "polygon.h"
 #include "debug.h"
 #include "light.h"
+#include "enemy.h"
+#include "bullet.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -79,6 +81,10 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindouw)
 	CPolygon::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),D3DXVECTOR3(40.0f, 0.0f, -40.0f),0);
 	CPolygon::Create(D3DXVECTOR3(0.0f, 0.0f, 20.0f), D3DXVECTOR3(90.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 0.0f, -20.0f), 0);
 	m_pModel = CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	
+	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 100.0f));
+	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 100.0f));
+
 	return S_OK;
 }
 
@@ -161,6 +167,8 @@ void CManager::LoadAll(void)
 	CPlayer::Load();
 	CPolygon::Load();
 	CModel::Load();
+	CEnemy::Load();
+	CBullet::Load();
 }
 
 //=============================================================================
@@ -171,6 +179,8 @@ void CManager::UnloadAll(void)
 	CModel::Unload();
 	CPolygon::Unload();
 	CPlayer::Unload();
+	CEnemy::Unload();
+	CBullet::Unload();
 }
 
 //=============================================================================

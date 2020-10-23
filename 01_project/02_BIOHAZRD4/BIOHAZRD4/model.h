@@ -6,7 +6,7 @@
 class CModel:public CScene3d
 {
 public:
-	CModel();
+	CModel(int nPriority = CScene::OBJTYPE_PLAYER);
 	~CModel();
 
 	static CModel *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot);

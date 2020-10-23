@@ -48,6 +48,7 @@ private:
 	int m_nPriority;
 	int m_nID;
 	static int	m_nCount;
+	static int m_nNext;
 	static bool m_bRelease;
 	bool m_bDeath;
 };

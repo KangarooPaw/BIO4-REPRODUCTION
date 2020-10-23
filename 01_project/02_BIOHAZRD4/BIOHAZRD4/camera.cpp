@@ -22,7 +22,7 @@ CCamera::CCamera()
 	vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	m_Distance = 0;
 	m_Theta = 1;
-	m_Phi = 1.7;
+	m_Phi = 1.7f;
 }
 
 //--------------------------------------

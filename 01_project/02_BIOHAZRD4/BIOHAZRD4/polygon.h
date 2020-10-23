@@ -11,7 +11,7 @@
 class CPolygon:public CScene3d
 {
 public:
-	CPolygon();			//インクリメント
+	CPolygon(int nPriority = CScene::OBJTYPE_NONE);			//インクリメント
 	~CPolygon();		//デクリメント
 
 	static CPolygon*Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, int type);

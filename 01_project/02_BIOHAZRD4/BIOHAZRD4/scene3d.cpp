@@ -3,8 +3,9 @@
 #include "renderer.h"
 #include "scene3d.h"
 
-CScene3d::CScene3d()
+CScene3d::CScene3d(int nPriority) :CScene(nPriority)
 {
+	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 CScene3d::~CScene3d()
@@ -14,7 +15,7 @@ CScene3d::~CScene3d()
 CScene3d * CScene3d::Create(float nPosX, float nPosY)
 {
 	CScene3d *pScene3d;
-	pScene3d = new CScene3d;
+	pScene3d = new CScene3d(0);
 
 	pScene3d->Init();
 	return pScene3d;
@@ -74,12 +75,25 @@ HRESULT CScene3d::Init(void)
 
 void CScene3d::Uninit(void)
 {
-
+	Release();
 }
 
 void CScene3d::Update(void)
 {
+	// 頂点情報を設定
+	VERTEX_3D *pVtx = NULL;
 
+	//頂点バッファのロック
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	//場所の設定
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y - (m_size.y / 2), m_pos.z - (m_size.z / 2));
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y - (m_size.y / 2), m_pos.z - (m_size.z / 2));
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y + (m_size.y / 2), m_pos.z + (m_size.z / 2));
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y + (m_size.y / 2), m_pos.z + (m_size.z / 2));
+
+	//頂点バッファのアンロック
+	m_pVtxBuff->Unlock();
 }
 
 void CScene3d::Draw(void)
@@ -129,4 +143,20 @@ void CScene3d::SetSize(D3DXVECTOR3 size)
 void CScene3d::BindTexture(LPDIRECT3DTEXTURE9 pTexture)
 {
 	m_pTexture = pTexture;
+}
+
+//----------------------------------------
+// 座標を渡す処理
+//----------------------------------------
+D3DXVECTOR3 CScene3d::GetPosition(void)
+{
+	return m_pos;
+}
+
+//----------------------------------------
+// サイズを渡す処理
+//----------------------------------------
+D3DXVECTOR3 CScene3d::GetSize(void)
+{
+	return m_size;
 }
