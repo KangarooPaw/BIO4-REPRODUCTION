@@ -34,11 +34,14 @@ CPlayer::~CPlayer()
 //----------------------------------------
 //生成処理
 //----------------------------------------
-CPlayer *CPlayer::Create(float nPosX, float nPosY)
+CPlayer *CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
 	CPlayer *pPlayer;
-	pPlayer = new CPlayer;
-	pPlayer->Init(nPosX, nPosY);
+	pPlayer = new CPlayer;	
+	pPlayer->SetPosition(pos);
+	pPlayer->SetSize(size);
+	pPlayer->Init();
+
 	return pPlayer;
 }
 
@@ -53,7 +56,7 @@ HRESULT CPlayer::Load(void)
 
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice,				// デバイスへのポインタ
-		TEXTURE_PLAYER,					// ファイルの名前
+		TEXTURE_PLAYER,								// ファイルの名前
 		&m_pTexture);
 
 	return S_OK;
@@ -74,10 +77,11 @@ void CPlayer::Unload(void)
 //----------------------------------------
 //初期化処理
 //----------------------------------------
-HRESULT CPlayer::Init(float nPosX, float nPosY)
-{
-	CScene2D::Init(nPosX, nPosY,PLAYER_WIDTH,PLAYER_HEIGHT);
+HRESULT CPlayer::Init(void)
+{	
+	CScene2D::Init();
 	CScene2D::BindTexture(m_pTexture);
+
 	SetObjType(CScene::OBJTYPE_PLAYER);
 	return S_OK;
 }
@@ -95,7 +99,7 @@ void CPlayer::Uninit(void)
 //----------------------------------------
 void CPlayer::Update(void)
 {
-
+	CScene2D::Update();
 }
 
 //----------------------------------------

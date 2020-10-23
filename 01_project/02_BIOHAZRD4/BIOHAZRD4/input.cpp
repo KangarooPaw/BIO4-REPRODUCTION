@@ -1,3 +1,4 @@
+#include "main.h"
 #include "input.h"
 
 LPDIRECTINPUT8 CInput::m_pInput = NULL;

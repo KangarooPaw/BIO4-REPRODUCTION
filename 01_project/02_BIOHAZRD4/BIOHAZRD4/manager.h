@@ -5,8 +5,12 @@
 
 //前方宣言
 class CRenderer;
-class CPlayer;
 class CInputKeyboard;
+class CInputJoystick;
+class CCamera;
+class CLight;
+class CPlayer;
+class CModel;
 class CDebugProc;
 
 //マネージャークラス
@@ -20,14 +24,26 @@ public:
 	void Update(void);//更新処理
 	void Draw(void);//描画処理
 
-	CPlayer *GetPlayer(void);				//プレイヤー
-	static CInputKeyboard *GetInput(void);	//レンダラー
-	static CRenderer *GetRenderer(void);	//キーボード
+	void LoadAll(void);//テクスチャの読み込みまとめ
+	void UnloadAll(void);//テクスチャの破棄まとめ
+
+	
+	static CRenderer *GetRenderer(void);	//レンダラー
+	static CInputKeyboard *GetInputKeyboard(void);	//キーボード
+	static CInputJoystick *GetInputJoystick(void);	//ゲームパッド
+	static CCamera *GetCamera(void);		//カメラ
+	static CLight *GetLight(void);			//ライト
+	static CPlayer *GetPlayer(void);		//プレイヤー
+	static CModel *GetModel(void);			//モデル
 	static CDebugProc*GetDebug(void);		//デバッグ
 private:								  
-	static CPlayer *m_pPlayer;				//プレイヤー
 	static CRenderer *m_pRenderer;			//レンダラー
 	static CInputKeyboard *m_pInputKeyboard;//キーボード
+	static CInputJoystick *m_pInputJoystick;//ゲームパッド
+	static CCamera *m_pCamera;				//カメラ
+	static CLight *m_pLight;				//ライト
+	static CPlayer *m_pPlayer;				//プレイヤー
+	static CModel *m_pModel;				//モデル
 	static CDebugProc*m_pDebugProc;			//デバッグ
 };	
 
