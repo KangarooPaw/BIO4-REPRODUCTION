@@ -11,10 +11,10 @@
   keyboard.cpp
   joystick.cpp
   input.cpp
+  enemy.cpp
   debug.cpp
   camera.cpp
-c:\users\student\desktop\02_biohazrd4\biohazrd4\camera.cpp(25): warning C4305: '=': 'double' から 'float' へ切り詰めます。
+  bullet.cpp
   コードを生成中...
-  LINK : 前回のインクリメンタル リンクで C:\Users\student\Desktop\02_BIOHAZRD4\Debug\BIOHAZRD4.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
-  BIOHAZRD4.vcxproj -> C:\Users\student\Desktop\02_BIOHAZRD4\Debug\BIOHAZRD4.exe
-  BIOHAZRD4.vcxproj -> C:\Users\student\Desktop\02_BIOHAZRD4\Debug\BIOHAZRD4.pdb (Full PDB)
+  BIOHAZRD4.vcxproj -> C:\Users\student\Desktop\チーム制作\02_BIOHAZRD4\Debug\BIOHAZRD4.exe
+  BIOHAZRD4.vcxproj -> C:\Users\student\Desktop\チーム制作\02_BIOHAZRD4\Debug\BIOHAZRD4.pdb (Full PDB)

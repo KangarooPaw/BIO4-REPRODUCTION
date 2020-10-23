@@ -6,7 +6,7 @@
 class CScene3d :public CScene
 {
 public:
-	CScene3d();//インクリメント
+	CScene3d(int nPriority);//インクリメント
 	~CScene3d();//デクリメント
 	static CScene3d *Create(float nPosX, float nPosY);//生成処理
 	HRESULT Init(void);	//初期化処理
@@ -19,6 +19,9 @@ public:
 	void SetRotation(D3DXVECTOR3 rot);		//角度
 	void SetSize(D3DXVECTOR3 size);			//サイズ	
 	void BindTexture(LPDIRECT3DTEXTURE9 pTexture);	//テクスチャ
+
+	D3DXVECTOR3 GetPosition(void);
+	D3DXVECTOR3 GetSize(void);
 private:
 	LPDIRECT3DTEXTURE9		m_pTexture = NULL;		// テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff = NULL;		// 頂点バッファへのポインタ

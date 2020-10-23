@@ -10,6 +10,7 @@
 #include "renderer.h"
 #include "joystick.h"
 #include "model.h"
+#include "bullet.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -21,7 +22,7 @@ DWORD CModel::m_nNumMat = 0;
 //----------------------------------------
 //インクリメント
 //----------------------------------------
-CModel::CModel()
+CModel::CModel(int nPriority) :CScene3d(nPriority)
 {
 
 }
@@ -137,6 +138,14 @@ void CModel::Update(void)
 	{
 		m_pos.z += 0.5f;
 	}
+
+	// Xボタンを押したら弾を発射
+	if (pInputJoystick->GetJoystickTrigger(0))
+	{
+		CBullet::Create(m_pos + D3DXVECTOR3(0.0f, 20.0f, 0.0f), D3DXVECTOR3(20.0f, 0.0f, 20.0f), 
+			D3DXVECTOR3(-sinf(m_rot.x)*5.0f, tanf(m_rot.y)*5.0f, -cosf(m_rot.x)*5.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
+	}
+
 }
 
 //----------------------------------------
