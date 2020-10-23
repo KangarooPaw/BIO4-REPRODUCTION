@@ -19,7 +19,10 @@ CCamera::CCamera()
 {
 	posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	vecU = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	m_Distance = 0;
+	m_Theta = 1;
+	m_Phi = 1.7;
 }
 
 //--------------------------------------
@@ -46,10 +49,7 @@ CCamera * CCamera::Create(void)
 //--------------------------------------
 void CCamera::Init(void)
 {
-	posV = D3DXVECTOR3(-20.0f, 70.0f, 70.0f);
-	posR = D3DXVECTOR3(-20.0f, 50.0f, 0.0f);
-	vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
-	m_fCameraAngle = 0.0f;
+
 }
 
 //--------------------------------------
@@ -69,7 +69,6 @@ void CCamera::Update(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	//モデル場所の取得
 	D3DXVECTOR3 pModelPos = CManager::GetModel()->GetPos();
-	D3DXVECTOR3 pModelRot = CManager::GetModel()->GetRot();
 	//キーボードの取得
 	CInputKeyboard *pKeyborad = CManager::GetInputKeyboard();
 	//コントローラーの取得処理
@@ -81,51 +80,43 @@ void CCamera::Update(void)
 		pJoystickDevice->Poll();
 		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
 	}
-	float angleV;
-	float angleR;
 	//--------------------------
 	//移動
-	//--------------------------
-	//左スティックを左に倒す
+	//--------------------------		
+
+	//左スティックを前に倒す
 	if (pStick.lX <= -500)
 	{
-		//注視点	
-		angleR = atan2((posR.z - pModelPos.z), (posR.x - pModelPos.x));
-		posR.x -= sinf(angleR) * 0.25f;
-		posR.z += cosf(angleR) * 0.25f;
-		//視点	
-		angleV = atan2((posR.z - posV.z), (posR.x - posV.x));
-		posV.x += sinf(angleV) * 0.7f;
-		posV.z -= cosf(angleV) * 0.7f;
-	}										 
-	//左スティックを右に倒す				  
-	if (pStick.lX >= 500)
-	{		
-		//注視点	
-		angleR = atan2((posR.z - pModelPos.z), (posR.x - pModelPos.x));
-		posR.x += sinf(angleR) * 0.3f;
-		posR.z -= cosf(angleR) * 0.3f;
-		//視点	
-		angleV = atan2((posR.z - posV.z), (posR.x - posV.x));
-		posV.x -= sinf(angleV) * 0.7f;
-		posV.z += cosf(angleV) * 0.7f;
-	}							   
-	//左スティックを前に倒す
-	if (pStick.lY <= -500)
-	{
-		//視点
-		posV.z -= 0.5f;
-		//注視点
-		posR.z -= 0.5f;
+		m_Phi += D3DXToRadian(1);
 	}
 	//左スティックを後ろに倒す
-	if (pStick.lY >= 500)
+	if (pStick.lX >= 500)
 	{
-		//視点
-		posV.z += 0.5f;
-		//注視点
-		posR.z += 0.5f;
+		m_Phi -= D3DXToRadian(1);
 	}
+	//左スティックを前に倒す
+	if (pKeyborad->GetKeyPress(DIK_UP))
+	{
+		m_Theta -= D3DXToRadian(1);
+	}
+	//左スティックを後ろに倒す
+	if (pKeyborad->GetKeyPress(DIK_DOWN))
+	{
+		m_Theta += D3DXToRadian(1);
+	}
+
+	//注視点
+	//距離
+	posR.x = (sinf(m_Theta)*cosf(m_Phi)) + pModelPos.x - 20;
+	posR.y = cosf(m_Theta) + pModelPos.y + 50;
+	posR.z = (sinf(m_Theta)*sinf(m_Phi)) + pModelPos.z + 5;
+
+	//視点	
+	//距離
+	m_Distance = 35;
+	posV.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + pModelPos.x - 20;
+	posV.y = m_Distance*cosf(m_Theta) + pModelPos.y + 50;
+	posV.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + pModelPos.z+5;
 
 	//--------------------------------------
 	//カメラ描画
@@ -134,6 +125,6 @@ void CCamera::Update(void)
 	D3DXMatrixLookAtLH(&mtxView, &posV, &posR, &vecU);
 	pDevice->SetTransform(D3DTS_VIEW, &mtxView);
 	D3DXMatrixIdentity(&mtxProjection);
-	D3DXMatrixPerspectiveFovLH(&mtxProjection, D3DXToRadian(45), SCREEN_WIDTH / SCREEN_HEIGHT, 10, 1000);
+	D3DXMatrixPerspectiveFovLH(&mtxProjection, D3DXToRadian(90), SCREEN_WIDTH / SCREEN_HEIGHT, 10, 1000);
 	pDevice->SetTransform(D3DTS_PROJECTION, &mtxProjection);
 }
