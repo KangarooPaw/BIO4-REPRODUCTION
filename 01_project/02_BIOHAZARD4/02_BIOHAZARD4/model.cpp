@@ -36,51 +36,6 @@ CModel::~CModel()
 }
 
 //----------------------------------------
-//生成処理
-//----------------------------------------
-CModel * CModel::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
-{
-	CModel *pModel;
-	pModel = new CModel;
-	pModel->m_pos = pos;
-	pModel->m_rot = rot;
-	pModel->Init();
-	return pModel;
-}
-
-//----------------------------------------
-//モデルの読み込み
-//----------------------------------------
-HRESULT CModel::Load(void)
-{
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-	D3DXLoadMeshFromX("data/MODEL/playermodel_test001.x", 
-		D3DXMESH_SYSTEMMEM, 
-		pDevice, 
-		NULL, 
-		&m_pBuffMat, 
-		NULL, 
-		&m_nNumMat, 
-		&m_pMesh
-	);
-
-	return E_NOTIMPL;
-}
-
-//----------------------------------------
-//モデルの破棄
-//----------------------------------------
-void CModel::Unload(void)
-{
-	if (m_pMesh != NULL)
-	{
-		m_pMesh->Release();
-		m_pMesh = NULL;
-	}
-}
-
-//----------------------------------------
 //初期化処理
 //----------------------------------------
 HRESULT CModel::Init(void)
@@ -93,11 +48,6 @@ HRESULT CModel::Init(void)
 //----------------------------------------
 void CModel::Uninit(void)
 {
-	if (m_pBuffMat != NULL)
-	{
-		m_pBuffMat->Release();
-		m_pBuffMat = NULL;
-	}
 	CScene3d::Uninit();
 }
 
@@ -106,45 +56,7 @@ void CModel::Uninit(void)
 //----------------------------------------
 void CModel::Update(void)
 {
-	//コントローラーの取得処理
-	DIJOYSTATE pStick;
-	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
-	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
-	if (pJoystickDevice != NULL)
-	{
-		pJoystickDevice->Poll();
-		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
-	}
-	//--------------------------
-	//移動
-	//--------------------------
-	if (pStick.lX <= -500)
-	{
-		m_rot.x -= D3DXToRadian(1);
-	}
-	//左スティックを右に倒す
-	if (pStick.lX >= 500)
-	{
-		m_rot.x += D3DXToRadian(1);
-	}
-	//左スティックを前に倒す	
-	if (pStick.lY <= -500)
-	{
-		m_pos.z -= 0.5f;
-	}
-	//左スティックを後ろに倒す
-	if (pStick.lY >= 500)
-	{
-		m_pos.z += 0.5f;
-	}
-
-	// Xボタンを押したら弾を発射
-	if (pInputJoystick->GetJoystickTrigger(0))
-	{
-		CBullet::Create(m_pos + D3DXVECTOR3(0.0f, 20.0f, 0.0f), D3DXVECTOR3(20.0f, 0.0f, 20.0f), 
-			D3DXVECTOR3(-sinf(m_rot.x)*5.0f, tanf(m_rot.y)*5.0f, -cosf(m_rot.x)*5.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
-	}
-
+	
 }
 
 //----------------------------------------
@@ -170,4 +82,17 @@ void CModel::Draw(void)
 		m_pMesh->DrawSubset(nCntMat);
 	}
 	pDevice->SetMaterial(&matDef);
+}
+
+void CModel::BindModel(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD nNumMat)
+{
+	m_pMesh = pMesh;
+	m_pBuffMat = pBuffMat;
+	m_nNumMat = nNumMat;
+}
+
+void CModel::SetModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
+{
+	m_pos = pos;
+	m_rot = rot;
 }

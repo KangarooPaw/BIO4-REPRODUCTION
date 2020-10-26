@@ -34,7 +34,6 @@ public:
 	static CCamera *GetCamera(void);		//カメラ
 	static CLight *GetLight(void);			//ライト
 	static CPlayer *GetPlayer(void);		//プレイヤー
-	static CModel *GetModel(void);			//モデル
 	static CDebugProc*GetDebug(void);		//デバッグ
 private:								  
 	static CRenderer *m_pRenderer;			//レンダラー
@@ -43,7 +42,6 @@ private:
 	static CCamera *m_pCamera;				//カメラ
 	static CLight *m_pLight;				//ライト
 	static CPlayer *m_pPlayer;				//プレイヤー
-	static CModel *m_pModel;				//モデル
 	static CDebugProc*m_pDebugProc;			//デバッグ
 };	
 

@@ -83,8 +83,6 @@ HRESULT CScene2D::Init(void)
 	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
 	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
-	pVtx += 4;
-
 	// 頂点バッファをアンロックする
 	m_pVtxBuff->Unlock();
 

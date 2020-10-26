@@ -20,8 +20,7 @@ public:
 	void SetSize(D3DXVECTOR3 size);			//サイズ	
 	void BindTexture(LPDIRECT3DTEXTURE9 pTexture);	//テクスチャ
 
-	D3DXVECTOR3 GetPosition(void);
-	D3DXVECTOR3 GetSize(void);
+
 private:
 	LPDIRECT3DTEXTURE9		m_pTexture = NULL;		// テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff = NULL;		// 頂点バッファへのポインタ

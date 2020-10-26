@@ -1,9 +1,9 @@
 #ifndef _ENEMY_H_
 #define _ENEMY_H_
 
-#include "scene3d.h"
+#include "model.h"
 
-class CEnemy :public CScene3d
+class CEnemy :public CModel
 {
 public:
 	CEnemy(int nPriority = CScene::OBJTYPE_ENEMY);
@@ -20,12 +20,12 @@ public:
 
 	void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size) {
 		m_pos = pos; m_rot = rot; m_size = size;
-		SetPosition(pos); SetRotation(rot); SetSize(size);
+		SetModel(pos, rot);
 		SetObjType(OBJTYPE_ENEMY);
 	}
 
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
-	D3DXVECTOR3 GetRot(void) { return m_rot; }
+	D3DXVECTOR3 GetSize(void) { return m_size; }
 private:
 	static LPD3DXMESH m_pMesh;
 	static LPD3DXBUFFER m_pBuffMat;
@@ -33,7 +33,6 @@ private:
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_rot;
 	D3DXVECTOR3 m_size;
-	D3DXMATRIX m_mtxWorld;
 };
 
 #endif

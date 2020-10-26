@@ -10,7 +10,7 @@
 #include "camera.h"
 #include "keyboard.h"
 #include "joystick.h"
-#include "model.h"
+#include "player.h"
 
 //--------------------------------------
 //インクリメント
@@ -68,8 +68,8 @@ void CCamera::Update(void)
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	//モデル場所の取得
-	D3DXVECTOR3 pModelPos = CManager::GetModel()->GetPos();
-	D3DXVECTOR3 pModelRot = CManager::GetModel()->GetRot();
+	D3DXVECTOR3 pPlayerPos = CManager::GetPlayer()->GetPos();
+	D3DXVECTOR3 pPlayerRot = CManager::GetPlayer()->GetRot();
 	//キーボードの取得
 	CInputKeyboard *pKeyborad = CManager::GetInputKeyboard();
 	//コントローラーの取得処理
@@ -109,9 +109,9 @@ void CCamera::Update(void)
 	//注視点
 	//距離
 	m_Distance = -15;
-	posR.x = m_Distance*cosf(pModelRot.x)+ pModelPos.x;
-	posR.y = pModelPos.y+47;
-	posR.z = m_Distance*sinf(-pModelRot.x) + pModelPos.z;
+	posR.x = m_Distance*cosf(pPlayerRot.x)+ pPlayerPos.x;
+	posR.y = pPlayerPos.y+47;
+	posR.z = m_Distance*sinf(-pPlayerRot.x) + pPlayerPos.z;
 
 	//視点	
 	//距離

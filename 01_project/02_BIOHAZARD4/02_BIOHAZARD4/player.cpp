@@ -1,24 +1,28 @@
-//----------------------------------------
-//プレイヤー処理
-//----------------------------------------
+//****************************************
+//モデル処理
+//****************************************
 
 //----------------------------------------
 //インクルードファイル
 //----------------------------------------
+#include "main.h"
 #include "manager.h"
 #include "renderer.h"
-#include "keyboard.h"
+#include "joystick.h"
 #include "player.h"
+#include "bullet.h"
 
 //----------------------------------------
 //静的メンバ変数
 //----------------------------------------
-LPDIRECT3DTEXTURE9 CPlayer::m_pTexture = NULL;
+LPD3DXMESH CPlayer::m_pMesh = NULL;
+LPD3DXBUFFER CPlayer::m_pBuffMat = NULL;
+DWORD CPlayer::m_nNumMat = 0;
 
 //----------------------------------------
 //インクリメント
 //----------------------------------------
-CPlayer::CPlayer(int nPriority):CScene2D(nPriority)
+CPlayer::CPlayer(int nPriority) :CModel(nPriority)
 {
 
 }
@@ -34,43 +38,44 @@ CPlayer::~CPlayer()
 //----------------------------------------
 //生成処理
 //----------------------------------------
-CPlayer *CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
+CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
 	CPlayer *pPlayer;
-	pPlayer = new CPlayer;	
-	pPlayer->SetPosition(pos);
-	pPlayer->SetSize(size);
+	pPlayer = new CPlayer;
+	pPlayer->SetPlayer(pos, rot, size);
 	pPlayer->Init();
-
 	return pPlayer;
 }
 
 //----------------------------------------
-//読み込み処理
+//モデルの読み込み
 //----------------------------------------
 HRESULT CPlayer::Load(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	pDevice = CManager::GetRenderer()->GetDevice();
-
-	// テクスチャの生成
-	D3DXCreateTextureFromFile(pDevice,				// デバイスへのポインタ
-		TEXTURE_PLAYER,								// ファイルの名前
-		&m_pTexture);
+	D3DXLoadMeshFromX("data/MODEL/playermodel_test001.x",
+		D3DXMESH_SYSTEMMEM,
+		pDevice,
+		NULL,
+		&m_pBuffMat,
+		NULL,
+		&m_nNumMat,
+		&m_pMesh
+	);
 
 	return S_OK;
 }
 
 //----------------------------------------
-//テクスチャの破棄
+//モデルの破棄
 //----------------------------------------
 void CPlayer::Unload(void)
 {
-	if (m_pTexture != NULL)
+	if (m_pMesh != NULL)
 	{
-		m_pTexture->Release();
-		m_pTexture = NULL;
+		m_pMesh->Release();
+		m_pMesh = NULL;
 	}
 }
 
@@ -78,11 +83,8 @@ void CPlayer::Unload(void)
 //初期化処理
 //----------------------------------------
 HRESULT CPlayer::Init(void)
-{	
-	CScene2D::Init();
-	CScene2D::BindTexture(m_pTexture);
-
-	SetObjType(CScene::OBJTYPE_PLAYER);
+{
+	CModel::BindModel(m_pMesh, m_pBuffMat, m_nNumMat);
 	return S_OK;
 }
 
@@ -91,7 +93,7 @@ HRESULT CPlayer::Init(void)
 //----------------------------------------
 void CPlayer::Uninit(void)
 {
-	CScene2D::Uninit();
+	CModel::Uninit();
 }
 
 //----------------------------------------
@@ -99,7 +101,47 @@ void CPlayer::Uninit(void)
 //----------------------------------------
 void CPlayer::Update(void)
 {
-	CScene2D::Update();
+	//コントローラーの取得処理
+	DIJOYSTATE pStick;
+	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
+	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
+	if (pJoystickDevice != NULL)
+	{
+		pJoystickDevice->Poll();
+		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
+	}
+	//m_pos = GetPos();
+	//--------------------------
+	//移動
+	//--------------------------
+	if (pStick.lX <= -500)
+	{
+		m_rot.x -= D3DXToRadian(1);
+	}
+	//左スティックを右に倒す
+	if (pStick.lX >= 500)
+	{
+		m_rot.x += D3DXToRadian(1);
+	}
+	//左スティックを前に倒す	
+	if (pStick.lY <= -500)
+	{
+		m_pos.z -= 0.5f;
+	}
+	//左スティックを後ろに倒す
+	if (pStick.lY >= 500)
+	{
+		m_pos.z += 0.5f;
+	}
+
+	// Xボタンを押したら弾を発射
+	if (pInputJoystick->GetJoystickTrigger(0))
+	{
+		CBullet::Create(m_pos + D3DXVECTOR3(0.0f, 20.0f, 0.0f), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
+			D3DXVECTOR3(-sinf(m_rot.x)*5.0f, tanf(m_rot.y)*5.0f, -cosf(m_rot.x)*5.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
+	}
+	SetModel(m_pos, m_rot);
+	CModel::Update();
 }
 
 //----------------------------------------
@@ -107,5 +149,5 @@ void CPlayer::Update(void)
 //----------------------------------------
 void CPlayer::Draw(void)
 {
-	CScene2D::Draw();
+	CModel::Draw();
 }

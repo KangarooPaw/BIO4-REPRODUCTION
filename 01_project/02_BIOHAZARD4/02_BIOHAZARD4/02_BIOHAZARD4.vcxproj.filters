@@ -63,9 +63,6 @@
     <ClCompile Include="joystick.cpp">
       <Filter>ソース ファイル\Input</Filter>
     </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>ソース ファイル\Scene\2D</Filter>
-    </ClCompile>
     <ClCompile Include="bullet.cpp">
       <Filter>ソース ファイル\Scene\3D</Filter>
     </ClCompile>
@@ -76,6 +73,12 @@
       <Filter>ソース ファイル\Scene\3D</Filter>
     </ClCompile>
     <ClCompile Include="polygon.cpp">
+      <Filter>ソース ファイル\Scene\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>ソース ファイル\Scene\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
       <Filter>ソース ファイル\Scene\3D</Filter>
     </ClCompile>
   </ItemGroup>
@@ -119,9 +122,6 @@
     <ClInclude Include="model.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="polygon.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -129,6 +129,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="scene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ui.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

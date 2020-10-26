@@ -21,7 +21,7 @@ DWORD CEnemy::m_nNumMat = 0;
 //----------------------------------------
 //ƒCƒ“ƒNƒŠƒƒ“ƒg
 //----------------------------------------
-CEnemy::CEnemy(int nPriority) :CScene3d(nPriority)
+CEnemy::CEnemy(int nPriority) :CModel(nPriority)
 {
 
 }
@@ -76,6 +76,15 @@ void CEnemy::Unload(void)
 		m_pMesh->Release();
 		m_pMesh = NULL;
 	}
+	if (m_pBuffMat != NULL)
+	{
+		m_pBuffMat->Release();
+		m_pBuffMat = NULL;
+	}
+	if (m_nNumMat != NULL)
+	{
+		m_nNumMat = NULL;
+	}
 }
 
 //----------------------------------------
@@ -83,7 +92,7 @@ void CEnemy::Unload(void)
 //----------------------------------------
 HRESULT CEnemy::Init(void)
 {
-	SetObjType(OBJTYPE_ENEMY);
+	CModel::BindModel(m_pMesh, m_pBuffMat, m_nNumMat);
 	return S_OK;
 }
 
@@ -92,7 +101,7 @@ HRESULT CEnemy::Init(void)
 //----------------------------------------
 void CEnemy::Uninit(void)
 {
-	CScene3d::Uninit();
+	CModel::Uninit();
 }
 
 //----------------------------------------
@@ -108,22 +117,5 @@ void CEnemy::Update(void)
 //----------------------------------------
 void CEnemy::Draw(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	D3DXMATRIX mtxRot, mtxTrans;
-	D3DMATERIAL9 matDef;
-	D3DXMATERIAL*pMat;
-	D3DXMatrixIdentity(&m_mtxWorld);
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.x, m_rot.y, m_rot.z);
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
-	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
-	pDevice->GetMaterial(&matDef);
-	pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
-	for (int nCntMat = 0; nCntMat < (int)m_nNumMat; nCntMat++)
-	{
-		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
-		m_pMesh->DrawSubset(nCntMat);
-	}
-	pDevice->SetMaterial(&matDef);
+	CModel::Draw();
 }

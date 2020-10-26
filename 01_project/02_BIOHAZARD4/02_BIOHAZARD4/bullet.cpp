@@ -10,7 +10,7 @@
 //=============================================================================
 #include "bullet.h"
 #include "enemy.h"
-#include "player.h"
+#include "ui.h"
 #include "camera.h"
 #include "manager.h"
 #include "renderer.h"
@@ -110,8 +110,6 @@ void CBullet::Update(void)
 {
 	CScene3d::Update();
 
-	m_pos = GetPosition();
-
 	//移動量を反映させる
 	m_pos += m_move;
 
@@ -131,8 +129,8 @@ void CBullet::Update(void)
 			if (objType == OBJTYPE_ENEMY)
 			{
 				// 座標とサイズの受け取り
-				m_Getpos = ((CScene3d*)pScene)->GetPosition();
-				m_Getsize = ((CScene3d*)pScene)->GetSize();
+ 				m_Getpos = ((CEnemy*)pScene)->GetPos();
+				m_Getsize = ((CEnemy*)pScene)->GetSize();
 
 				// 当たり判定
 				if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)

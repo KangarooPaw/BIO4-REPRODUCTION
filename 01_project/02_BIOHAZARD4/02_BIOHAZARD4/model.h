@@ -9,17 +9,16 @@ public:
 	CModel(int nPriority = CScene::OBJTYPE_PLAYER);
 	~CModel();
 
-	static CModel *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot);
-	static HRESULT Load(void);
-	static void Unload(void);
-
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	void BindModel(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD nNumMat);
+	void SetModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot);
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
+
 private:
 	static LPD3DXMESH m_pMesh;
 	static LPD3DXBUFFER m_pBuffMat;

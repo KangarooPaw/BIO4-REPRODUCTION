@@ -144,19 +144,3 @@ void CScene3d::BindTexture(LPDIRECT3DTEXTURE9 pTexture)
 {
 	m_pTexture = pTexture;
 }
-
-//----------------------------------------
-// 座標を渡す処理
-//----------------------------------------
-D3DXVECTOR3 CScene3d::GetPosition(void)
-{
-	return m_pos;
-}
-
-//----------------------------------------
-// サイズを渡す処理
-//----------------------------------------
-D3DXVECTOR3 CScene3d::GetSize(void)
-{
-	return m_size;
-}

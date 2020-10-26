@@ -16,11 +16,12 @@
 #include "scene2d.h"
 #include "scene3d.h"
 #include "camera.h"
-#include "player.h"
+#include "ui.h"
 #include "model.h"
 #include "polygon.h"
 #include "debug.h"
 #include "light.h"
+#include "player.h"
 #include "enemy.h"
 #include "bullet.h"
 
@@ -33,7 +34,6 @@ CInputJoystick *CManager::m_pInputJoystick = NULL;
 CCamera *CManager::m_pCamera = NULL;
 CLight *CManager::m_pLight = NULL;
 CPlayer *CManager::m_pPlayer = NULL;
-CModel *CManager::m_pModel = NULL;
 CDebugProc *CManager::m_pDebugProc = NULL;
 
 //=============================================================================
@@ -80,7 +80,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindouw)
 	//ポリゴン生成
 	CPolygon::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),D3DXVECTOR3(40.0f, 0.0f, -40.0f),0);
 	CPolygon::Create(D3DXVECTOR3(0.0f, 0.0f, 20.0f), D3DXVECTOR3(90.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 0.0f, -20.0f), 0);
-	m_pModel = CModel::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f) , D3DXVECTOR3(50.0f, 50.0f, 100.0f));
 	
 	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 100.0f));
 	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 100.0f));
@@ -164,9 +164,9 @@ void CManager::Draw(void)
 //=============================================================================
 void CManager::LoadAll(void)
 {
-	CPlayer::Load();
+	CUi::Load();
 	CPolygon::Load();
-	CModel::Load();
+	CPlayer::Load();
 	CEnemy::Load();
 	CBullet::Load();
 }
@@ -175,12 +175,12 @@ void CManager::LoadAll(void)
 //テクスチャの破棄まとめ
 //=============================================================================
 void CManager::UnloadAll(void)
-{
-	CModel::Unload();
-	CPolygon::Unload();
-	CPlayer::Unload();
-	CEnemy::Unload();
+{	
 	CBullet::Unload();
+	CEnemy::Unload();
+	CPlayer::Unload();
+	CPolygon::Unload();
+	CUi::Unload();
 }
 
 //=============================================================================
@@ -220,12 +220,6 @@ CLight * CManager::GetLight(void)
 CPlayer *CManager::GetPlayer(void)
 {
 	return m_pPlayer;
-}
-
-//モデル
-CModel * CManager::GetModel(void)
-{
-	return m_pModel;
 }
 
 //デバッグ
