@@ -66,9 +66,6 @@
     <ClCompile Include="player.cpp">
       <Filter>ソース ファイル\scene\2D</Filter>
     </ClCompile>
-    <ClCompile Include="scene3d.cpp">
-      <Filter>ソース ファイル\scene</Filter>
-    </ClCompile>
     <ClCompile Include="model.cpp">
       <Filter>ソース ファイル\scene\3D</Filter>
     </ClCompile>
@@ -89,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="enemy.cpp">
       <Filter>ソース ファイル\scene\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="scene3d.cpp">
+      <Filter>ソース ファイル\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

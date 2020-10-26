@@ -9,8 +9,6 @@
 // インクルードファイル
 //=============================================================================
 #include "bullet.h"
-//#include "block.h"
-//#include "collision.h"
 #include "enemy.h"
 #include "player.h"
 #include "camera.h"

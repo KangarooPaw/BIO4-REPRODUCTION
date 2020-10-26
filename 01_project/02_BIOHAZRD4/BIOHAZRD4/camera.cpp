@@ -107,16 +107,17 @@ void CCamera::Update(void)
 
 	//íçéãì_
 	//ãóó£
-	posR.x = (sinf(m_Theta)*cosf(m_Phi)) + pModelPos.x - 20;
-	posR.y = cosf(m_Theta) + pModelPos.y + 50;
-	posR.z = (sinf(m_Theta)*sinf(m_Phi)) + pModelPos.z + 5;
+	m_Distance = 10;
+	posR.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + pModelPos.x;
+	posR.y = m_Distance*cosf(m_Theta) + pModelPos.y+40;
+	posR.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + pModelPos.z ;
 
 	//éãì_	
 	//ãóó£
-	m_Distance = 35;
-	posV.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + pModelPos.x - 20;
-	posV.y = m_Distance*cosf(m_Theta) + pModelPos.y + 50;
-	posV.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + pModelPos.z+5;
+	m_Distance = 20;
+	posV.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + posR.x;
+	posV.y = m_Distance*cosf(m_Theta) + posR.y;
+	posV.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + posR.z;
 
 	//--------------------------------------
 	//ÉJÉÅÉâï`âÊ
