@@ -69,6 +69,7 @@ void CCamera::Update(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	//モデル場所の取得
 	D3DXVECTOR3 pModelPos = CManager::GetModel()->GetPos();
+	D3DXVECTOR3 pModelRot = CManager::GetModel()->GetRot();
 	//キーボードの取得
 	CInputKeyboard *pKeyborad = CManager::GetInputKeyboard();
 	//コントローラーの取得処理
@@ -107,14 +108,14 @@ void CCamera::Update(void)
 
 	//注視点
 	//距離
-	m_Distance = 10;
-	posR.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + pModelPos.x;
-	posR.y = m_Distance*cosf(m_Theta) + pModelPos.y+40;
-	posR.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + pModelPos.z ;
+	m_Distance = -15;
+	posR.x = m_Distance*cosf(pModelRot.x)+ pModelPos.x;
+	posR.y = pModelPos.y+47;
+	posR.z = m_Distance*sinf(-pModelRot.x) + pModelPos.z;
 
 	//視点	
 	//距離
-	m_Distance = 20;
+	m_Distance = 25;
 	posV.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + posR.x;
 	posV.y = m_Distance*cosf(m_Theta) + posR.y;
 	posV.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + posR.z;

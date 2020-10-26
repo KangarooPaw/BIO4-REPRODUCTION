@@ -63,12 +63,6 @@
     <ClCompile Include="scene.cpp">
       <Filter>ソース ファイル\scene</Filter>
     </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>ソース ファイル\scene\2D</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>ソース ファイル\scene\3D</Filter>
-    </ClCompile>
     <ClCompile Include="polygon.cpp">
       <Filter>ソース ファイル\scene\3D</Filter>
     </ClCompile>
@@ -90,6 +84,12 @@
     <ClCompile Include="scene3d.cpp">
       <Filter>ソース ファイル\scene</Filter>
     </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>ソース ファイル\scene\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>ソース ファイル\scene\2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug.h">
@@ -109,12 +109,6 @@
     </ClInclude>
     <ClInclude Include="input.h">
       <Filter>ヘッダー ファイル\input</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>ヘッダー ファイル\scene\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>ヘッダー ファイル\scene\2D</Filter>
     </ClInclude>
     <ClInclude Include="polygon.h">
       <Filter>ヘッダー ファイル\scene\3D</Filter>
@@ -141,6 +135,12 @@
       <Filter>ヘッダー ファイル\scene\3D</Filter>
     </ClInclude>
     <ClInclude Include="enemy.h">
+      <Filter>ヘッダー ファイル\scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>ヘッダー ファイル\scene\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
       <Filter>ヘッダー ファイル\scene\3D</Filter>
     </ClInclude>
   </ItemGroup>
