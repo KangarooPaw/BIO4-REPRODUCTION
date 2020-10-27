@@ -1,0 +1,1 @@
+data/TEXTURE/sample.png ←このように指定しています
