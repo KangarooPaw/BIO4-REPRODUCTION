@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-﻿  02_BIOHAZARD4.vcxproj -> C:\Users\GSP057\Desktop\アクションシューティングチーム制作\BIO4-REPRODUCTION\01_project\02_BIOHAZARD4\Debug\02_BIOHAZARD4.exe
-  02_BIOHAZARD4.vcxproj -> C:\Users\GSP057\Desktop\アクションシューティングチーム制作\BIO4-REPRODUCTION\01_project\02_BIOHAZARD4\Debug\02_BIOHAZARD4.pdb (Full PDB)
-=======
 ﻿  player.cpp
 c:\users\gsp026\desktop\02_biohazard4\02_biohazard4\player.cpp(134): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
 c:\users\gsp026\desktop\02_biohazard4\02_biohazard4\player.cpp(135): warning C4244: '+=': 'double' から 'float' への変換です。データが失われる可能性があります。
@@ -14,4 +10,3 @@ c:\users\gsp026\desktop\02_biohazard4\02_biohazard4\player.cpp(141): warning C42
   コードを生成中...
   02_BIOHAZARD4.vcxproj -> C:\Users\gsp026\Desktop\02_BIOHAZARD4\Debug\02_BIOHAZARD4.exe
   02_BIOHAZARD4.vcxproj -> C:\Users\gsp026\Desktop\02_BIOHAZARD4\Debug\02_BIOHAZARD4.pdb (Full PDB)
->>>>>>> 86bced201c1abd03d70eb9b8d7c8543ae0712707
