@@ -14,11 +14,12 @@ public:
 		OBJTYPE_BULLET,
 		OBJTYPE_SCORE,
 		OBJTYPE_NUMBER,
+		OBJTYPE_UI,
 		OBJTYPE_FADE,
 		OBJTYPE_MAX
 	}OBJTYPE;
 
-	CScene(int nPriority=2);
+	CScene(int nPriority = 2);
 	virtual ~CScene();
 
 	void SetObjType(OBJTYPE objType);
@@ -34,16 +35,20 @@ public:
 	static void UpdateAll(void);	//更新まとめ
 	static void DrawAll(void);		//描画まとめ
 	static void ReleaseAll(void);	//終了まとめ
+	static void DesignationReleaseAll(OBJTYPE type);
+	static void SetUpdateStop(bool bUpdateStop);
+
+	static bool GetUpdateStop(void) { return m_bUpdateStop; }
 
 protected:	
 	void Release(void);
 
 private:
-	OBJTYPE m_objType;							//オブジェクトの種類
-	static CScene *m_pTop[PRIORITY];//先頭のオブジェクトへのポインタ
-	static CScene *m_pCur[PRIORITY];//現在のオブジェクトへのポインタ
-	CScene *m_pPrev;//前のオブジェクトへのポインタ
-	CScene *m_pNext;//次のオブジェクトへのポインタ
+	OBJTYPE m_objType;					//オブジェクトの種類
+	static CScene *m_pTop[PRIORITY];	//先頭のオブジェクトへのポインタ
+	static CScene *m_pCur[PRIORITY];	//現在のオブジェクトへのポインタ
+	CScene *m_pPrev;					//前のオブジェクトへのポインタ
+	CScene *m_pNext;					//次のオブジェクトへのポインタ
 	static int m_nNumAll;
 	int m_nPriority;
 	int m_nID;
@@ -51,6 +56,7 @@ private:
 	static int m_nNext;
 	static bool m_bRelease;
 	bool m_bDeath;
+	static bool m_bUpdateStop;
 };
 
 #endif // !_RENDERER_H_

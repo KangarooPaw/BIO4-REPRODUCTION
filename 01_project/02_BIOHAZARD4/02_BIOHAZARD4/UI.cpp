@@ -37,7 +37,7 @@ CUi::~CUi()
 CUi *CUi::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
 	CUi *pUi;
-	pUi = new CUi;
+	pUi = new CUi(OBJTYPE_UI);
 	pUi->SetPosition(pos);
 	pUi->SetSize(size);
 	pUi->Init();
@@ -82,7 +82,7 @@ HRESULT CUi::Init(void)
 	CScene2D::Init();
 	CScene2D::BindTexture(m_pTexture);
 
-	SetObjType(CScene::OBJTYPE_PLAYER);
+	SetObjType(CScene::OBJTYPE_UI);
 	return S_OK;
 }
 

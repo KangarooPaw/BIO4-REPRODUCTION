@@ -24,6 +24,11 @@
 #include "player.h"
 #include "enemy.h"
 #include "bullet.h"
+#include "tutorial.h"
+#include "result.h"
+#include "title.h"
+#include "game.h"
+#include "fade.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -33,8 +38,10 @@ CInputKeyboard *CManager::m_pInputKeyboard = NULL;
 CInputJoystick *CManager::m_pInputJoystick = NULL;
 CCamera *CManager::m_pCamera = NULL;
 CLight *CManager::m_pLight = NULL;
-CPlayer *CManager::m_pPlayer = NULL;
+CFade *CManager::m_pFade = NULL;
 CDebugProc *CManager::m_pDebugProc = NULL;
+CMode *CManager::m_pMode = NULL;
+CManager::MODE CManager::m_mode = CManager::MODE_NONE;
 
 //=============================================================================
 //コンストラクタ
@@ -70,20 +77,11 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindouw)
 	//デバッグ
 	m_pDebugProc = new CDebugProc;
 	m_pDebugProc->Init();
-	//カメラ
-	m_pCamera = CCamera::Create();
-	//ライト
-	m_pLight = CLight::Create();
-
 	//テクスチャの読み込み
 	LoadAll();
-	//ポリゴン生成
-	CPolygon::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),D3DXVECTOR3(40.0f, 0.0f, -40.0f),0);
-	CPolygon::Create(D3DXVECTOR3(0.0f, 0.0f, 20.0f), D3DXVECTOR3(90.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 0.0f, -20.0f), 0);
-	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f) , D3DXVECTOR3(50.0f, 50.0f, 100.0f));
-	
-	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 100.0f));
-	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 100.0f));
+
+	//モードの設定
+	SetMode(MODE_TITLE);
 
 	return S_OK;
 }
@@ -131,6 +129,11 @@ void CManager::Uninit(void)
 		delete m_pInputKeyboard;
 		m_pInputKeyboard = NULL;
 	}
+	if (m_pMode != NULL)
+	{
+		//その時のモードの終了処理
+		m_pMode->Uninit();
+	}
 	//レンダラーの終了
 	if (m_pRenderer != NULL)
 	{
@@ -145,10 +148,35 @@ void CManager::Uninit(void)
 //=============================================================================
 void CManager::Update(void)
 {
-	m_pInputKeyboard->Update();
-	m_pInputJoystick->Update();
-	m_pRenderer->Update();
-	m_pCamera->Update();
+	if (m_pInputJoystick != NULL)
+	{
+		//キーボードの更新処理
+		m_pInputKeyboard->Update();
+	}
+
+	if (m_pInputJoystick != NULL)
+	{
+		//ジョイスティックの更新処理
+		m_pInputJoystick->Update();
+	}
+
+	if (m_pRenderer != NULL)
+	{
+		//レンダラーの更新処理
+		m_pRenderer->Update();
+	}
+
+	if (m_pCamera != NULL)
+	{
+		//カメラのの更新処理
+		m_pCamera->Update();
+	}
+
+	if (m_pMode != NULL)
+	{
+		//その時のモードの更新処理
+		m_pMode->Update();
+	}
 }
 
 //=============================================================================
@@ -156,7 +184,17 @@ void CManager::Update(void)
 //=============================================================================
 void CManager::Draw(void)
 {
-	m_pRenderer->Draw();
+	if (m_pRenderer != NULL)
+	{
+		//描画処理
+		m_pRenderer->Draw();
+	}
+
+	if (m_pMode != NULL)
+	{
+		//その時のモードの描画処理
+		m_pMode->Draw();
+	}
 }
 
 //=============================================================================
@@ -169,6 +207,7 @@ void CManager::LoadAll(void)
 	CPlayer::Load();
 	CEnemy::Load();
 	CBullet::Load();
+	CFade::Load();
 }
 
 //=============================================================================
@@ -181,6 +220,119 @@ void CManager::UnloadAll(void)
 	CPlayer::Unload();
 	CPolygon::Unload();
 	CUi::Unload();
+	CFade::Unload();
+}
+
+//=============================================================================
+//モードの設定
+//=============================================================================
+void CManager::SetMode(MODE mode)
+{
+	if (m_pMode != NULL)
+	{
+		//その時のモードの終了処理
+		m_pMode->Uninit();
+		delete m_pMode;
+		m_pMode = NULL;
+	}
+
+	if (m_pMode == NULL)
+	{
+		m_mode = mode;
+
+		switch (m_mode)
+		{
+		case MODE_TITLE:
+
+			//タイトルの生成
+			m_pMode = new CTitle;
+
+			//タイトルの初期化処理
+			m_pMode->Init();
+
+			break;
+
+		case MODE_GAME:
+
+			//ゲームの生成
+			m_pMode = new CGame;
+
+			//ゲームの初期化処理
+			m_pMode->Init();
+
+			break;
+
+		case MODE_TUTORIAL:
+
+			//チュートリアルの生成
+			m_pMode = new CTutorial;
+
+			//チュートリアルの初期化処理
+			m_pMode->Init();
+
+			break;
+
+		case MODE_RESULT:
+
+			//クリア画面の生成
+			m_pMode = new CResult;
+
+			//クリア画面の初期化処理
+			m_pMode->Init();
+
+			break;
+		}
+	}
+}
+
+//=============================================================================
+//カメラの生成
+//=============================================================================
+void CManager::CreateCamera(void)
+{
+	if (m_pCamera == NULL)
+	{
+		m_pCamera = new CCamera;
+
+		if (m_pCamera != NULL)
+		{
+			m_pCamera->Init();
+		}
+	}
+}
+
+//=============================================================================
+//ライトの生成
+//=============================================================================
+void CManager::CreateLight(void)
+{
+	if (m_pLight == NULL)
+	{
+		m_pLight = new CLight;
+
+		if (m_pLight != NULL)
+		{
+			m_pLight->Init();
+		}
+	}
+}
+
+//=============================================================================
+//フェードの生成
+//=============================================================================
+void CManager::CreateFade(MODE mode)
+{
+	if (m_pFade == NULL)
+	{
+		m_pFade = new CFade(CScene::OBJTYPE_FADE);
+
+		m_pFade->Init();
+	}
+
+	if (m_pFade != NULL)
+	{
+		m_pFade->SetFade(mode);
+	}
 }
 
 //=============================================================================
@@ -216,10 +368,10 @@ CLight * CManager::GetLight(void)
 	return m_pLight;
 }
 
-//プレイヤー
-CPlayer *CManager::GetPlayer(void)
+//フェード
+CFade * CManager::GetFade(void)
 {
-	return m_pPlayer;
+	return m_pFade;
 }
 
 //デバッグ
@@ -228,3 +380,8 @@ CDebugProc * CManager::GetDebug(void)
 	return m_pDebugProc;
 }
 
+//モードの取得
+CManager::MODE CManager::GetMode(void)
+{
+	return m_mode;
+}

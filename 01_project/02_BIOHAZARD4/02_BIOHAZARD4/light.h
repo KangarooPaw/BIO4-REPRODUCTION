@@ -6,7 +6,6 @@ class CLight
 public:
 	CLight();
 	~CLight();
-	static CLight*Create(void);
 	void Init(void);
 	void Uninit(void);
 private:

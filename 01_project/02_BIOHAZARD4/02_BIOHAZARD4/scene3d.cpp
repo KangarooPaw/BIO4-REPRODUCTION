@@ -94,6 +94,13 @@ HRESULT CScene3d::Init(void)
 //--------------------------------------
 void CScene3d::Uninit(void)
 {
+	// 頂点バッファの破棄
+	if (m_pVtxBuff != NULL)
+	{
+		m_pVtxBuff->Release();
+		m_pVtxBuff = NULL;
+	}
+
 	Release();
 }
 

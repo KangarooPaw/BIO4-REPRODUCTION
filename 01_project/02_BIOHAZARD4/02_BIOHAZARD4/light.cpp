@@ -13,14 +13,6 @@ CLight::~CLight()
 
 }
 
-CLight * CLight::Create(void)
-{
-	CLight*pLight;
-	pLight = new CLight;
-	pLight->Init();
-	return pLight;
-}
-
 void CLight::Init(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();

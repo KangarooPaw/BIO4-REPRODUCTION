@@ -10,7 +10,6 @@ class CCamera
 public:
 	CCamera();
 	~CCamera();
-	static CCamera *Create(void);
 	void Init(void);
 	void Uninit(void);
 	void Update(void);
