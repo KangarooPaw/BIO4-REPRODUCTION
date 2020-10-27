@@ -67,8 +67,9 @@ void CCamera::Update(void)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	//モデル場所の取得
+	//プレイヤーの場所の取得
 	D3DXVECTOR3 pPlayerPos = CManager::GetPlayer()->GetPos();
+	//プレイヤーの角度の取得
 	D3DXVECTOR3 pPlayerRot = CManager::GetPlayer()->GetRot();
 	//キーボードの取得
 	CInputKeyboard *pKeyborad = CManager::GetInputKeyboard();
@@ -84,7 +85,6 @@ void CCamera::Update(void)
 	//--------------------------
 	//移動
 	//--------------------------		
-
 	//左スティックを前に倒す
 	if (pStick.lX <= -500)
 	{

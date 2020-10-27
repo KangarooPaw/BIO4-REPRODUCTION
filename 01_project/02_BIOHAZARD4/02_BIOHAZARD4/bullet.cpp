@@ -88,10 +88,9 @@ void CBullet::Unload(void)
 //バレットクラスの初期化処理
 //=============================================================================
 HRESULT CBullet::Init(void)
-{
-	CScene3d::Init();
+{	
 	CScene3d::BindTexture(m_pTexture);
-
+	CScene3d::Init();
 	return S_OK;
 }
 
@@ -108,7 +107,6 @@ void CBullet::Uninit(void)
 //=============================================================================
 void CBullet::Update(void)
 {
-	CScene3d::Update();
 
 	//移動量を反映させる
 	m_pos += m_move;
@@ -116,8 +114,6 @@ void CBullet::Update(void)
 	//弾の射程を決める
 	m_nLife--;
 
-	// 座標のセット
-	SetPosition(m_pos);
 
 	CScene *pScene = NULL;
 	do
@@ -145,6 +141,10 @@ void CBullet::Update(void)
 			}
 		}
 	} while (pScene != NULL);
+
+	// 座標のセット
+	SetPosition(m_pos);
+	CScene3d::Update();
 
 	// ライフがなくなったら消す
 	if (m_nLife <= 0)

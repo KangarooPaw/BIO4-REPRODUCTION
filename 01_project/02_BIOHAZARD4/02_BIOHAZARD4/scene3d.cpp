@@ -1,17 +1,30 @@
+//--------------------------------------
+//インクルードファイル
+//--------------------------------------
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
 #include "scene3d.h"
 
+//--------------------------------------
+//コンストラクタ
+//--------------------------------------
 CScene3d::CScene3d(int nPriority) :CScene(nPriority)
 {
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
+//--------------------------------------
+//デストラクタ
+//--------------------------------------
 CScene3d::~CScene3d()
 {
 }
 
+//--------------------------------------
+//コンストラクタ
+//--------------------------------------
 CScene3d * CScene3d::Create(float nPosX, float nPosY)
 {
 	CScene3d *pScene3d;
@@ -22,6 +35,9 @@ CScene3d * CScene3d::Create(float nPosX, float nPosY)
 
 }
 
+//--------------------------------------
+//初期化処理
+//--------------------------------------
 HRESULT CScene3d::Init(void)
 {
 	LPDIRECT3DDEVICE9 pDevice= CManager::GetRenderer()->GetDevice();
@@ -44,10 +60,10 @@ HRESULT CScene3d::Init(void)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	//場所の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y - (m_size.y / 2), m_pos.z - (m_size.z / 2));
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y - (m_size.y / 2), m_pos.z - (m_size.z / 2));
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y + (m_size.y / 2), m_pos.z + (m_size.z / 2));
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y + (m_size.y / 2), m_pos.z + (m_size.z / 2));
+	pVtx[0].pos = D3DXVECTOR3(- (m_size.x / 2),m_size.y, + (m_size.z / 2));
+	pVtx[1].pos = D3DXVECTOR3(+ (m_size.x / 2),m_size.y, + (m_size.z / 2));
+	pVtx[2].pos = D3DXVECTOR3(- (m_size.x / 2),m_size.y, - (m_size.z / 2));
+	pVtx[3].pos = D3DXVECTOR3(+ (m_size.x / 2),m_size.y, - (m_size.z / 2));
 
 	//法線の設定
 	pVtx[0].nor = D3DXVECTOR3(0, 1, 0);
@@ -73,11 +89,17 @@ HRESULT CScene3d::Init(void)
 	return S_OK;
 }
 
+//--------------------------------------
+//終了処理
+//--------------------------------------
 void CScene3d::Uninit(void)
 {
 	Release();
 }
 
+//--------------------------------------
+//更新処理
+//--------------------------------------
 void CScene3d::Update(void)
 {
 	// 頂点情報を設定
@@ -87,15 +109,18 @@ void CScene3d::Update(void)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	//場所の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y - (m_size.y / 2), m_pos.z - (m_size.z / 2));
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y - (m_size.y / 2), m_pos.z - (m_size.z / 2));
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y + (m_size.y / 2), m_pos.z + (m_size.z / 2));
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y + (m_size.y / 2), m_pos.z + (m_size.z / 2));
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y, m_pos.z + (m_size.z / 2));
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y, m_pos.z + (m_size.z / 2));
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y, m_pos.z - (m_size.z / 2));
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y, m_pos.z - (m_size.z / 2));
 
 	//頂点バッファのアンロック
 	m_pVtxBuff->Unlock();
 }
 
+//--------------------------------------
+//描画処理
+//--------------------------------------
 void CScene3d::Draw(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
