@@ -109,10 +109,10 @@ void CScene3d::Update(void)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	//場所の設定
-	pVtx[0].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y, m_pos.z + (m_size.z / 2));
-	pVtx[1].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y, m_pos.z + (m_size.z / 2));
-	pVtx[2].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2), m_pos.y, m_pos.z - (m_size.z / 2));
-	pVtx[3].pos = D3DXVECTOR3(m_pos.x + (m_size.x / 2), m_pos.y, m_pos.z - (m_size.z / 2));
+	pVtx[0].pos = D3DXVECTOR3(- (m_size.x / 2), m_pos.y,  + (m_size.z / 2));
+	pVtx[1].pos = D3DXVECTOR3(+ (m_size.x / 2), m_pos.y,  + (m_size.z / 2));
+	pVtx[2].pos = D3DXVECTOR3(- (m_size.x / 2), m_pos.y,  - (m_size.z / 2));
+	pVtx[3].pos = D3DXVECTOR3(+ (m_size.x / 2), m_pos.y,  - (m_size.z / 2));
 
 	//頂点バッファのアンロック
 	m_pVtxBuff->Unlock();
