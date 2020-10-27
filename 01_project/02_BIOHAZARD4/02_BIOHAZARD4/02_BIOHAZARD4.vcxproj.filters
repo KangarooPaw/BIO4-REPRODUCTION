@@ -25,6 +25,12 @@
     <Filter Include="ソース ファイル\Scene\3D">
       <UniqueIdentifier>{3bff88d9-0a2f-4b5f-88ea-73c0eb5db036}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\mode">
+      <UniqueIdentifier>{2f822dea-fdaa-43bb-a584-91e279d34f0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\mode">
+      <UniqueIdentifier>{857e6a8f-7392-408c-bdcc-f96394cbbdc7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -81,6 +87,18 @@
     <ClCompile Include="player.cpp">
       <Filter>ソース ファイル\Scene\3D</Filter>
     </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>ソース ファイル\mode</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>ソース ファイル\mode</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>ソース ファイル\mode</Filter>
+    </ClCompile>
+    <ClCompile Include="mode.cpp">
+      <Filter>ソース ファイル\mode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scene2d.h">
@@ -136,6 +154,18 @@
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>ヘッダー ファイル\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>ヘッダー ファイル\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>ヘッダー ファイル\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="mode.h">
+      <Filter>ヘッダー ファイル\mode</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
