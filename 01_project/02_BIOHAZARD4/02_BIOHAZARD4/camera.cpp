@@ -84,26 +84,29 @@ void CCamera::Update(void)
 	}
 	//--------------------------
 	//移動
-	//--------------------------		
-	//左スティックを前に倒す
-	if (pStick.lX <= -500)
+	//--------------------------
+	if (pJoystickDevice != NULL)
 	{
-		m_Phi += D3DXToRadian(1);
-	}
-	//左スティックを後ろに倒す
-	if (pStick.lX >= 500)
-	{
-		m_Phi -= D3DXToRadian(1);
-	}
-	//左スティックを前に倒す
-	if (pKeyborad->GetKeyPress(DIK_UP))
-	{
-		m_Theta -= D3DXToRadian(1);
-	}
-	//左スティックを後ろに倒す
-	if (pKeyborad->GetKeyPress(DIK_DOWN))
-	{
-		m_Theta += D3DXToRadian(1);
+		//左スティックを前に倒す
+		if (pStick.lX <= -500)
+		{
+			m_Phi += D3DXToRadian(1);
+		}
+		//左スティックを後ろに倒す
+		if (pStick.lX >= 500)
+		{
+			m_Phi -= D3DXToRadian(1);
+		}
+		//左スティックを前に倒す
+		if (pKeyborad->GetKeyPress(DIK_UP))
+		{
+			m_Theta -= D3DXToRadian(1);
+		}
+		//左スティックを後ろに倒す
+		if (pKeyborad->GetKeyPress(DIK_DOWN))
+		{
+			m_Theta += D3DXToRadian(1);
+		}
 	}
 
 	//注視点

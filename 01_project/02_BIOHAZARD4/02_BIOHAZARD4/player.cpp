@@ -119,28 +119,30 @@ void CPlayer::Update(void)
 	//--------------------------
 	//移動
 	//--------------------------
-	if (pStick.lX <= -500)
+	if (pJoystickDevice != NULL)
 	{
-		m_rot.x -= D3DXToRadian(1);
+		if (pStick.lX <= -500)
+		{
+			m_rot.x -= D3DXToRadian(1);
+		}
+		//左スティックを右に倒す
+		if (pStick.lX >= 500)
+		{
+			m_rot.x += D3DXToRadian(1);
+		}
+		//左スティックを前に倒す	
+		if (pStick.lY <= -500)
+		{
+			m_pos.x -= sin(m_rot.x)*0.5f;
+			m_pos.z -= cos(m_rot.x)*0.5f;
+		}
+		//左スティックを後ろに倒す
+		if (pStick.lY >= 500)
+		{
+			m_pos.x += sin(m_rot.x)*0.5f;
+			m_pos.z += cos(m_rot.x)*0.5f;
+		}
 	}
-	//左スティックを右に倒す
-	if (pStick.lX >= 500)
-	{
-		m_rot.x += D3DXToRadian(1);
-	}
-	//左スティックを前に倒す	
-	if (pStick.lY <= -500)
-	{
-		m_pos.x -= sin(m_rot.x)*0.5f;
-		m_pos.z -= cos(m_rot.x)*0.5f;
-	}
-	//左スティックを後ろに倒す
-	if (pStick.lY >= 500)
-	{
-		m_pos.x += sin(m_rot.x)*0.5f;
-		m_pos.z += cos(m_rot.x)*0.5f;
-	}
-
 
 	SetModel(m_pos, m_rot);
 	CModel::Update();
