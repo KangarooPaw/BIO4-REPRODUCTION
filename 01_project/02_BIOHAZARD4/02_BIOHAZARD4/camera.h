@@ -3,7 +3,6 @@
 
 #include "main.h"
 
-#define PI	(3.1415926535)
 #define MOVE_RATE 80
 class CCamera
 {
