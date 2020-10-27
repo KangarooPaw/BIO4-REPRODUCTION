@@ -66,7 +66,10 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindouw)
 	m_pInputKeyboard->Init(hInstance, hWnd);
 	//ゲームパッド
 	m_pInputJoystick = new CInputJoystick;
-	m_pInputJoystick->Init(hInstance, hWnd);
+	if (m_pInputJoystick != NULL)
+	{
+		m_pInputJoystick->Init(hInstance, hWnd);
+	}
 	//デバッグ
 	m_pDebugProc = new CDebugProc;
 	m_pDebugProc->Init();

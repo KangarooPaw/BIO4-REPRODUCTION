@@ -67,8 +67,9 @@ void CCamera::Update(void)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	//モデル場所の取得
+	//プレイヤーの場所の取得
 	D3DXVECTOR3 pPlayerPos = CManager::GetPlayer()->GetPos();
+	//プレイヤーの角度の取得
 	D3DXVECTOR3 pPlayerRot = CManager::GetPlayer()->GetRot();
 	//キーボードの取得
 	CInputKeyboard *pKeyborad = CManager::GetInputKeyboard();
@@ -83,27 +84,29 @@ void CCamera::Update(void)
 	}
 	//--------------------------
 	//移動
-	//--------------------------		
-
-	//左スティックを前に倒す
-	if (pStick.lX <= -500)
+	//--------------------------
+	if (pJoystickDevice != NULL)
 	{
-		m_Phi += D3DXToRadian(1);
-	}
-	//左スティックを後ろに倒す
-	if (pStick.lX >= 500)
-	{
-		m_Phi -= D3DXToRadian(1);
-	}
-	//左スティックを前に倒す
-	if (pKeyborad->GetKeyPress(DIK_UP))
-	{
-		m_Theta -= D3DXToRadian(1);
-	}
-	//左スティックを後ろに倒す
-	if (pKeyborad->GetKeyPress(DIK_DOWN))
-	{
-		m_Theta += D3DXToRadian(1);
+		//左スティックを前に倒す
+		if (pStick.lX <= -500)
+		{
+			m_Phi += D3DXToRadian(1);
+		}
+		//左スティックを後ろに倒す
+		if (pStick.lX >= 500)
+		{
+			m_Phi -= D3DXToRadian(1);
+		}
+		//左スティックを前に倒す
+		if (pKeyborad->GetKeyPress(DIK_UP))
+		{
+			m_Theta -= D3DXToRadian(1);
+		}
+		//左スティックを後ろに倒す
+		if (pKeyborad->GetKeyPress(DIK_DOWN))
+		{
+			m_Theta += D3DXToRadian(1);
+		}
 	}
 
 	//注視点
