@@ -12,10 +12,10 @@
 #include "manager.h"
 #include "keyboard.h"
 #include "joystick.h"
-//#include "fade.h"
 #include "time.h"
 //#include "sound.h"
 #include "ui.h"
+#include "mode.h"
 
 //*****************************************************************************
 //コンストラクタ
@@ -36,14 +36,8 @@ CTitle::~CTitle()
 //*****************************************************************************
 HRESULT CTitle::Init(void)
 {
-	//BGMの再生
-	CManager::GetSound()->Play(CSound::SOUND_LABEL_BGM00);
-
-	//背景の生成
-	CBg::Create();
-
 	//ゲームタイトルのUIの生成
-	CUi::Create(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f), D3DXVECTOR3(800.0f, 420.0f, 0.0f), CUi::UI_TYPE_TITLE);
+	CUi::Create(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f), D3DXVECTOR3(800.0f, 420.0f, 0.0f)/*, CUi::UI_TYPE_TITLE*/);
 
 	return S_OK;
 }
@@ -53,11 +47,8 @@ HRESULT CTitle::Init(void)
 //*****************************************************************************
 void CTitle::Uninit(void)
 {
-	//BGMの停止
-	CManager::GetSound()->Stop(CSound::SOUND_LABEL_BGM00);
-
-	//全てのメモリの開放処理
-	CScene::ReleaseAllOtherThanFade();
+	//指定したオブジェクト以外のメモリの開放処理
+	CScene::DesignationReleaseAll(CScene::OBJTYPE_FADE);
 }
 
 //*****************************************************************************
@@ -65,10 +56,13 @@ void CTitle::Uninit(void)
 //*****************************************************************************
 void CTitle::Update(void)
 {
-	if (CManager::GetKeyboard()->GetKeyboardTrigger(DIK_RETURN) || CManager::GetController()->GetJoypadTrigger(CController::BUTTON_B))
-	{ //Enterキー または Bボタンを押したとき
-	  //フェードの生成
-		CFade::Create(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f), D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f), CManager::MODE_SELECT);
+	if (CScene::GetUpdateStop() == false)
+	{
+		if (CManager::GetInputKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetInputJoystick()->GetJoystickTrigger(CInputJoystick::BUTTON_B))
+		{ //Enterキー または Bボタンを押したとき
+		  //フェードの生成
+			CManager::CreateFade(CManager::MODE_TUTORIAL);
+		}
 	}
 }
 

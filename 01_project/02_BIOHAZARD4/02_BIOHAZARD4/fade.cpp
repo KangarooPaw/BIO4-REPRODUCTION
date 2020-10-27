@@ -5,14 +5,12 @@
 
 LPDIRECT3DTEXTURE9 CFade::m_pTexture = NULL;
 CFade::FADE CFade::m_fade = FADE_NONE;
-//CManager::MODE CFade::m_mode = CManager::MODE_TITLE;
+CManager::MODE CFade::m_mode = CManager::MODE_NONE;
 
-CFade::CFade()
+CFade::CFade(int nPriority) :CScene2D(nPriority)
 {
-	m_pScene2D = NULL;
 	m_TexPos = 0;
-	m_nFade = 255;
-
+	m_nFade = 0;
 }
 
 CFade::~CFade()
@@ -27,7 +25,7 @@ HRESULT CFade::Load(void)
 
 	// テクスチャの生成
 	D3DXCreateTextureFromFile(pDevice,				// デバイスへのポインタ
-		"TEXTURE_FADE",					// ファイルの名前
+		"data/TEXTURES/fade.jpg",					// ファイルの名前
 		&m_pTexture);
 	return S_OK;
 }
@@ -42,84 +40,74 @@ void CFade::Unload(void)
 	}
 }
 
-CFade * CFade::Create(float nPosX, float nPosY)
+HRESULT CFade::Init(void)
 {
-	CFade *pFade;
-	pFade = new CFade;
-	pFade->Init();
-	return pFade;
-}
-
-HRESULT CFade::Init()
-{
-	m_pScene2D = new CScene2D(0);
-	m_pScene2D->Init();
-	m_pScene2D->BindTexture(m_pTexture);
-	m_pScene2D->SetObjType(m_pScene2D->OBJTYPE_FADE);
+	SetPosition(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f));
+	SetSize(D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f));
+	SetAlpha(m_nFade);
+	BindTexture(m_pTexture);
+	SetObjType(CScene::OBJTYPE_FADE);
+	CScene2D::Init();
 
 	return S_OK;
 }
 
 void CFade::Uninit(void)
 {
-	if (m_pScene2D != NULL)
-	{
-		m_pScene2D->Uninit();
-		m_pScene2D = NULL;
-	}
-
+	CScene2D::Uninit();
 }
 
 void CFade::Update(void)
 {
-
 	if (m_fade != FADE_NONE)
 	{
 		if (m_fade == FADE_IN)
 		{
 			FadeIn();
 		}
-		if (m_fade == FADE_OUT)
+		else if (m_fade == FADE_OUT)
 		{
 			FadeOut();
 		}
-	}	
-	m_pScene2D->Update();
+	}
 }
 
 void CFade::Draw(void)
 {
-	m_pScene2D->Draw();
+	CScene2D::Draw();
 }
 
-void CFade::SetFade(/*CManager::MODE mode*/)
+void CFade::SetFade(CManager::MODE mode)
 {
 	m_fade = FADE_IN;
-	//m_mode = mode;
+	m_mode = mode;
+	SetUpdateStop(true);
 }
 
 void CFade::FadeIn(void)
 {
-	m_nFade+=4;
+	m_nFade += 4;
 	if (m_nFade >= 255)
 	{
 		m_nFade = 255;
 		m_fade = FADE_OUT;
-		//CManager::SetMode(m_mode);
-	}	
-	m_pScene2D->SetAlpha(m_nFade);
-	m_pScene2D->Update();
+		GetManager()->SetMode(m_mode);
+		return;
+	}
+	SetAlpha(m_nFade);
+	CScene2D::Update();
 }
 
 void CFade::FadeOut(void)
 {	
-	m_nFade-=4;	
-	if (m_nFade <=0)
+	m_nFade -= 4;
+	if (m_nFade <= 0)
 	{
 		m_nFade = 0;
 		m_fade = FADE_NONE;
-		
+		SetUpdateStop(false);
+		return;
 	}
-	m_pScene2D->SetAlpha(m_nFade);
-	m_pScene2D->Update();
+	SetAlpha(m_nFade);
+	CScene2D::Update();
 }

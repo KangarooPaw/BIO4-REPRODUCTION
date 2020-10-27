@@ -6,7 +6,7 @@
 class CUi :public CScene2D
 {
 public:
-	CUi(int nPriority = 9);
+	CUi(int nPriority);
 	~CUi();
 	
 	static CUi*Create(D3DXVECTOR3 pos,D3DXVECTOR3 size);

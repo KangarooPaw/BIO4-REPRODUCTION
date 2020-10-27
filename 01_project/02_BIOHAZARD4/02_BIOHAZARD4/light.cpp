@@ -23,17 +23,6 @@ CLight::~CLight()
 }
 
 //--------------------------------
-//¶¬ˆ—
-//--------------------------------
-CLight * CLight::Create(void)
-{
-	CLight*pLight;
-	pLight = new CLight;
-	pLight->Init();
-	return pLight;
-}
-
-//--------------------------------
 //‰Šú‰»ˆ—
 //--------------------------------
 void CLight::Init(void)

@@ -131,11 +131,16 @@ void CBullet::Update(void)
 				// 当たり判定
 				if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
 				{
+					// 敵を消す
+					pScene->Uninit();
+
 					// 弾を消す
 					Uninit();
-
-					// 敵を消す
-					((CEnemy*)pScene)->Uninit();
+					return;
+				}
+				else if (m_nLife <= 0)
+				{ // ライフがなくなったら消す
+					Uninit();
 					return;
 				}
 			}
@@ -145,12 +150,6 @@ void CBullet::Update(void)
 	// 座標のセット
 	SetPosition(m_pos);
 	CScene3d::Update();
-
-	// ライフがなくなったら消す
-	if (m_nLife <= 0)
-	{
-		Uninit();
-	}
 }
 
 //=============================================================================

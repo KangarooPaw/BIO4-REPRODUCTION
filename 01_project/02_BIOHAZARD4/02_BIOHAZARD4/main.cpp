@@ -12,24 +12,20 @@
 #include "manager.h"
 
 //*****************************************************************************
-// マクロ定義
-//*****************************************************************************
-
-
-
-//*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+//*****************************************************************************
+// グローバル変数宣言
+//*****************************************************************************
+CManager *g_pManager;	//マネージャーのポインタ
 
 //=============================================================================
 // メイン関数
 //=============================================================================
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
-
 	WNDCLASSEX wcex =
 	{
 		sizeof(WNDCLASSEX),
@@ -72,11 +68,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		hInstance,
 		NULL);
 
+	g_pManager = new CManager;
+	if (g_pManager != NULL)
+	{
+		// 初期化処理
+		g_pManager->Init(hInstance, hWnd, TRUE);
+	}
 
-	CManager *pManager = NULL;
-	pManager = new CManager;
-	// 初期化処理
-	pManager->Init(hInstance,hWnd, TRUE);
 	// 分解能を設定
 	timeBeginPeriod(1);
 
@@ -123,23 +121,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			{// 1/60秒経過
 				dwExecLastTime = dwCurrentTime;	// 現在の時間を保存
 				
-				// 更新処理
-				pManager->Update();
-				// 描画処理
-				pManager->Draw();
+				if (g_pManager != NULL)
+				{
+					// 更新処理
+					g_pManager->Update();
+					// 描画処理
+					g_pManager->Draw();
+				}
 
 				dwFrameCount++;
 			}
 		}
 	}
 
-	if (pManager != NULL)
+	if (g_pManager != NULL)
 	{
-	// 終了処理
-	pManager->Uninit();
-	delete pManager;
-	pManager = NULL;
+		// 終了処理
+		g_pManager->Uninit();
+		delete g_pManager;
+		g_pManager = NULL;
 	}
+
 	// ウィンドウクラスの登録を解除
 	UnregisterClass(CLASS_NAME, wcex.hInstance);
 
@@ -179,7 +181,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
-
-
-
-
+//*****************************************************************************
+// マネージャーの取得
+//*****************************************************************************
+CManager *GetManager(void)
+{
+	return g_pManager;
+}

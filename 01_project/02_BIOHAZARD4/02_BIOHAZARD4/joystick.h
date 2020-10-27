@@ -21,6 +21,25 @@
 class CInputJoystick : public CInput
 {
 public:
+	//É{É^ÉìÇÃéÌóﬁÇÃóÒãìå^
+	typedef enum
+	{
+		BUTTON_X = 0,	//X
+		BUTTON_Y,		//Y
+		BUTTON_A,		//A
+		BUTTON_B,		//B
+		BUTTON_L1,		//LB
+		BUTTON_R1,		//RB
+		BUTTON_L2,		//LT
+		BUTTON_R2,		//RT
+		BUTTON_L3,		//LâüÇµçûÇ›
+		BUTTON_R3,		//RâüÇµçûÇ›
+		BUTTON_BACK,	//BACK
+		BUTTON_START,	//START
+		BUTTON_M,
+		MAX_BUTTON
+	}BUTTON;
+
 	CInputJoystick();
 	~CInputJoystick();
 	HRESULT Init(HINSTANCE hInstance, HWND hWnd);

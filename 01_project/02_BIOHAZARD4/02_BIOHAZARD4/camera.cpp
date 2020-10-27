@@ -11,6 +11,7 @@
 #include "keyboard.h"
 #include "joystick.h"
 #include "player.h"
+#include "game.h"
 
 //--------------------------------------
 //インクリメント
@@ -31,17 +32,6 @@ CCamera::CCamera()
 CCamera::~CCamera()
 {
 
-}
-
-//--------------------------------------
-//生成処理
-//--------------------------------------
-CCamera * CCamera::Create(void)
-{
-	CCamera*pCamera;
-	pCamera = new CCamera;
-	pCamera->Init();
-	return pCamera;
 }
 
 //--------------------------------------
@@ -67,10 +57,7 @@ void CCamera::Update(void)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	//プレイヤーの場所の取得
-	D3DXVECTOR3 pPlayerPos = CManager::GetPlayer()->GetPos();
-	//プレイヤーの角度の取得
-	D3DXVECTOR3 pPlayerRot = CManager::GetPlayer()->GetRot();
+
 	//キーボードの取得
 	CInputKeyboard *pKeyborad = CManager::GetInputKeyboard();
 	//コントローラーの取得処理
@@ -106,27 +93,35 @@ void CCamera::Update(void)
 		m_Theta += D3DXToRadian(1);
 	}
 
-	//注視点
-	//距離
-	m_Distance = -15;
-	posR.x = m_Distance*cosf(pPlayerRot.x)+ pPlayerPos.x;
-	posR.y = pPlayerPos.y+47;
-	posR.z = m_Distance*sinf(-pPlayerRot.x) + pPlayerPos.z;
+	if (CGame::GetPlayer() != NULL)
+	{
+		//プレイヤーの場所の取得
+		D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
+		//プレイヤーの角度の取得
+		D3DXVECTOR3 pPlayerRot = CGame::GetPlayer()->GetRot();
 
-	//視点	
-	//距離
-	m_Distance = 25;
-	posV.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + posR.x;
-	posV.y = m_Distance*cosf(m_Theta) + posR.y;
-	posV.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + posR.z;
+		//注視点
+		//距離
+		m_Distance = -15;
+		posR.x = m_Distance*cosf(pPlayerRot.x) + pPlayerPos.x;
+		posR.y = pPlayerPos.y + 47;
+		posR.z = m_Distance*sinf(-pPlayerRot.x) + pPlayerPos.z;
 
-	//--------------------------------------
-	//カメラ描画
-	//--------------------------------------
-	D3DXMatrixIdentity(&mtxView);
-	D3DXMatrixLookAtLH(&mtxView, &posV, &posR, &vecU);
-	pDevice->SetTransform(D3DTS_VIEW, &mtxView);
-	D3DXMatrixIdentity(&mtxProjection);
-	D3DXMatrixPerspectiveFovLH(&mtxProjection, D3DXToRadian(90), SCREEN_WIDTH / SCREEN_HEIGHT, 10, 1000);
-	pDevice->SetTransform(D3DTS_PROJECTION, &mtxProjection);
+		//視点	
+		//距離
+		m_Distance = 25;
+		posV.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + posR.x;
+		posV.y = m_Distance*cosf(m_Theta) + posR.y;
+		posV.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + posR.z;
+
+		//--------------------------------------
+		//カメラ描画
+		//--------------------------------------
+		D3DXMatrixIdentity(&mtxView);
+		D3DXMatrixLookAtLH(&mtxView, &posV, &posR, &vecU);
+		pDevice->SetTransform(D3DTS_VIEW, &mtxView);
+		D3DXMatrixIdentity(&mtxProjection);
+		D3DXMatrixPerspectiveFovLH(&mtxProjection, D3DXToRadian(90), SCREEN_WIDTH / SCREEN_HEIGHT, 10, 1000);
+		pDevice->SetTransform(D3DTS_PROJECTION, &mtxProjection);
+	}
 }

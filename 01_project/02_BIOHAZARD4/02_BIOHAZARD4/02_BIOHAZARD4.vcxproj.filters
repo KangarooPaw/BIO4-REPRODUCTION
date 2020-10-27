@@ -37,6 +37,12 @@
     <Filter Include="ヘッダー ファイル\Scene\3D">
       <UniqueIdentifier>{0dbe16dd-400c-4532-87bc-62eeb4ebb31f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\mode">
+      <UniqueIdentifier>{2bdec3dd-3b23-4d67-92ba-87114f9e3c14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\mode">
+      <UniqueIdentifier>{b0fb7529-d731-4b94-8d79-04de6feae6a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -96,6 +102,24 @@
     <ClCompile Include="fade.cpp">
       <Filter>ソース ファイル\Scene\2D</Filter>
     </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="title.cpp">
+      <Filter>ソース ファイル\mode</Filter>
+    </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>ソース ファイル\mode</Filter>
+    </ClCompile>
+    <ClCompile Include="tutorial.cpp">
+      <Filter>ソース ファイル\mode</Filter>
+    </ClCompile>
+    <ClCompile Include="mode.cpp">
+      <Filter>ソース ファイル\mode</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>ソース ファイル\mode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -117,9 +141,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="bullet.h">
-      <Filter>ヘッダー ファイル\Scene\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="enemy.h">
       <Filter>ヘッダー ファイル\Scene\3D</Filter>
     </ClInclude>
     <ClInclude Include="fade.h">
@@ -153,6 +174,27 @@
       <Filter>ヘッダー ファイル\Scene\2D</Filter>
     </ClInclude>
     <ClInclude Include="polygon.h">
+      <Filter>ヘッダー ファイル\Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial.h">
+      <Filter>ヘッダー ファイル\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="title.h">
+      <Filter>ヘッダー ファイル\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>ヘッダー ファイル\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="mode.h">
+      <Filter>ヘッダー ファイル\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>ヘッダー ファイル\mode</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
       <Filter>ヘッダー ファイル\Scene\3D</Filter>
     </ClInclude>
   </ItemGroup>
