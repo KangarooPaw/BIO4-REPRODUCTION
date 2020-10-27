@@ -79,17 +79,6 @@ void CGame::Uninit(void)
 //*****************************************************************************
 void CGame::Update(void)
 {
-	//bool bEnemy = false;
-	//CScene *pEnemy = NULL;
-	//do
-	//{
-	//	pEnemy = CScene::GetScene(CScene::OBJTYPE_ENEMY);
-	//	if (pEnemy != NULL)
-	//	{
-	//		bEnemy = true;
-	//	}
-	//} while (pEnemy != NULL);
-
 	if (CScene::GetUpdateStop() == false)
 	{
 		if (CManager::GetInputKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetInputJoystick()->GetJoystickTrigger(CInputJoystick::BUTTON_B))

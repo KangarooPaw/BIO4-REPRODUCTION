@@ -207,7 +207,6 @@ void CManager::LoadAll(void)
 	CPlayer::Load();
 	CEnemy::Load();
 	CBullet::Load();
-	CFade::Load();
 }
 
 //=============================================================================
@@ -220,7 +219,6 @@ void CManager::UnloadAll(void)
 	CPlayer::Unload();
 	CPolygon::Unload();
 	CUi::Unload();
-	CFade::Unload();
 }
 
 //=============================================================================
@@ -326,10 +324,10 @@ void CManager::CreateFade(MODE mode)
 	{
 		m_pFade = new CFade(CScene::OBJTYPE_FADE);
 
+		m_pFade->SetFade(mode);
 		m_pFade->Init();
 	}
-
-	if (m_pFade != NULL)
+	else if (m_pFade != NULL)
 	{
 		m_pFade->SetFade(mode);
 	}

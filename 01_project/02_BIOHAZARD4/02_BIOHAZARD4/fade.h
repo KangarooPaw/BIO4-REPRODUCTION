@@ -16,10 +16,8 @@ public:
 		FADE_OUT
 	}FADE;
 
-	CFade(int nPriority);			//コンストラクタ
+	CFade(int nPriority);							//コンストラクタ
 	~CFade();										//デストラクタ
-	static HRESULT Load(void);						//テクスチャの読み込み
-	static void Unload(void);						//テクスチャの破棄
 	HRESULT Init(void);								//初期化処理
 	void Uninit(void);								//終了処理	
 	void Update(void);								//更新処理
@@ -27,14 +25,15 @@ public:
 	void SetFade(CManager::MODE mode);
 	void FadeIn(void);
 	void FadeOut(void);
+
 private:
-	static LPDIRECT3DTEXTURE9 m_pTexture;		//テクスチャ変数
+	static LPDIRECT3DTEXTURE9 m_pTexture;			//テクスチャ変数
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff = NULL;		// 頂点バッファへのポインタ
 	D3DXVECTOR3				m_pos;					// ポリゴンの位置
+	D3DXCOLOR				m_color;				//色
 	int						m_PolygonWidth;
 	int						m_PolygonHeight;
 	float					m_TexPos;
-	int						m_nFade;
 	static CManager::MODE	m_mode;
 	static FADE				m_fade;
 };

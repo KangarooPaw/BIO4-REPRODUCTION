@@ -14,9 +14,9 @@ CScene2D::CScene2D(int nPriority):CScene(nPriority)
 {
 	m_PolygonWidth = 0;
 	m_PolygonHeight = 0;
-	m_Alpha = 255;
 	m_angleX = 1.0f;
 	m_angleY = 1.0f;
+	m_color = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 //--------------------------------
@@ -84,13 +84,13 @@ HRESULT CScene2D::Init(void)
 	pVtx[0].rhw = 1.0f;
 	pVtx[1].rhw = 1.0f;
 	pVtx[2].rhw = 1.0f;
-	pVtx[3].rhw = 1.0f;   
+	pVtx[3].rhw = 1.0f;
 
 	// 頂点カラーの設定
-	pVtx[0].col = D3DCOLOR_RGBA(255,255,255,m_Alpha);
-	pVtx[1].col = D3DCOLOR_RGBA(255,255,255,m_Alpha);
-	pVtx[2].col = D3DCOLOR_RGBA(255,255,255,m_Alpha);
-	pVtx[3].col = D3DCOLOR_RGBA(255,255,255,m_Alpha);
+	pVtx[0].col = D3DXCOLOR(m_color.r, m_color.g, m_color.b, m_color.a);
+	pVtx[1].col = D3DXCOLOR(m_color.r, m_color.g, m_color.b, m_color.a);
+	pVtx[2].col = D3DXCOLOR(m_color.r, m_color.g, m_color.b, m_color.a);
+	pVtx[3].col = D3DXCOLOR(m_color.r, m_color.g, m_color.b, m_color.a);
 
 	//テクスチャ座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -152,10 +152,10 @@ void CScene2D::Update(void)
 	pVtx[3].rhw = 1.0f;
 
 	// 頂点カラーの設定
-	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, m_Alpha);
-	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, m_Alpha);
-	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, m_Alpha);
-	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, m_Alpha);
+	pVtx[0].col = D3DXCOLOR(m_color.r, m_color.g, m_color.b, m_color.a);
+	pVtx[1].col = D3DXCOLOR(m_color.r, m_color.g, m_color.b, m_color.a);
+	pVtx[2].col = D3DXCOLOR(m_color.r, m_color.g, m_color.b, m_color.a);
+	pVtx[3].col = D3DXCOLOR(m_color.r, m_color.g, m_color.b, m_color.a);
 
 	// 頂点バッファをアンロックする
 	m_pVtxBuff->Unlock();
@@ -192,9 +192,9 @@ void CScene2D::BindTexture(LPDIRECT3DTEXTURE9 pTexture)
 //--------------------------------
 //アルファ値の設定
 //--------------------------------
-void CScene2D::SetAlpha(int alpha)
+void CScene2D::SetColor(D3DXCOLOR color)
 {
- 	m_Alpha = alpha;
+	m_color = color;
 }
 
 //=============================================================
@@ -272,4 +272,10 @@ void CScene2D::SetSize(D3DXVECTOR3 size)
 D3DXVECTOR3 CScene2D::GetPosition(void)
 {
 	return m_pos;
+}
+
+//色の取得
+D3DXCOLOR CScene2D::GetColor(void)
+{
+	return m_color;
 }
