@@ -20,19 +20,20 @@ public:
 	
 	void SetPosition(D3DXVECTOR3 pos);		//位置
 	void SetSize(D3DXVECTOR3 size);			//サイズ
-	void SetAlpha(int alpha);
+	void SetColor(D3DXCOLOR color);
 	void SetRotVertex(float sizeX,float sizeY,float fAngle);
 
-	
 	D3DXVECTOR3 GetPosition(void);
+	D3DXCOLOR GetColor(void);
+
 private:	
 	LPDIRECT3DTEXTURE9		m_pTexture = NULL;		// テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff = NULL;		// 頂点バッファへのポインタ
 	D3DXVECTOR3				m_pos;					// ポリゴンの位置
 	D3DXVECTOR3				m_size;
+	D3DXCOLOR				m_color;
 	int						m_PolygonWidth;
 	int						m_PolygonHeight;
-	int 					m_Alpha;
 	float					m_angleX, m_angleY;
 };
 
