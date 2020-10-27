@@ -1,5 +1,11 @@
+//--------------------------------
+//インクルードファイル
+//--------------------------------
 #include "keyboard.h"
 
+//--------------------------------
+//コンストラクタ
+//--------------------------------
 CInputKeyboard::CInputKeyboard()
 {
 	memset(m_akeyState, 0, sizeof(m_akeyState));
@@ -7,11 +13,17 @@ CInputKeyboard::CInputKeyboard()
 	memset(m_akeyStateRelease, 0, sizeof(m_akeyStateRelease));
 }
 
+//--------------------------------
+//デストラクタ
+//--------------------------------
 CInputKeyboard::~CInputKeyboard()
 {
 
 }
 
+//--------------------------------
+//初期化処理
+//--------------------------------
 HRESULT CInputKeyboard::Init(HINSTANCE hInstance, HWND hWnd)
 {
 	CInput::Init(hInstance, hWnd);
@@ -33,11 +45,17 @@ HRESULT CInputKeyboard::Init(HINSTANCE hInstance, HWND hWnd)
 	return S_OK;
 }
 
+//--------------------------------
+//終了処理
+//--------------------------------
 void CInputKeyboard::Uninit(void)
 {
 	CInput::Uninit();
 }
 
+//--------------------------------
+//更新処理
+//--------------------------------
 void CInputKeyboard::Update(void)
 {
 	BYTE akeyState[NUM_KEY_MAX];//キーの最大数
@@ -60,15 +78,20 @@ void CInputKeyboard::Update(void)
 	}
 }
 
+//--------------------------------
+//キー入力処理
+//--------------------------------
+//押している間
 bool CInputKeyboard::GetKeyPress(int nKey)
 {
 	return (m_akeyState[nKey] & 0x80) ? true : false;
 }
+//押したとき
 bool CInputKeyboard::GetKeyTrigger(int nKey)
 {
 	return (m_akeyStateTrigger[nKey] & 0x80) ? true : false;
-
 }
+//離したとき
 bool CInputKeyboard::GetKeyRelease(int nKey)
 {
 	return (m_akeyStateRelease[nKey] & 0x80) ? true : false;

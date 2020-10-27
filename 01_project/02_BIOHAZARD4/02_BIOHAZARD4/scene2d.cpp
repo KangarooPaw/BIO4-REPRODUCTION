@@ -1,9 +1,15 @@
+//--------------------------------
+//インクルードファイル
+//--------------------------------
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
 #include "scene.h"
 #include "scene2d.h"
 
+//--------------------------------
+//コンストラクタ
+//--------------------------------
 CScene2D::CScene2D(int nPriority):CScene(nPriority)
 {
 	m_PolygonWidth = 0;
@@ -13,20 +19,28 @@ CScene2D::CScene2D(int nPriority):CScene(nPriority)
 	m_angleY = 1.0f;
 }
 
+//--------------------------------
+//デストラクタ
+//--------------------------------
 CScene2D::~CScene2D()
 {
 
 }
 
+//--------------------------------
+//生成処理
+//--------------------------------
 CScene2D *CScene2D::Create(float nPosX, float nPosY)
 {
 	CScene2D *pScene2D;
 	pScene2D = new CScene2D(3);
-	
 	pScene2D->Init();
 	return pScene2D;
 }
 
+//--------------------------------
+//初期化処理
+//--------------------------------
 HRESULT CScene2D::Init(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;
@@ -70,7 +84,8 @@ HRESULT CScene2D::Init(void)
 	pVtx[0].rhw = 1.0f;
 	pVtx[1].rhw = 1.0f;
 	pVtx[2].rhw = 1.0f;
-	pVtx[3].rhw = 1.0f;        
+	pVtx[3].rhw = 1.0f;   
+
 	// 頂点カラーの設定
 	pVtx[0].col = D3DCOLOR_RGBA(255,255,255,m_Alpha);
 	pVtx[1].col = D3DCOLOR_RGBA(255,255,255,m_Alpha);
@@ -167,28 +182,17 @@ void CScene2D::Draw(void)
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
 }
 
+//--------------------------------
+//テクスチャの設定
+//--------------------------------
 void CScene2D::BindTexture(LPDIRECT3DTEXTURE9 pTexture)
 {
 	m_pTexture = pTexture;
 }
 
-void CScene2D::SetAnimation(int nPatternAnim)
-{
-	// 頂点情報を設定
-	VERTEX_2D *pVtx;
-	// 頂点バッファをロックし、頂点情報へのポインタを取得
-	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-
-	// テクスチャ座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f+(nPatternAnim*0.125f ), 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(0.125f+(nPatternAnim*0.125f) , 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f+(nPatternAnim *0.125f), 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(0.125f+(nPatternAnim *0.125f) , 1.0f);
-	pVtx += 4;
-	// 頂点バッファをアンロックする
-	m_pVtxBuff->Unlock();
-}
-
+//--------------------------------
+//アルファ値の設定
+//--------------------------------
 void CScene2D::SetAlpha(int alpha)
 {
  	m_Alpha = alpha;
@@ -252,30 +256,20 @@ void CScene2D::SetRotVertex(float sizeX, float sizeY, float fAngle)
     m_pVtxBuff->Unlock();
 }
 
-void CScene2D::SetEnemyTex(float texX1, float texX2, float texY1, float texY2)
-{
-	// 頂点情報を設定
-	VERTEX_2D *pVtx;
-	// 頂点バッファをロックし、頂点情報へのポインタを取得
-	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
-	pVtx[0].tex = D3DXVECTOR2(texX1, texY1);
-	pVtx[1].tex = D3DXVECTOR2(texX2, texY1);
-	pVtx[2].tex = D3DXVECTOR2(texX1, texY2);
-	pVtx[3].tex = D3DXVECTOR2(texX2, texY2);
-	// 頂点バッファをアンロックする
-	m_pVtxBuff->Unlock();
-}
-
+//--------------------------------
+//各種設定
+//--------------------------------
+//場所
 void CScene2D::SetPosition(D3DXVECTOR3 pos)
 {
 	m_pos = pos;
 }
-
+//大きさ
 void CScene2D::SetSize(D3DXVECTOR3 size)
 {
 	m_size = size;
 }
-
+//場所の受け渡し処理
 D3DXVECTOR3 CScene2D::GetPosition(void)
 {
 	return m_pos;

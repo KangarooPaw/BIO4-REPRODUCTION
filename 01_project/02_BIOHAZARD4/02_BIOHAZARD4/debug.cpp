@@ -1,19 +1,34 @@
+//--------------------------------
+//インクルードファイル
+//--------------------------------
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
 #include "debug.h"
 
+//--------------------------------
+//静的メンバ変数
+//--------------------------------
 LPD3DXFONT CDebugProc::m_pFont =NULL;
 char CDebugProc::m_astr[1024] = {};
 
+//--------------------------------
+//コンストラクタ
+//--------------------------------
 CDebugProc::CDebugProc()
 {
 }
 
+//--------------------------------
+//デストラクタ
+//--------------------------------
 CDebugProc::~CDebugProc()
 {
 }
 
+//--------------------------------
+//初期化処理
+//--------------------------------
 void CDebugProc::Init(void)
 {
 	LPDIRECT3DDEVICE9 pDevice;
@@ -24,6 +39,9 @@ void CDebugProc::Init(void)
 		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Terminal", &m_pFont);
 }
 
+//--------------------------------
+//終了処理
+//--------------------------------
 void CDebugProc::Uninit(void)
 {
 	if (m_pFont != NULL)
@@ -33,6 +51,9 @@ void CDebugProc::Uninit(void)
 	}
 }
 
+//--------------------------------
+//描画
+//--------------------------------
 void CDebugProc::Print(char * fmt, ...)
 {
 	va_list list;
@@ -41,6 +62,9 @@ void CDebugProc::Print(char * fmt, ...)
 	va_end(list);
 }
 
+//--------------------------------
+//描画処理
+//--------------------------------
 void CDebugProc::Draw(void)
 {
 	RECT rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };

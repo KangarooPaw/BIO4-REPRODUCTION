@@ -1,18 +1,30 @@
+//--------------------------------
+//インクルードファイル
+//--------------------------------
 #include "main.h"
 #include "manager.h"
 #include "renderer.h"
 #include "light.h"
 
+//--------------------------------
+//コンストラクタ
+//--------------------------------
 CLight::CLight()
 {
 
 }
 
+//--------------------------------
+//デストラクタ
+//--------------------------------
 CLight::~CLight()
 {
 
 }
 
+//--------------------------------
+//生成処理
+//--------------------------------
 CLight * CLight::Create(void)
 {
 	CLight*pLight;
@@ -21,6 +33,9 @@ CLight * CLight::Create(void)
 	return pLight;
 }
 
+//--------------------------------
+//初期化処理
+//--------------------------------
 void CLight::Init(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -35,7 +50,9 @@ void CLight::Init(void)
 	pDevice->LightEnable(0, TRUE);
 }
 
+//--------------------------------
+//終了処理
+//--------------------------------
 void CLight::Uninit(void)
 {
-
 }

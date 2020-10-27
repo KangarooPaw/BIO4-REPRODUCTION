@@ -1,13 +1,21 @@
+//--------------------------------
+//インクルードファイル
+//--------------------------------
 #include "scene.h"
 #include "scene2d.h"
 
-
+//--------------------------------
+//静的メンバ変数
+//--------------------------------
 CScene *CScene::m_pTop[PRIORITY] = {};
 CScene *CScene::m_pCur[PRIORITY] = {};
 int CScene::m_nNumAll = 0;
 int CScene::m_nCount = 0;
 int CScene::m_nNext = 0;
 
+//--------------------------------
+//コンストラクタ
+//--------------------------------
 CScene::CScene(int nPriority)
 {
 			m_pNext = NULL;
@@ -31,17 +39,25 @@ CScene::CScene(int nPriority)
 			
 }
 
+//--------------------------------
+//コンストラクタ
+//--------------------------------
 CScene::~CScene()
 {
 
 }
 
+//--------------------------------
+//オブジェクトタイプ設定
+//--------------------------------
 void CScene::SetObjType(OBJTYPE objType)
 {
 	m_objType = objType;
 }
 
-
+//--------------------------------
+//シーンの取得
+//--------------------------------
 CScene * CScene::GetScene(int nPriority)
 {
 	CScene *pScene = m_pTop[nPriority];
@@ -67,10 +83,12 @@ CScene * CScene::GetScene(int nPriority)
 	{
 		m_nNext = 0;
 	}
-
 	return pScene;
 }
 
+//--------------------------------
+//リリース処理まとめ
+//--------------------------------
 void CScene::ReleaseAll(void)
 {
 	for (int nCountpriority = 0; nCountpriority < PRIORITY; nCountpriority++)
@@ -101,6 +119,9 @@ void CScene::ReleaseAll(void)
 	}
 }
 
+//--------------------------------
+//更新処理まとめ
+//--------------------------------
 void CScene::UpdateAll(void)
 {
 	for (int nCountpriority = 0; nCountpriority < PRIORITY; nCountpriority++)
@@ -130,6 +151,9 @@ void CScene::UpdateAll(void)
 	}
 }
 
+//--------------------------------
+//描画処理
+//--------------------------------
 void CScene::DrawAll(void)
 {	
 	for (int nCountpriority = 0; nCountpriority < PRIORITY; nCountpriority++)
@@ -145,6 +169,9 @@ void CScene::DrawAll(void)
 	}
 }
 
+//--------------------------------
+//リリース処理
+//--------------------------------
 void CScene::Release(void)
 {
 	if (m_bDeath == true)
