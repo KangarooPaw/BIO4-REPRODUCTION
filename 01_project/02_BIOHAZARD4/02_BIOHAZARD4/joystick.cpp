@@ -6,6 +6,9 @@
 #include "input.h"
 #include "joystick.h"
 
+//--------------------------------
+//静的メンバ変数
+//--------------------------------
 LPDIRECTINPUTDEVICE8 CInputJoystick::m_pJDevice = NULL;
 //------------------------------------------------
 //コンストラクタ

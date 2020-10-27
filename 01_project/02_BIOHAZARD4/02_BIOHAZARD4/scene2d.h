@@ -20,10 +20,9 @@ public:
 	
 	void SetPosition(D3DXVECTOR3 pos);		//位置
 	void SetSize(D3DXVECTOR3 size);			//サイズ
-	void SetAnimation(int nPatternAnim);
 	void SetAlpha(int alpha);
 	void SetRotVertex(float sizeX,float sizeY,float fAngle);
-	void SetEnemyTex(float texX1,float texX2,float texY1, float texY2);
+
 	
 	D3DXVECTOR3 GetPosition(void);
 private:	

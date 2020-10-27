@@ -156,12 +156,8 @@
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
-    <ClCompile Include="mode.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="result.cpp" />
-    <ClCompile Include="title.cpp" />
-    <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="renderer.cpp" />
@@ -182,12 +178,8 @@
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
-    <ClInclude Include="mode.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="result.h" />
-    <ClInclude Include="title.h" />
-    <ClInclude Include="tutorial.h" />
     <ClInclude Include="ui.h" />
     <ClInclude Include="polygon.h" />
     <ClInclude Include="renderer.h" />

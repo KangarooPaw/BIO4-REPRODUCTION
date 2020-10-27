@@ -84,6 +84,9 @@ void CModel::Draw(void)
 	pDevice->SetMaterial(&matDef);
 }
 
+//--------------------------------
+//モデルのテクスチャ設定
+//--------------------------------
 void CModel::BindModel(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD nNumMat)
 {
 	m_pMesh = pMesh;
@@ -91,6 +94,9 @@ void CModel::BindModel(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD nNumMat)
 	m_nNumMat = nNumMat;
 }
 
+//--------------------------------
+//モデルの場所、角度設定
+//--------------------------------
 void CModel::SetModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 {
 	m_pos = pos;
