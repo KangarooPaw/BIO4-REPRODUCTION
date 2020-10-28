@@ -77,7 +77,7 @@ void CFade::FadeIn(void)
 }
 
 void CFade::FadeOut(void)
-{
+{	
 	D3DXCOLOR color = GetColor();
 	color.a -= 0.02f;
 	if (color.a <= 0.0f)

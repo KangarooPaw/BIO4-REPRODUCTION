@@ -146,7 +146,7 @@ void CPlayer::Update(void)
 	// Xボタンを押したら弾を発射
 	if (pInputJoystick->GetJoystickTrigger(CInputJoystick::BUTTON_X))
 	{
-		CBullet::Create(D3DXVECTOR3(m_pos.x+ cosf(m_rot.x), m_pos.y+20.0f, m_pos.z+ sinf(m_rot.x) ), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
+		CBullet::Create(D3DXVECTOR3(m_pos.x + cosf(m_rot.x), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.x)), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
 			D3DXVECTOR3(-sinf(m_rot.x)*2.0f, 0, -cosf(m_rot.x)*2.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
 	}
 	//--------------------------
@@ -190,9 +190,9 @@ void CPlayer::Draw(void)
 //----------------------------------------
 void CPlayer::SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
-		m_pos = pos;//場所
-		m_rot = rot;//角度
-		m_size = size;//大きさ
-		SetModel(pos, rot);//モデルの設定
-		SetObjType(OBJTYPE_PLAYER);//オブジェクトタイプの設定
+	m_pos = pos;//場所
+	m_rot = rot;//角度
+	m_size = size;//大きさ
+	SetModel(pos, rot);//モデルの設定
+	SetObjType(OBJTYPE_PLAYER);//オブジェクトタイプの設定
 }

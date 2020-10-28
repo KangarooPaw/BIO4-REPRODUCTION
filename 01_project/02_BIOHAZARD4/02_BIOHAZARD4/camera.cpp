@@ -69,29 +69,7 @@ void CCamera::Update(void)
 		pJoystickDevice->Poll();
 		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
 	}
-	//--------------------------
-	//移動
-	//--------------------------		
-	//左スティックを前に倒す
-	if (pStick.lX <= -500)
-	{
-		m_Phi += D3DXToRadian(1);
-	}
-	//左スティックを後ろに倒す
-	if (pStick.lX >= 500)
-	{
-		m_Phi -= D3DXToRadian(1);
-	}
-	//左スティックを前に倒す
-	if (pKeyborad->GetKeyPress(DIK_UP))
-	{
-		m_Theta -= D3DXToRadian(1);
-	}
-	//左スティックを後ろに倒す
-	if (pKeyborad->GetKeyPress(DIK_DOWN))
-	{
-		m_Theta += D3DXToRadian(1);
-	}
+
 
 	if (CGame::GetPlayer() != NULL)
 	{
@@ -99,21 +77,53 @@ void CCamera::Update(void)
 		D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
 		//プレイヤーの角度の取得
 		D3DXVECTOR3 pPlayerRot = CGame::GetPlayer()->GetRot();
+		if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
+		{
+			//--------------------------
+			//移動
+			//--------------------------		
+			//左スティックを左に倒す
+			if (pStick.lX <= -500)
+			{
+				m_Phi += D3DXToRadian(1);
+			}
+			//左スティックを右に倒す
+			if (pStick.lX >= 500)
+			{
+				m_Phi -= D3DXToRadian(1);
+			}
 
-		//注視点
-		//距離
-		m_Distance = -15;
-		posR.x = m_Distance*cosf(pPlayerRot.x) + pPlayerPos.x;
-		posR.y = pPlayerPos.y + 47;
-		posR.z = m_Distance*sinf(-pPlayerRot.x) + pPlayerPos.z;
+			//注視点
+			m_Distance = -15;	//距離
+			posR.x = m_Distance*cosf(pPlayerRot.x) + pPlayerPos.x;
+			posR.y = pPlayerPos.y + 47;
+			posR.z = m_Distance*sinf(-pPlayerRot.x) + pPlayerPos.z;
 
-		//視点	
-		//距離
-		m_Distance = 25;
-		posV.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + posR.x;
-		posV.y = m_Distance*cosf(m_Theta) + posR.y;
-		posV.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + posR.z;
+			//視点	
+			m_Distance = 25;	//距離
+			posV.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + posR.x;
+			posV.y = m_Distance*cosf(m_Theta) + posR.y;
+			posV.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + posR.z;
+			//---------------------------
+			//カメラの角度変更
+			//---------------------------
+			//右スティックを左に倒す
+			if (pStick.lRx <= -500)
+			{
+				m_Distance = -15;	//距離
+				posR.x = m_Distance*cosf(pPlayerRot.x) + pPlayerPos.x + 15.0f;
+			}
+			//右スティックを右に倒す
+			if (pStick.lRx >= 500)
+			{
+				m_Distance = -15;	//距離
+				posR.x = m_Distance*cosf(pPlayerRot.x) + pPlayerPos.x - 15.0f;
+			}
+		}
+		else if(pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2))
+		{
 
+		}
 		//--------------------------------------
 		//カメラ描画
 		//--------------------------------------
