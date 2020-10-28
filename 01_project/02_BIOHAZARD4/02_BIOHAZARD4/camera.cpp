@@ -24,8 +24,6 @@ CCamera::CCamera()
 	m_Distance = 0;
 	m_lTheta = 1.0f;
 	m_lPhi = 1.7f;	
-	m_rTheta = 1.0f;
-	m_rPhi = 1.7f;
 }
 
 //--------------------------------------
@@ -113,13 +111,13 @@ void CCamera::Update(void)
 			if (pStick.lRx <= -500)
 			{
 				m_Distance = -15;	//距離
-				posR.x = m_Distance*cosf(pPlayerRot.x) + pPlayerPos.x + 15.0f;
+				posR.x  += 15.0f;
 			}
 			//右スティックを右に倒す
 			if (pStick.lRx >= 500)
 			{
 				m_Distance = -15;	//距離
-				posR.x = m_Distance*cosf(pPlayerRot.x) + pPlayerPos.x - 15.0f;
+				posR.x -= 15.0f;
 			}
 			//右スティックを上に倒す
 			if (pStick.lRy <= -500)

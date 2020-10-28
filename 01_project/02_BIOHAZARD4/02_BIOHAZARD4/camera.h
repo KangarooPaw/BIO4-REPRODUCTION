@@ -3,7 +3,8 @@
 
 #include "main.h"
 
-#define MOVE_RATE 80
+#define GAZE_Y (47.0f)
+
 class CCamera
 {
 public:
@@ -21,9 +22,7 @@ private:
 	D3DXMATRIX	mtxView;
 	float m_Distance;
 	float m_lTheta;
-	float m_rTheta;
 	float m_lPhi;
-	float m_rPhi;
 };
 
 #endif
