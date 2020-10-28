@@ -213,7 +213,7 @@ void CManager::LoadAll(void)
 //テクスチャの破棄まとめ
 //=============================================================================
 void CManager::UnloadAll(void)
-{	
+{
 	CBullet::Unload();
 	CEnemy::Unload();
 	CPlayer::Unload();
@@ -339,7 +339,7 @@ void CManager::CreateFade(MODE mode)
 //レンダラー
 CRenderer *CManager::GetRenderer(void)
 {
-	return m_pRenderer;	
+	return m_pRenderer;
 }
 
 //キーボード
