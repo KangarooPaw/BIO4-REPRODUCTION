@@ -20,8 +20,10 @@ private:
 	D3DXMATRIX	mtxProjection;
 	D3DXMATRIX	mtxView;
 	float m_Distance;
-	float m_Theta;
-	float m_Phi;
+	float m_lTheta;
+	float m_rTheta;
+	float m_lPhi;
+	float m_rPhi;
 };
 
 #endif

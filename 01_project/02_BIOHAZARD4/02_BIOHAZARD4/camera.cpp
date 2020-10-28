@@ -22,8 +22,10 @@ CCamera::CCamera()
 	posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	m_Distance = 0;
-	m_Theta = 1;
-	m_Phi = 1.7f;
+	m_lTheta = 1.0f;
+	m_lPhi = 1.7f;	
+	m_rTheta = 1.0f;
+	m_rPhi = 1.7f;
 }
 
 //--------------------------------------
@@ -80,17 +82,17 @@ void CCamera::Update(void)
 		if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
 		{
 			//--------------------------
-					//移動
-					//--------------------------		
-					//左スティックを左に倒す
+			//移動
+			//--------------------------		
+			//左スティックを左に倒す
 			if (pStick.lX <= -500)
 			{
-				m_Phi += D3DXToRadian(1);
+				m_lPhi += D3DXToRadian(1);
 			}
 			//左スティックを右に倒す
 			if (pStick.lX >= 500)
 			{
-				m_Phi -= D3DXToRadian(1);
+				m_lPhi -= D3DXToRadian(1);
 			}
 
 			//注視点
@@ -101,9 +103,9 @@ void CCamera::Update(void)
 
 			//視点	
 			m_Distance = 25;	//距離
-			posV.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + posR.x;
-			posV.y = m_Distance*cosf(m_Theta) + posR.y;
-			posV.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + posR.z;
+			posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi)) + posR.x;
+			posV.y = m_Distance*cosf(m_lTheta) + posR.y;
+			posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 			//---------------------------
 			//カメラの角度変更
 			//---------------------------
@@ -119,11 +121,18 @@ void CCamera::Update(void)
 				m_Distance = -15;	//距離
 				posR.x = m_Distance*cosf(pPlayerRot.x) + pPlayerPos.x - 15.0f;
 			}
+			//右スティックを上に倒す
+			if (pStick.lRy <= -500)
+			{
+				posR.y = pPlayerPos.y + 47.0f+ 15.0f;
+			}
+			//右スティックを下に倒す
+			if (pStick.lRy >= 500)
+			{
+				posR.y = pPlayerPos.y + 47.0f  - 15.0f;
+			}
 		}
-		else if(pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2))
-		{
 
-		}
 		//--------------------------------------
 		//カメラ描画
 		//--------------------------------------

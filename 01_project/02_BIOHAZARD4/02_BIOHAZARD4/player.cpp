@@ -111,34 +111,37 @@ void CPlayer::Update(void)
 		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
 	}
 	// Xボタンを押したら弾を発射
-	if (pInputJoystick->GetJoystickTrigger(0))
+	if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
 	{
 		CBullet::Create(D3DXVECTOR3(m_pos.x+ cosf(m_rot.x), m_pos.y+20.0f, m_pos.z+ sinf(m_rot.x) ), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
 			D3DXVECTOR3(-sinf(m_rot.x)*2.0f, 0, -cosf(m_rot.x)*2.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
 	}
-	//--------------------------
-	//移動
-	//--------------------------
-	if (pStick.lX <= -500)
+	if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2)==false)
 	{
-		m_rot.x -= D3DXToRadian(1);
-	}
-	//左スティックを右に倒す
-	if (pStick.lX >= 500)
-	{
-		m_rot.x += D3DXToRadian(1);
-	}
-	//左スティックを前に倒す	
-	if (pStick.lY <= -500)
-	{
-		m_pos.x += -sin(m_rot.x)*1.0f;
-		m_pos.z += -cos(m_rot.x)*1.0f;
-	}
-	//左スティックを後ろに倒す
-	if (pStick.lY >= 500)
-	{
-		m_pos.x += sin(m_rot.x)*1.0f;
-		m_pos.z += cos(m_rot.x)*1.0f;
+		//--------------------------
+		//移動
+		//--------------------------
+		if (pStick.lX <= -500)
+		{
+			m_rot.x -= D3DXToRadian(1);
+		}
+		//左スティックを右に倒す
+		if (pStick.lX >= 500)
+		{
+			m_rot.x += D3DXToRadian(1);
+		}
+		//左スティックを前に倒す	
+		if (pStick.lY <= -500)
+		{
+			m_pos.x += -sin(m_rot.x)*1.0f;
+			m_pos.z += -cos(m_rot.x)*1.0f;
+		}
+		//左スティックを後ろに倒す
+		if (pStick.lY >= 500)
+		{
+			m_pos.x += sin(m_rot.x)*1.0f;
+			m_pos.z += cos(m_rot.x)*1.0f;
+		}
 	}
 	SetModel(m_pos, m_rot);
 	CModel::Update();
