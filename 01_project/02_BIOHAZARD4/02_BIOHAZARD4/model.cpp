@@ -13,18 +13,15 @@
 #include "bullet.h"
 
 //----------------------------------------
-//静的メンバ変数
-//----------------------------------------
-LPD3DXMESH CModel::m_pMesh = NULL;
-LPD3DXBUFFER CModel::m_pBuffMat = NULL;
-DWORD CModel::m_nNumMat = 0;
-
-//----------------------------------------
 //インクリメント
 //----------------------------------------
 CModel::CModel(int nPriority) :CScene3d(nPriority)
 {
-
+	m_pMesh = NULL;
+	m_pBuffMat = NULL;
+	m_nNumMat = 0;
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 //----------------------------------------
@@ -39,7 +36,7 @@ CModel::~CModel()
 //初期化処理
 //----------------------------------------
 HRESULT CModel::Init(void)
-{	
+{
 	return S_OK;
 }
 
@@ -56,7 +53,7 @@ void CModel::Uninit(void)
 //----------------------------------------
 void CModel::Update(void)
 {
-	
+
 }
 
 //----------------------------------------

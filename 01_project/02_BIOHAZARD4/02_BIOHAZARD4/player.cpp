@@ -15,14 +15,29 @@
 //----------------------------------------
 //静的メンバ変数
 //----------------------------------------
-LPD3DXMESH CPlayer::m_pMesh = NULL;
-LPD3DXBUFFER CPlayer::m_pBuffMat = NULL;
-DWORD CPlayer::m_nNumMat = 0;
+LPD3DXMESH CPlayer::m_pMesh[MAX_PLAYER_PARTS] = {};
+LPD3DXBUFFER CPlayer::m_pBuffMat[MAX_PLAYER_PARTS] = {};
+DWORD CPlayer::m_nNumMat[MAX_PLAYER_PARTS] = {};
+CPlayer::MODELPARENT CPlayer::m_modelParent[MAX_PLAYER_PARTS] = {
+	{ "data/MODEL/PLAYER/body.x" },			// 上半身
+	{ "data/MODEL/PLAYER/bodyUnder.x" },	// 下半身
+	{ "data/MODEL/PLAYER/head.x" },			// 頭
+	{ "data/MODEL/PLAYER/legLeft.x" },		// 左足
+	{ "data/MODEL/PLAYER/legMomoLeft.x" },	// 左もも
+	{ "data/MODEL/PLAYER/legRight.x" },		// 右足
+	{ "data/MODEL/PLAYER/legMomoRight.x" }, // 右もも
+	{ "data/MODEL/PLAYER/upArmLeft.x" },    // 左上腕
+	{ "data/MODEL/PLAYER/downArmLeft.x" },   // 左前腕
+	{ "data/MODEL/PLAYER/handLeft.x" },	    // 左手
+	{ "data/MODEL/PLAYER/upArmRight.x" },    // 右上腕
+	{ "data/MODEL/PLAYER/downArmRight.x" }, // 右前腕
+	{ "data/MODEL/PLAYER/handRight.x" },    // 右手
+};
 
 //----------------------------------------
 //インクリメント
 //----------------------------------------
-CPlayer::CPlayer(int nPriority) :CModel(nPriority)
+CPlayer::CPlayer(int nPriority) :CModelhierarchy(nPriority)
 {
 
 }
@@ -54,15 +69,18 @@ HRESULT CPlayer::Load(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	D3DXLoadMeshFromX("data/MODEL/playermodel_test001.x",
-		D3DXMESH_SYSTEMMEM,
-		pDevice,
-		NULL,
-		&m_pBuffMat,
-		NULL,
-		&m_nNumMat,
-		&m_pMesh
-	);
+	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+	{
+		D3DXLoadMeshFromX(m_modelParent[nCount].pFileName,
+			D3DXMESH_SYSTEMMEM,
+			pDevice,
+			NULL,
+			&m_pBuffMat[nCount],
+			NULL,
+			&m_nNumMat[nCount],
+			&m_pMesh[nCount]
+		);
+	}
 
 	return S_OK;
 }
@@ -72,10 +90,21 @@ HRESULT CPlayer::Load(void)
 //----------------------------------------
 void CPlayer::Unload(void)
 {
-	if (m_pMesh != NULL)
+	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
 	{
-		m_pMesh->Release();
-		m_pMesh = NULL;
+		// メッシュの破棄
+		if (m_pMesh[nCount] != NULL)
+		{
+			m_pMesh[nCount]->Release();
+			m_pMesh[nCount] = NULL;
+		}
+
+		// マテリアルの破棄
+		if (m_pBuffMat[nCount] != NULL)
+		{
+			m_pBuffMat[nCount]->Release();
+			m_pBuffMat[nCount] = NULL;
+		}
 	}
 }
 
@@ -84,7 +113,11 @@ void CPlayer::Unload(void)
 //----------------------------------------
 HRESULT CPlayer::Init(void)
 {
-	CModel::BindModel(m_pMesh, m_pBuffMat, m_nNumMat);
+	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+	{
+		CModelhierarchy::BindModel(m_pMesh[nCount], m_pBuffMat[nCount], m_nNumMat[nCount], nCount - 1);
+	}
+
 	return S_OK;
 }
 
@@ -93,7 +126,7 @@ HRESULT CPlayer::Init(void)
 //----------------------------------------
 void CPlayer::Uninit(void)
 {
-	CModel::Uninit();
+	CModelhierarchy::Uninit();
 }
 
 //----------------------------------------
@@ -111,9 +144,9 @@ void CPlayer::Update(void)
 		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
 	}
 	// Xボタンを押したら弾を発射
-	if (pInputJoystick->GetJoystickTrigger(0))
+	if (pInputJoystick->GetJoystickTrigger(CInputJoystick::BUTTON_X))
 	{
-		CBullet::Create(D3DXVECTOR3(m_pos.x+ cosf(m_rot.x), m_pos.y+20.0f, m_pos.z+ sinf(m_rot.x) ), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
+		CBullet::Create(D3DXVECTOR3(m_pos.x + cosf(m_rot.x), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.x)), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
 			D3DXVECTOR3(-sinf(m_rot.x)*2.0f, 0, -cosf(m_rot.x)*2.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
 	}
 	//--------------------------
@@ -141,7 +174,7 @@ void CPlayer::Update(void)
 		m_pos.z += cos(m_rot.x)*1.0f;
 	}
 	SetModel(m_pos, m_rot);
-	CModel::Update();
+	CModelhierarchy::Update();
 }
 
 //----------------------------------------
@@ -149,7 +182,7 @@ void CPlayer::Update(void)
 //----------------------------------------
 void CPlayer::Draw(void)
 {
-	CModel::Draw();
+	CModelhierarchy::Draw();
 }
 
 //----------------------------------------
@@ -157,9 +190,9 @@ void CPlayer::Draw(void)
 //----------------------------------------
 void CPlayer::SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
-		m_pos = pos;//場所
-		m_rot = rot;//角度
-		m_size = size;//大きさ
-		SetModel(pos, rot);//モデルの設定
-		SetObjType(OBJTYPE_PLAYER);//オブジェクトタイプの設定
+	m_pos = pos;//場所
+	m_rot = rot;//角度
+	m_size = size;//大きさ
+	SetModel(pos, rot);//モデルの設定
+	SetObjType(OBJTYPE_PLAYER);//オブジェクトタイプの設定
 }

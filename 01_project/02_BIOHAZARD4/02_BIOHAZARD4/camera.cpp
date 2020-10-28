@@ -80,9 +80,9 @@ void CCamera::Update(void)
 		if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
 		{
 			//--------------------------
-					//移動
-					//--------------------------		
-					//左スティックを左に倒す
+			//移動
+			//--------------------------		
+			//左スティックを左に倒す
 			if (pStick.lX <= -500)
 			{
 				m_Phi += D3DXToRadian(1);
@@ -104,6 +104,7 @@ void CCamera::Update(void)
 			posV.x = m_Distance*(sinf(m_Theta)*cosf(m_Phi)) + posR.x;
 			posV.y = m_Distance*cosf(m_Theta) + posR.y;
 			posV.z = m_Distance*(sinf(m_Theta)*sinf(m_Phi)) + posR.z;
+
 			//---------------------------
 			//カメラの角度変更
 			//---------------------------
@@ -124,6 +125,7 @@ void CCamera::Update(void)
 		{
 
 		}
+
 		//--------------------------------------
 		//カメラ描画
 		//--------------------------------------
