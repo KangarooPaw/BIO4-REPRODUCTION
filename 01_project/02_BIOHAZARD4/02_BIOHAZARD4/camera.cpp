@@ -104,6 +104,7 @@ void CCamera::Update(void)
 			posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi)) + posR.x;
 			posV.y = m_Distance*cosf(m_lTheta) + posR.y;
 			posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
+
 			//---------------------------
 			//カメラの角度変更
 			//---------------------------
@@ -130,6 +131,7 @@ void CCamera::Update(void)
 				posR.y = pPlayerPos.y + 47.0f  - 15.0f;
 			}
 		}
+
 
 		//--------------------------------------
 		//カメラ描画
