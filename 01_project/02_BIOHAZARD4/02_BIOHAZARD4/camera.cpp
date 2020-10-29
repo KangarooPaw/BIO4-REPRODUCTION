@@ -81,6 +81,7 @@ void CCamera::Update(void)
 		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
 	}
 
+
 	if (CGame::GetPlayer() != NULL)
 	{
 		//プレイヤーの場所の取得
@@ -104,16 +105,12 @@ void CCamera::Update(void)
 			{
 				m_lPhi -= D3DXToRadian(1);
 			}
-			//左スティックを後ろに倒しながらAボタン
-			if (pStick.lY >= 500 && pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
-			{
-					m_lPhi += D3DXToRadian(180);
-			}
+
 			//注視点
 			m_Distance = CAMERA_GAZE;	//距離
-			posR.x = m_Distance*cosf(pPlayerRot.x) + pPlayerPos.x;
+			posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;
 			posR.y = pPlayerPos.y + GAZE_Y;
-			posR.z = m_Distance*sinf(-pPlayerRot.x) + pPlayerPos.z;
+			posR.z = m_Distance*sinf(-pPlayerRot.y) + pPlayerPos.z;
 
 			//視点	
 			m_Distance = CAMERA_VIEW;	//距離
@@ -154,11 +151,11 @@ void CCamera::Update(void)
 			if (m_nCount <= HOLD_FRAME)
 			{
 				//注視点
-				posR.x += (float)-sin(pPlayerRot.x);
-				posR.z += (float)-cos(pPlayerRot.x);
+				posR.x += (float)-sin(pPlayerRot.y);
+				posR.z += (float)-cos(pPlayerRot.y);
 				//視点	
-				posV.x += (float)-sin(pPlayerRot.x);
-				posV.z += (float)-cos(pPlayerRot.x);
+				posV.x += (float)-sin(pPlayerRot.y);
+				posV.z += (float)-cos(pPlayerRot.y);
 			}
 			m_nCount++;
 		}

@@ -25,6 +25,9 @@ CModelhierarchy::CModelhierarchy(int nPriority) :CScene3d(nPriority)
 		m_Model[nCount].m_pMeshParts = NULL;
 		m_Model[nCount].m_pBuffMatParts = NULL;
 		m_Model[nCount].m_nNumMatParts = NULL;
+
+		m_modelParent[nCount].m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		m_modelParent[nCount].m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	}
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -53,7 +56,7 @@ HRESULT CModelhierarchy::Init(void)
 //=============================================================================
 void CModelhierarchy::Uninit(void)
 {
-	
+	CScene3d::Uninit();
 }
 
 //=============================================================================
@@ -78,7 +81,7 @@ void CModelhierarchy::Draw(void)
 	D3DXMatrixIdentity(&m_mtxWorld);
 
 	//向きを反転
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.x, m_rot.y, m_rot.z);
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
 	//位置を反映
@@ -91,11 +94,11 @@ void CModelhierarchy::Draw(void)
 		D3DXMatrixIdentity(&m_Model[nCount].m_mtxWorldParts);
 
 		//向きを反転
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.x, m_rot.y, m_rot.z);
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_modelParent[nCount].m_rot.y, m_modelParent[nCount].m_rot.x, m_modelParent[nCount].m_rot.z);
 		D3DXMatrixMultiply(&m_Model[nCount].m_mtxWorldParts, &m_Model[nCount].m_mtxWorldParts, &mtxRot);
 
 		//位置を反映
-		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+		D3DXMatrixTranslation(&mtxTrans, m_modelParent[nCount].m_pos.x, m_modelParent[nCount].m_pos.y, m_modelParent[nCount].m_pos.z);
 		D3DXMatrixMultiply(&m_Model[nCount].m_mtxWorldParts, &m_Model[nCount].m_mtxWorldParts, &mtxTrans);
 		
 		//マテリアルデータへのポインタを取得する
@@ -113,7 +116,7 @@ void CModelhierarchy::Draw(void)
 		D3DXMatrixMultiply(&m_Model[nCount].m_mtxWorldParts, &m_Model[nCount].m_mtxWorldParts, &mtxParent);
 
 		//ワールドマトリックスの設定
-		pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+		pDevice->SetTransform(D3DTS_WORLD, &m_Model[nCount].m_mtxWorldParts);
 
 		//現在のマテリアルを取得する
 		pDevice->GetMaterial(&matDef);
@@ -151,8 +154,18 @@ void CModelhierarchy::BindModel(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD n
 //=============================================================================
 // モデルの場所、角度設定
 //=============================================================================
-void CModelhierarchy::SetModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
+void CModelhierarchy::SetModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
 	m_pos = pos;
 	m_rot = rot;
+	m_size = size;
+}
+
+//=============================================================================
+// 各モデルパーツの場所、角度設定
+//=============================================================================
+void CModelhierarchy::SetModelParts(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nCount)
+{
+	m_modelParent[nCount].m_pos = pos;
+	m_modelParent[nCount].m_rot = rot;
 }
