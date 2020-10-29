@@ -229,9 +229,14 @@ void CPlayer::Update(void)
 		// モデルのパーツごとのセット
 		SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
 	}
-
+	// Xボタンを押したら弾を発射
+	if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
+	{
+		CBullet::Create(D3DXVECTOR3(m_pos.x + cosf(m_rot.x), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.x)), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
+			D3DXVECTOR3(-sinf(m_rot.x)*2.0f, 0, -cosf(m_rot.x)*2.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
+	}
 	// モデルヒエラルキークラスの更新処理
-	CModelhierarchy::Update();
+	//CModelhierarchy::Update();
 }
 
 //----------------------------------------
