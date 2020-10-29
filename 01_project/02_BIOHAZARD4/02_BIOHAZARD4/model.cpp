@@ -22,6 +22,7 @@ CModel::CModel(int nPriority) :CScene3d(nPriority)
 	m_nNumMat = 0;
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 //----------------------------------------
@@ -94,8 +95,9 @@ void CModel::BindModel(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD nNumMat)
 //--------------------------------
 //ÉÇÉfÉãÇÃèÍèäÅAäpìxê›íË
 //--------------------------------
-void CModel::SetModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
+void CModel::SetModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
 	m_pos = pos;
 	m_rot = rot;
+	m_size = size;
 }
