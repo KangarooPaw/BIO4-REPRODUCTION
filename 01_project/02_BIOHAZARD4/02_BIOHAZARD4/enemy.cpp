@@ -9,7 +9,9 @@
 #include "manager.h"
 #include "renderer.h"
 #include "joystick.h"
+#include "game.h"
 #include "enemy.h"
+#include "player.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -109,7 +111,21 @@ void CEnemy::Uninit(void)
 //----------------------------------------
 void CEnemy::Update(void)
 {
-
+	CScene *pScene = NULL;
+	//プレイヤーの場所の取得
+	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
+	do
+	{
+		pScene = GetScene(OBJTYPE_PLAYER);
+		if (pScene != NULL)
+		{
+			OBJTYPE objType = pScene->GetObjType();
+			if (objType == OBJTYPE_PLAYER)
+			{
+			//	if()
+			}
+		}
+	} while (pScene == NULL);
 }
 
 //----------------------------------------
