@@ -1,3 +1,18 @@
-﻿  manager.cpp
+﻿  model_hierarchy.cpp
+  billboard.cpp
+  コードを生成中...
+polygon.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+UI.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+tutorial.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+title.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+result.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+mode.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+main.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+light.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+keyboard.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+joystick.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+input.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+fade.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
+debug.obj : warning LNK4020: 'c:\users\gsp026\desktop\bio4-reproduction\01_project\02_biohazard4\02_biohazard4\debug\vc140.pdb' の型レコードは破損しています。一部のシンボルおよび型は、デバッガーからはアクセスできない可能性があります。
   02_BIOHAZARD4.vcxproj -> C:\Users\gsp026\Desktop\BIO4-REPRODUCTION\01_project\02_BIOHAZARD4\Debug\02_BIOHAZARD4.exe
   02_BIOHAZARD4.vcxproj -> C:\Users\gsp026\Desktop\BIO4-REPRODUCTION\01_project\02_BIOHAZARD4\Debug\02_BIOHAZARD4.pdb (Full PDB)
