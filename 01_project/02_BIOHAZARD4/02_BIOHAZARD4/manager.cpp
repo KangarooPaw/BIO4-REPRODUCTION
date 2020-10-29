@@ -251,12 +251,7 @@ void CManager::SetMode(MODE mode)
 			break;
 
 		case MODE_GAME:
-			if (m_pCamera != NULL)
-			{
-				m_pCamera->Uninit();
-				delete m_pCamera;
-				m_pCamera = NULL;
-			}
+
 			//ÉQÅ[ÉÄÇÃê∂ê¨
 			m_pMode = new CGame;
 

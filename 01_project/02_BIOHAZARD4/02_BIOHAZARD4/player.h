@@ -1,23 +1,35 @@
+//=============================================================================
+//
+// プレイヤーの処理 [player.h]
+// Author : 
+//
+//=============================================================================
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
+//=============================================================================
+// インクルードファイル
+//=============================================================================
 #include "model_hierarchy.h"
 
-#define MAX_PLAYER_PARTS (13)
+//=============================================================================
+// マクロ定義
+//=============================================================================
+#define MAX_PLAYER_PARTS (13) // プレイヤーのモデルのパーツの最大数
+#define MOTION_PLAYER_TEXT ("data/MODEL/PLAYER/MOTION/motion.txt") // モーションのテキスト
+#define LOAD_PLAYER_TEXT ("data/MODEL/PLAYER/MOTION/player.txt") // 各モデルパーツの初期値
 
+//=============================================================================
+// 前方宣言
+//=============================================================================
+class CMotion;
+
+//=============================================================================
+// プレイヤークラス
+//=============================================================================
 class CPlayer :public CModelhierarchy
 {
 public:
-	typedef struct {
-		char* pFileName;	   //読み込みファイル名
-		int modelparentIndex;  //モデルの親子関係
-		int nIndex;
-		int nParents;		   // モデルナンバー
-		D3DXVECTOR3 pos;	   // 位置
-		D3DXVECTOR3 posOrigin; // 始まりの位置
-		D3DXVECTOR3 rot;	   // 角度
-	}MODELPARENT;
-
 	CPlayer(int nPriority = CScene::OBJTYPE_PLAYER);//コンストラクタ
 	~CPlayer();//デストラクタ
 
@@ -37,13 +49,22 @@ public:
 	D3DXVECTOR3 GetPos(void) { return m_pos; }//場所
 	D3DXVECTOR3 GetRot(void) { return m_rot; }//角度
 private:
+	typedef struct {
+		char* pFileName;	   // 読み込みファイル名
+		int nIndex;			   // モデルナンバー
+		int nParents;		   // モデルの親子関係
+		D3DXVECTOR3 pos;	   // 位置
+		D3DXVECTOR3 rot;	   // 角度
+	}MODELPARENT;
+
 	static LPD3DXMESH m_pMesh[MAX_PLAYER_PARTS];
 	static LPD3DXBUFFER m_pBuffMat[MAX_PLAYER_PARTS];
 	static DWORD m_nNumMat[MAX_PLAYER_PARTS];
+	static MODELPARENT m_modelParent[MAX_PLAYER_PARTS];
 	D3DXVECTOR3 m_pos;			//場所
 	D3DXVECTOR3 m_rot;			//角度
 	D3DXVECTOR3 m_size;			//大きさ
-	static MODELPARENT m_modelParent[MAX_PLAYER_PARTS];
+	CMotion *m_pMotion;
 };
 
 #endif

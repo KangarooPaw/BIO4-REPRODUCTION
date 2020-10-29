@@ -15,16 +15,19 @@ public:
 	void Draw(void);
 
 	void BindModel(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD nNumMat);
-	void SetModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot);
+	void SetModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);
+	
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
+	D3DXVECTOR3 GetSize(void) { return m_size; }
 
 private:
 	LPD3DXMESH m_pMesh;
 	LPD3DXBUFFER m_pBuffMat;
 	DWORD m_nNumMat;
 	D3DXVECTOR3 m_pos;
-	D3DXVECTOR3 m_rot;
+	D3DXVECTOR3 m_rot;	
+	D3DXVECTOR3 m_size;
 	D3DXMATRIX m_mtxWorld;
 };
 
