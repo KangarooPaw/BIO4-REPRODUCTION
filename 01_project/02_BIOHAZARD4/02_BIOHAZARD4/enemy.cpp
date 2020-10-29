@@ -148,6 +148,7 @@ void CEnemy::Uninit(void)
 {
 	// モデルクラスの終了処理
 	CModelhierarchy::Uninit();
+	m_pMotion = NULL;
 }
 
 //----------------------------------------

@@ -95,9 +95,9 @@ void CCamera::Update(void)
 
 			//íçéãì_
 			m_Distance = -15;	//ãóó£
-			posR.x = m_Distance*cosf(pPlayerRot.x) + pPlayerPos.x;
+			posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;
 			posR.y = pPlayerPos.y + 47;
-			posR.z = m_Distance*sinf(-pPlayerRot.x) + pPlayerPos.z;
+			posR.z = m_Distance*sinf(-pPlayerRot.y) + pPlayerPos.z;
 
 			//éãì_	
 			m_Distance = 25;	//ãóó£
