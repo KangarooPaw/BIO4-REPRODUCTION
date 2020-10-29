@@ -144,7 +144,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="motion.cpp" />
+    <ClCompile Include="animation.cpp" />
+    <ClCompile Include="billboard.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="debug.cpp" />
@@ -172,7 +173,8 @@
     <ClCompile Include="scene3d.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="motion.h" />
+    <ClInclude Include="animation.h" />
+    <ClInclude Include="billboard.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="debug.h" />

@@ -9,39 +9,23 @@
 #include "manager.h"
 #include "renderer.h"
 #include "joystick.h"
+#include "game.h"
 #include "enemy.h"
-#include "motion.h"
+#include "player.h"
 
 //----------------------------------------
 //静的メンバ変数
 //----------------------------------------
-LPD3DXMESH CEnemy::m_pMesh[MAX_ENEMY_PARTS] = {};
-LPD3DXBUFFER CEnemy::m_pBuffMat[MAX_ENEMY_PARTS] = {};
-DWORD CEnemy::m_nNumMat[MAX_ENEMY_PARTS] = {};
-CEnemy::MODELPARENT CEnemy::m_modelParent[MAX_ENEMY_PARTS] = {
-	{ "data/MODEL/ENEMY/body.x" },			// 上半身
-	{ "data/MODEL/ENEMY/bodyUnder.x" },	// 下半身
-	{ "data/MODEL/ENEMY/head.x" },			// 頭
-	{ "data/MODEL/ENEMY/legMomoLeft.x" },	// 左もも
-	{ "data/MODEL/ENEMY/legLeft.x" },		// 左足
-	{ "data/MODEL/ENEMY/legMomoRight.x" }, // 右もも
-	{ "data/MODEL/ENEMY/legRight.x" },		// 右足
-	{ "data/MODEL/ENEMY/upArmLeft.x" },    // 左上腕
-	{ "data/MODEL/ENEMY/downArmLeft.x" },  // 左前腕
-	{ "data/MODEL/ENEMY/handLeft.x" },	    // 左手
-	{ "data/MODEL/ENEMY/upArmRight.x" },   // 右上腕
-	{ "data/MODEL/ENEMY/downArmRight.x" }, // 右前腕
-	{ "data/MODEL/ENEMY/handRight.x" },    // 右手
-};
-
+LPD3DXMESH CEnemy::m_pMesh = NULL;
+LPD3DXBUFFER CEnemy::m_pBuffMat = NULL;
+DWORD CEnemy::m_nNumMat = 0;
+bool  CEnemy::m_bChase = false;
 //----------------------------------------
 //インクリメント
 //----------------------------------------
-CEnemy::CEnemy(int nPriority) :CModelhierarchy(nPriority)
+CEnemy::CEnemy(int nPriority) :CModel(nPriority)
 {
-	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_fPlayerDirection = 0.0f;
 }
 
 //----------------------------------------
@@ -71,19 +55,15 @@ HRESULT CEnemy::Load(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
-	{
-		// Xファイルの読み込み
-		D3DXLoadMeshFromX(m_modelParent[nCount].pFileName,
-			D3DXMESH_SYSTEMMEM,
-			pDevice,
-			NULL,
-			&m_pBuffMat[nCount],
-			NULL,
-			&m_nNumMat[nCount],
-			&m_pMesh[nCount]
-		);
-	}
+	D3DXLoadMeshFromX("data/MODEL/enemymodel_test001.x",
+		D3DXMESH_SYSTEMMEM,
+		pDevice,
+		NULL,
+		&m_pBuffMat,
+		NULL,
+		&m_nNumMat,
+		&m_pMesh
+	);
 
 	return E_NOTIMPL;
 }
@@ -93,28 +73,20 @@ HRESULT CEnemy::Load(void)
 //----------------------------------------
 void CEnemy::Unload(void)
 {
-	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
+	if (m_pMesh != NULL)
 	{
-		// メッシュの破棄
-		if (m_pMesh[nCount] != NULL)
-		{
-			m_pMesh[nCount]->Release();
-			m_pMesh[nCount] = NULL;
-		}
-
-		// マテリアルの破棄
-		if (m_pBuffMat[nCount] != NULL)
-		{
-			m_pBuffMat[nCount]->Release();
-			m_pBuffMat[nCount] = NULL;
-		}
-
-		if (m_nNumMat[nCount] != NULL)
-		{
-			m_nNumMat[nCount] = NULL;
-		}
+		m_pMesh->Release();
+		m_pMesh = NULL;
 	}
-
+	if (m_pBuffMat != NULL)
+	{
+		m_pBuffMat->Release();
+		m_pBuffMat = NULL;
+	}
+	if (m_nNumMat != NULL)
+	{
+		m_nNumMat = NULL;
+	}
 }
 
 //----------------------------------------
@@ -122,22 +94,7 @@ void CEnemy::Unload(void)
 //----------------------------------------
 HRESULT CEnemy::Init(void)
 {
-	m_pMotion = CMotion::Create();
-	m_pMotion->Load(LOAD_ENEMY_TEXT);
-	m_pMotion->LoadMotion(MOTION_ENEMY_TEXT);
-
-	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
-	{
-		m_modelParent[nCount].nIndex = m_pMotion->GetIndex(nCount);
-		m_modelParent[nCount].nParents = m_pMotion->GetParents(nCount);
-		m_modelParent[nCount].pos = m_pMotion->GetPos(nCount);
-		m_modelParent[nCount].rot = m_pMotion->GetRot(nCount);
-
-		// モデルヒエラルキークラスのモデルのパーツごとの設定
-		CModelhierarchy::BindModel(m_pMesh[nCount], m_pBuffMat[nCount], m_nNumMat[nCount], m_modelParent[nCount].nParents);
-
-		SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
-	}
+	CModel::BindModel(m_pMesh, m_pBuffMat, m_nNumMat);
 	return S_OK;
 }
 
@@ -146,41 +103,50 @@ HRESULT CEnemy::Init(void)
 //----------------------------------------
 void CEnemy::Uninit(void)
 {
-	// モデルクラスの終了処理
-	CModelhierarchy::Uninit();
+	CModel::Uninit();
 }
 
 //----------------------------------------
 //更新処理
 //----------------------------------------
 void CEnemy::Update(void)
-{
-	// モデルクラスの更新処理
-	CModelhierarchy::Update();
-
-	// モーションの更新処理
-	m_pMotion->UpdatePlayerMotion();
-
-	// モデルのパーツごとの座標と回転を受け取る
-	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
+{			
+	//プレイヤーの場所の取得
+	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();	
+	//シーンの取得
+	CScene *pScene = NULL;
+	if (m_bChase == false)
 	{
-		m_modelParent[nCount].pos = m_pMotion->GetPos(nCount);
-		m_modelParent[nCount].rot = m_pMotion->GetRot(nCount);
+		do
+		{
+			pScene = GetScene(OBJTYPE_PLAYER);
+			if (pScene != NULL)
+			{
+				OBJTYPE objType = pScene->GetObjType();
+				if (objType == OBJTYPE_PLAYER)
+				{
+					//プレイヤーが近づいたら追いかける
+					if (pPlayerPos.x - m_pos.x >= -20 && pPlayerPos.x - m_pos.z <= 20 &&
+						pPlayerPos.z - m_pos.z >= -20 && pPlayerPos.z - m_pos.z <= 20)
+					{
+						m_bChase = true;
+					}
+				}
+			}
+		} while (pScene == NULL);
 	}
-
-	// 座標、回転、サイズの受け取り
-	m_pos = GetPos();
-	m_rot = GetRot();
-	m_size = GetSize();
-
-	// 座標、回転、サイズのセット
-	SetModel(m_pos, m_rot, m_size);
-
-	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
+	else
 	{
-		// モデルのパーツごとのセット
-		SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
+		//プレイヤーの方向を計算
+		m_fPlayerDirection = atan2((pPlayerPos.z - m_pos.z), (pPlayerPos.x - m_pos.x));
+		//プレイヤーの方向に向く
+		m_rot.x += D3DXToRadian(m_fPlayerDirection);
+		//向いている方向に進む
+		m_pos.x += (float)-sin(m_rot.x);
+		m_pos.z += (float)-cos(m_rot.x);
 	}
+	SetModel(m_pos, m_rot);
+	//CModelhierarchy::Update();
 }
 
 //----------------------------------------
@@ -188,6 +154,5 @@ void CEnemy::Update(void)
 //----------------------------------------
 void CEnemy::Draw(void)
 {
-	// モデルクラスの描画処理
-	CModelhierarchy::Draw();
+	CModel::Draw();
 }

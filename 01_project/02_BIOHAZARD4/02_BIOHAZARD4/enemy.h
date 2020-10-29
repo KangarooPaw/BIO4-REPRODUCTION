@@ -1,64 +1,41 @@
 #ifndef _ENEMY_H_
 #define _ENEMY_H_
 
-//=============================================================================
-// インクルードファイル
-//=============================================================================
-#include "model_hierarchy.h"
+#include "model.h"
 
-//=============================================================================
-// マクロ定義
-//=============================================================================
-#define MAX_ENEMY_PARTS (13) // プレイヤーのモデルのパーツの最大数
-#define MOTION_ENEMY_TEXT ("data/MODEL/ENEMY/MOTION/motion.txt") // モーションのテキスト
-#define LOAD_ENEMY_TEXT ("data/MODEL/ENEMY/MOTION/enemy.txt") // 各モデルパーツの初期値
-
-//=============================================================================
-// 前方宣言
-//=============================================================================
-class CMotion;
-
-//=============================================================================
-// エネミークラス
-//=============================================================================
-class CEnemy :public CModelhierarchy
+class CEnemy :public CModel
 {
 public:
-	CEnemy(int nPriority = CScene::OBJTYPE_ENEMY);
-	~CEnemy();
+	CEnemy(int nPriority = CScene::OBJTYPE_ENEMY);//コンストラクタ
+	~CEnemy();//デストラクタ
 
-	static CEnemy *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);
-	static HRESULT Load(void);
-	static void Unload(void);
+	static CEnemy *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);//生成処理
+	static HRESULT Load(void);//テクスチャの読み込み
+	static void Unload(void);//テクスチャの破棄
 
-	HRESULT Init(void);
-	void Uninit(void);
-	void Update(void);
-	void Draw(void);
+	HRESULT Init(void);//初期化処理
+	void Uninit(void);//終了処理
+	void Update(void);//更新処理
+	void Draw(void);//描画処理
 
 	void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size) {
 		m_pos = pos; m_rot = rot; m_size = size;
-		SetModel(pos, rot, size);
+		SetModel(pos, rot);
 		SetObjType(OBJTYPE_ENEMY);
 	}
 
+	//受け取り処理
+	D3DXVECTOR3 GetPos(void) { return m_pos; }	//場所
+	D3DXVECTOR3 GetSize(void) { return m_size; }//大きさ
 private:
-	typedef struct {
-		char* pFileName;	   // 読み込みファイル名
-		int nIndex;			   // モデルナンバー
-		int nParents;		   // モデルの親子関係
-		D3DXVECTOR3 pos;	   // 位置
-		D3DXVECTOR3 rot;	   // 角度
-	}MODELPARENT;
-
-	static LPD3DXMESH m_pMesh[MAX_ENEMY_PARTS];
-	static LPD3DXBUFFER m_pBuffMat[MAX_ENEMY_PARTS];
-	static DWORD m_nNumMat[MAX_ENEMY_PARTS];
-	static MODELPARENT m_modelParent[MAX_ENEMY_PARTS];
-	D3DXVECTOR3 m_pos;			//場所
-	D3DXVECTOR3 m_rot;			//角度
-	D3DXVECTOR3 m_size;			//大きさ
-	CMotion *m_pMotion;
+	static LPD3DXMESH m_pMesh;
+	static LPD3DXBUFFER m_pBuffMat;
+	static DWORD m_nNumMat;
+	D3DXVECTOR3 m_pos;		//場所
+	D3DXVECTOR3 m_rot;		//角度
+	D3DXVECTOR3 m_size;		//大きさ
+	static bool m_bChase;	//プレイヤーを追いかけるトリガー
+	float m_fPlayerDirection;//プレイヤーの方向
 };
 
 #endif

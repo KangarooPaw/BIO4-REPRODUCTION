@@ -120,11 +120,14 @@
     <ClCompile Include="game.cpp">
       <Filter>ソース ファイル\mode</Filter>
     </ClCompile>
+    <ClCompile Include="animation.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="model_hierarchy.cpp">
       <Filter>ソース ファイル\Scene\3D</Filter>
     </ClCompile>
-    <ClCompile Include="motion.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="billboard.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,11 +206,14 @@
     <ClInclude Include="enemy.h">
       <Filter>ヘッダー ファイル\Scene\3D</Filter>
     </ClInclude>
+    <ClInclude Include="animation.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="model_hierarchy.h">
       <Filter>ヘッダー ファイル\Scene\3D</Filter>
     </ClInclude>
-    <ClInclude Include="motion.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="billboard.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
