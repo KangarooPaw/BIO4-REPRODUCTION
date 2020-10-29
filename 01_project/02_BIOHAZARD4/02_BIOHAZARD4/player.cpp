@@ -145,13 +145,7 @@ void CPlayer::Update(void)
 		pJoystickDevice->Poll();
 		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
 	}
-	// Xƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚ç’e‚ð”­ŽË
 
-	if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
-	{
-		CBullet::Create(D3DXVECTOR3(m_pos.x + cosf(m_rot.x), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.x)), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
-			D3DXVECTOR3(-sinf(m_rot.x)*2.0f, 0, -cosf(m_rot.x)*2.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
-	}
 	if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
 	{
 		//--------------------------
@@ -185,9 +179,14 @@ void CPlayer::Update(void)
 		}
 
 	}
-
+	// Xƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½‚ç’e‚ð”­ŽË
+	if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
+	{
+		CBullet::Create(D3DXVECTOR3(m_pos.x + cosf(m_rot.x), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.x)), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
+			D3DXVECTOR3(-sinf(m_rot.x)*2.0f, 0, -cosf(m_rot.x)*2.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
+	}
 	SetModel(m_pos, m_rot);
-	CModelhierarchy::Update();
+	//CModelhierarchy::Update();
 }
 
 //----------------------------------------
