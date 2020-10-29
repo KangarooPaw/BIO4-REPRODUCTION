@@ -3,26 +3,30 @@
 
 #include "main.h"
 
-#define GAZE_Y (47.0f)
-
+#define GAZE_Y	(47.0f)
+#define CAMERA_GAZE	(-15)
+#define CAMERA_VIEW	(25)
+#define HOLD_FRAME	(10)
+#define MOVE	(15.0f)
 class CCamera
 {
 public:
-	CCamera();
-	~CCamera();
-	void Init(void);
-	void Uninit(void);
-	void Update(void);
-	D3DXVECTOR3 GetPosR(void) { return posR; }
+	CCamera();		//コンストラクタ
+	~CCamera();		//デストラクタ
+	void Init(void);		//初期化処理
+	void Uninit(void);		//終了処理
+	void Update(void);		//更新処理
+	D3DXVECTOR3 GetPosR(void) { return posR; }		//角度の受け取り処理
 private:
-	D3DXVECTOR3 posV;
-	D3DXVECTOR3 posR;
+	D3DXVECTOR3 posV;		//位置
+	D3DXVECTOR3 posR;		//角度
 	D3DXVECTOR3 vecU;
 	D3DXMATRIX	mtxProjection;
 	D3DXMATRIX	mtxView;
-	float m_Distance;
-	float m_lTheta;
-	float m_lPhi;
+	float m_Distance;		//距離
+	float m_lTheta;			//シータ
+	float m_lPhi;			//ファイ
+	int m_nCount;			//構えのカウント
 };
 
 #endif

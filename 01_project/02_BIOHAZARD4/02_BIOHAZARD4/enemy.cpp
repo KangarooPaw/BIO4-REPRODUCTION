@@ -9,7 +9,9 @@
 #include "manager.h"
 #include "renderer.h"
 #include "joystick.h"
+#include "game.h"
 #include "enemy.h"
+#include "player.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -17,13 +19,13 @@
 LPD3DXMESH CEnemy::m_pMesh = NULL;
 LPD3DXBUFFER CEnemy::m_pBuffMat = NULL;
 DWORD CEnemy::m_nNumMat = 0;
-
+bool  CEnemy::m_bChase = false;
 //----------------------------------------
 //インクリメント
 //----------------------------------------
 CEnemy::CEnemy(int nPriority) :CModel(nPriority)
 {
-
+	m_fPlayerDirection = 0.0f;
 }
 
 //----------------------------------------
@@ -108,8 +110,43 @@ void CEnemy::Uninit(void)
 //更新処理
 //----------------------------------------
 void CEnemy::Update(void)
-{
-
+{			
+	//プレイヤーの場所の取得
+	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();	
+	//シーンの取得
+	CScene *pScene = NULL;
+	if (m_bChase == false)
+	{
+		do
+		{
+			pScene = GetScene(OBJTYPE_PLAYER);
+			if (pScene != NULL)
+			{
+				OBJTYPE objType = pScene->GetObjType();
+				if (objType == OBJTYPE_PLAYER)
+				{
+					//プレイヤーが近づいたら追いかける
+					if (pPlayerPos.x - m_pos.x >= -20 && pPlayerPos.x - m_pos.z <= 20 &&
+						pPlayerPos.z - m_pos.z >= -20 && pPlayerPos.z - m_pos.z <= 20)
+					{
+						m_bChase = true;
+					}
+				}
+			}
+		} while (pScene == NULL);
+	}
+	else
+	{
+		//プレイヤーの方向を計算
+		m_fPlayerDirection = atan2((pPlayerPos.z - m_pos.z), (pPlayerPos.x - m_pos.x));
+		//プレイヤーの方向に向く
+		m_rot.x += D3DXToRadian(m_fPlayerDirection);
+		//向いている方向に進む
+		m_pos.x += (float)-sin(m_rot.x);
+		m_pos.z += (float)-cos(m_rot.x);
+	}
+	SetModel(m_pos, m_rot);
+	//CModelhierarchy::Update();
 }
 
 //----------------------------------------
