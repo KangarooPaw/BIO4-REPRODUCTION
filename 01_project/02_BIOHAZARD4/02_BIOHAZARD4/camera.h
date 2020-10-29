@@ -3,15 +3,12 @@
 
 #include "main.h"
 
-#define GAZE_Y	(47.0f)
-#define CAMERA_GAZE	(-15)
-#define CAMERA_VIEW	(25)
-#define HOLD_FRAME	(10)
-#define MOVE	(15.0f)
+#define GAZE_Y (47.0f)
+
 class CCamera
 {
 public:
-	CCamera();		//コンストラクタ
+	CCamera();
 	~CCamera();		//デストラクタ
 	void Init(void);		//初期化処理
 	void Uninit(void);		//終了処理
