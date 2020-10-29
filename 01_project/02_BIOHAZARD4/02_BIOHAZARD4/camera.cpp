@@ -21,6 +21,8 @@ CCamera::CCamera()
 	posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	memset(mtxProjection, NULL, sizeof(mtxProjection));
+	memset(mtxView, NULL, sizeof(mtxView));
 	m_Distance = 0;
 	m_lTheta = 1.0f;
 	m_lPhi = 1.7f;	
@@ -40,7 +42,15 @@ CCamera::~CCamera()
 //--------------------------------------
 void CCamera::Init(void)
 {
-
+	posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	memset(mtxProjection, NULL, sizeof(mtxProjection));
+	memset(mtxView, NULL, sizeof(mtxView));
+	m_Distance = 0;
+	m_lTheta = 1.0f;
+	m_lPhi = 1.7f;
+	m_nCount = 0;
 }
 
 //--------------------------------------

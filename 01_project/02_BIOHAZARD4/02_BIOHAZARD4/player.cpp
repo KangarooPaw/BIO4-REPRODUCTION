@@ -39,7 +39,9 @@ CPlayer::MODELPARENT CPlayer::m_modelParent[MAX_PLAYER_PARTS] = {
 //----------------------------------------
 CPlayer::CPlayer(int nPriority) :CModelhierarchy(nPriority)
 {
-
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 //----------------------------------------
