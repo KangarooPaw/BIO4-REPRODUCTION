@@ -191,10 +191,16 @@ void CEnemy::Update(void)
 			m_pos.z - pPlayerPos.z >= -50 && m_pos.z - pPlayerPos.z <= 50)
 		{
 			m_bChase = true;
-			m_pMotion->SetMotion(CMotion::MOTION_IDLE);
 		}
 	}
+	else
+	{
+		//向いている方向に進む
+		m_pos.x += -sinf(m_rot.y)*0.5f;
+		m_pos.z += -cosf(m_rot.y)*0.5f;
 
+		m_rot.y = cos(pPlayerPos.x);
+	}
 
     // 座標、回転、サイズのセット
     SetModel(m_pos, m_rot, m_size);
