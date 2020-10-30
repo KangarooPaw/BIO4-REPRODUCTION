@@ -1,0 +1,647 @@
+newmtl box02:lambert6SG
+illum 4
+Kd 0.27 0.17 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl box02:pasted__lambert6SG
+illum 4
+Kd 0.27 0.17 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:blinn1SG
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:lambert6SG
+illum 4
+Kd 0.21 0.21 0.03
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:lambert7SG
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:lambert8SG
+illum 4
+Kd 0.06 0.10 0.13
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:lambert10SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:lambert12SG
+illum 4
+Kd 1.00 0.33 0.37
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:lambert13SG
+illum 4
+Kd 0.05 0.03 0.05
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:lambert14SG
+illum 4
+Kd 0.02 0.01 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:lambert15SG
+illum 4
+Kd 0.16 0.15 0.15
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:lambert16SG
+illum 4
+Kd 1.00 0.10 0.92
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:lambert17SG
+illum 4
+Kd 0.06 0.06 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__blinn1SG4
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__blinn1SG5
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__blinn1SG6
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__blinn1SG7
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__blinn1SG8
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__blinn1SG9
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__blinn1SG10
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__blinn1SG11
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__blinn1SG12
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__lambert6SG1
+illum 4
+Kd 0.21 0.21 0.03
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__lambert7SG1
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__lambert7SG3
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__lambert8SG1
+illum 4
+Kd 0.06 0.10 0.13
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__lambert10SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__lambert13SG
+illum 4
+Kd 0.05 0.03 0.05
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__lambert13SG2
+illum 4
+Kd 0.05 0.03 0.05
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__lambert14SG
+illum 4
+Kd 0.02 0.01 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__pasted__blinn1SG8
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building001:pasted__pasted__blinn1SG9
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:blinn1SG
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:lambert6SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Metal023_2K_Color.png
+bump  -bm 1 Metal007_2K_Roughness.png
+Ni 1.00
+newmtl building002:lambert7SG
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:lambert8SG
+illum 4
+Kd 0.06 0.10 0.13
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:lambert9SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Plaster003_2K_Color.png
+bump  -bm 1 Plaster003_2K_Roughness.png
+Ni 1.00
+newmtl building002:lambert10SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:lambert12SG
+illum 4
+Kd 1.00 0.33 0.37
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:lambert13SG
+illum 4
+Kd 0.05 0.03 0.05
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:lambert14SG
+illum 4
+Kd 0.02 0.01 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:lambert15SG
+illum 4
+Kd 0.16 0.15 0.15
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:lambert16SG
+illum 4
+Kd 1.00 0.10 0.92
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:lambert17SG
+illum 4
+Kd 0.06 0.06 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:lambert18SG
+illum 4
+Kd 0.12 0.04 0.04
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+bump  -bm 1 Metal023_2K_Roughness.png
+Ni 1.00
+newmtl building002:pasted__blinn1SG4
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__blinn1SG5
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__blinn1SG6
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__blinn1SG7
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__blinn1SG8
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__blinn1SG9
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__blinn1SG10
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__blinn1SG11
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__blinn1SG12
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__lambert6SG1
+illum 4
+Kd 0.21 0.21 0.03
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__lambert7SG1
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__lambert7SG3
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__lambert8SG1
+illum 4
+Kd 0.06 0.10 0.13
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__lambert10SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__lambert13SG
+illum 4
+Kd 0.05 0.03 0.05
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__lambert13SG2
+illum 4
+Kd 0.05 0.03 0.05
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__lambert14SG
+illum 4
+Kd 0.02 0.01 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__pasted__blinn1SG8
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl building002:pasted__pasted__blinn1SG9
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:blinn1SG
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:lambert6SG
+illum 4
+Kd 0.21 0.21 0.03
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:lambert7SG
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:lambert8SG
+illum 4
+Kd 0.06 0.10 0.13
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:lambert10SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:lambert12SG
+illum 4
+Kd 1.00 0.33 0.37
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:lambert13SG
+illum 4
+Kd 0.05 0.03 0.05
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:lambert14SG
+illum 4
+Kd 0.02 0.01 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:lambert15SG
+illum 4
+Kd 0.16 0.15 0.15
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:lambert16SG
+illum 4
+Kd 1.00 0.10 0.92
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:lambert17SG
+illum 4
+Kd 0.06 0.06 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__blinn1SG4
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__blinn1SG5
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__blinn1SG6
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__blinn1SG7
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__blinn1SG8
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__blinn1SG9
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__blinn1SG10
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__blinn1SG11
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__blinn1SG12
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__lambert6SG1
+illum 4
+Kd 0.21 0.21 0.03
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__lambert7SG3
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__lambert7SG4
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__lambert8SG1
+illum 4
+Kd 0.06 0.10 0.13
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__lambert8SG2
+illum 4
+Kd 0.06 0.10 0.13
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__lambert10SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__lambert13SG
+illum 4
+Kd 0.05 0.03 0.05
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__lambert13SG1
+illum 4
+Kd 0.05 0.03 0.05
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__lambert13SG2
+illum 4
+Kd 0.05 0.03 0.05
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__lambert14SG
+illum 4
+Kd 0.02 0.01 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__pasted__blinn1SG8
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl gattai02:pasted__pasted__blinn1SG9
+illum 4
+Kd 1.00 0.81 0.68
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl initialShadingGroup
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl lambert6SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd brown_mud_dry_diff_2k.png
+Ni 1.00
+newmtl lambert8SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd roof_09_diff_2k.png
+Ni 1.00
+newmtl lambert10SG
+illum 4
+Kd 0.50 0.08 0.08
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl lambert12SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd brown_planks_08_diff_2k.png
+Ni 1.00
+newmtl lambert17SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Concrete032_2K_Color.png
+map_Ka Concrete032_2K_AmbientOcclusion.png
+Ni 1.00
+newmtl lambert18SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl lambert19SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Metal023_2K_Color.png
+Ni 1.00
+newmtl lambert20SG
+illum 4
+Kd 0.50 0.29 0.07
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl model002:lambert8SG
+illum 4
+Kd 0.20 0.12 0.04
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
