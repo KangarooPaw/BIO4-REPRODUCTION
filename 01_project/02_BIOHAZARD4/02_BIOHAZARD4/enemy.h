@@ -60,6 +60,7 @@ private:
 	D3DXVECTOR3 m_size;			//‘å‚«‚³
 	CMotion *m_pMotion;
 	static bool m_bChase;
+	int m_nCntFrame;
 };
 
 #endif
