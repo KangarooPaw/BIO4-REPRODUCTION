@@ -210,7 +210,7 @@ void CPlayer::Update(void)
 	else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
 	{
 		//ナイフを構えるモーション
-		m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
+		//m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
 		// Xボタンを押したらナイフを振る
 		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 		{
