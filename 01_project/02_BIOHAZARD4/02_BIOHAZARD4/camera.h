@@ -3,8 +3,11 @@
 
 #include "main.h"
 
-#define GAZE_Y (47.0f)
-
+#define GAZE_Y		(47.0f)
+#define CAMERA_GAZE	(-15)
+#define CAMERA_VIEW	(25)
+#define MOVE		(15.0f)
+#define HOLD_FRAME	(10)
 class CCamera
 {
 public:

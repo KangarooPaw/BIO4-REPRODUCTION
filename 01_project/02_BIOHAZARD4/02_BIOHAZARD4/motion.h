@@ -32,11 +32,11 @@ public:
 	typedef enum {
 		MOTION_IDLE = 0,  // 待機モーション
 		MOTION_RUN,		  // 歩きモーション
-		MOTION_HOLDGUN,	  // 攻撃モーション
-		MOTION_SHOT,	  // ジャンプモーション
-		MOTION_HOLDKNIFE, // ガードモーション
-		MOTION_SLASH,	  // ガードモーション
-		MOTION_DAMAGE,	  // ガードモーション
+		MOTION_HOLDGUN,	  // 銃構えモーション
+		MOTION_SHOT,	  // 射撃モーション
+		MOTION_HOLDKNIFE, // ナイフ構えモーション
+		MOTION_SLASH,	  // ナイフを振るモーション
+		MOTION_DAMAGE,	  // ダメージを受けるモーション
 		MOTION_MAX
 	}MOTIONSTATE;
 

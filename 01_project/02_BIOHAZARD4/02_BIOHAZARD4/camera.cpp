@@ -105,7 +105,11 @@ void CCamera::Update(void)
 			{
 				m_lPhi -= D3DXToRadian(1);
 			}
-
+			//左スティックを後ろに倒す//Aボタンを押して反転
+			if (pStick.lY >= 500 && pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
+			{
+				m_lPhi += D3DXToRadian(180);
+			}
 			//注視点
 			m_Distance = CAMERA_GAZE;	//距離
 			posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;

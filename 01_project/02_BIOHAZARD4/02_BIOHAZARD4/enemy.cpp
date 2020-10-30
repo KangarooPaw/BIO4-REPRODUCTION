@@ -18,6 +18,7 @@
 LPD3DXMESH CEnemy::m_pMesh[MAX_ENEMY_PARTS] = {};
 LPD3DXBUFFER CEnemy::m_pBuffMat[MAX_ENEMY_PARTS] = {};
 DWORD CEnemy::m_nNumMat[MAX_ENEMY_PARTS] = {};
+bool CEnemy::m_bChase = false;
 CEnemy::MODELPARENT CEnemy::m_modelParent[MAX_ENEMY_PARTS] = {
     { "data/MODEL/ENEMY/body.x" },			// ã”¼g
     { "data/MODEL/ENEMY/bodyUnder.x" },	// ‰º”¼g
@@ -126,7 +127,6 @@ HRESULT CEnemy::Init(void)
     m_pMotion = CMotion::Create();
     m_pMotion->Load(LOAD_ENEMY_TEXT);
     m_pMotion->LoadMotion(MOTION_ENEMY_TEXT);
-
     for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
     {
         m_modelParent[nCount].nIndex = m_pMotion->GetIndex(nCount);
@@ -138,7 +138,8 @@ HRESULT CEnemy::Init(void)
         CModelhierarchy::BindModel(m_pMesh[nCount], m_pBuffMat[nCount], m_nNumMat[nCount], m_modelParent[nCount].nParents);
 
         SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
-    }
+    }	
+	m_pMotion->SetMotion(CMotion::MOTION_IDLE);
     m_bChase = false;
     return S_OK;
 }

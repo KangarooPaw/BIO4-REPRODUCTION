@@ -119,8 +119,8 @@ HRESULT CPlayer::Init(void)
 {
 	m_pMotion = CMotion::Create();
 	m_pMotion->Load(LOAD_PLAYER_TEXT);
-	m_pMotion->LoadMotion(MOTION_PLAYER_TEXT);
-
+	m_pMotion->LoadMotion(MOTION_PLAYER_TEXT);	
+	m_pMotion->SetMotion(CMotion::MOTION_IDLE);
 	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
 	{
 		m_modelParent[nCount].nIndex = m_pMotion->GetIndex(nCount);
@@ -171,8 +171,9 @@ void CPlayer::Update(void)
 		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
 	}
 
-	if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
+	if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1)==false&&pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
 	{
+		m_pMotion->SetMotion(CMotion::MOTION_IDLE);
 		//--------------------------
 		//移動
 		//--------------------------
@@ -203,22 +204,26 @@ void CPlayer::Update(void)
 					m_rot.y += D3DXToRadian(180);
 			}
 		}
+	}	
+	else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
+	{
+		m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
+		// Xボタンを押したらナイフを振る
+		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
+		{
+			m_pMotion->SetMotion(CMotion::MOTION_SLASH);
+		}
 	}
 	else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2))
 	{
-		m_pMotion->SetMotion(CMotion::MOTION_HOLDGUN);
+			m_pMotion->SetMotion(CMotion::MOTION_HOLDGUN);
 		// Xボタンを押したら弾を発射
-		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
+		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 		{
 			CBullet::Create(D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
 				D3DXVECTOR3(-sinf(m_rot.y)*2.0f, 0, -cosf(m_rot.y)*2.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
-			m_pMotion->SetMotion(CMotion::MOTION_SHOT);
+				m_pMotion->SetMotion(CMotion::MOTION_SHOT);
 		}
-	}
-	// Xボタンを押したら弾を発射
-	if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
-	{
-		m_pMotion->SetMotion(CMotion::MOTION_SLASH);
 	}
 
 	// 座標、回転、サイズのセット
@@ -228,12 +233,6 @@ void CPlayer::Update(void)
 	{
 		// モデルのパーツごとのセット
 		SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
-	}
-	// Xボタンを押したら弾を発射
-	if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
-	{
-		CBullet::Create(D3DXVECTOR3(m_pos.x + cosf(m_rot.x), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.x)), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
-			D3DXVECTOR3(-sinf(m_rot.x)*2.0f, 0, -cosf(m_rot.x)*2.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
 	}
 	// モデルヒエラルキークラスの更新処理
 	//CModelhierarchy::Update();
@@ -256,6 +255,6 @@ void CPlayer::SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 	m_pos = pos;				//場所
 	m_rot = rot;				//角度
 	m_size = size;				//大きさ
-	SetModel(pos, rot, size);			//モデルの設定
+	SetModel(pos, rot, size);	//モデルの設定
 	SetObjType(OBJTYPE_PLAYER); //オブジェクトタイプの設定
 }
