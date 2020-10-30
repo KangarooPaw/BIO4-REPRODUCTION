@@ -165,6 +165,7 @@ void CPlayer::Update(void)
 	DIJOYSTATE pStick;
 	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
 	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
+
 	if (pJoystickDevice != NULL)
 	{
 		pJoystickDevice->Poll();
@@ -204,25 +205,37 @@ void CPlayer::Update(void)
 					m_rot.y += D3DXToRadian(180);
 			}
 		}
-	}	
+	}
+	//LBを押している場合
 	else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
 	{
+		//ナイフを構えるモーション
 		m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
 		// Xボタンを押したらナイフを振る
 		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 		{
+			//ナイフを振るモーション
 			m_pMotion->SetMotion(CMotion::MOTION_SLASH);
 		}
 	}
+	//LTを押している場合
 	else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2))
 	{
-			m_pMotion->SetMotion(CMotion::MOTION_HOLDGUN);
+		//銃を構えるモーション
+		m_pMotion->SetMotion(CMotion::MOTION_HOLDGUN);
 		// Xボタンを押したら弾を発射
 		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 		{
-			CBullet::Create(D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)), D3DXVECTOR3(20.0f, 0.0f, 20.0f),
-				D3DXVECTOR3(-sinf(m_rot.y)*2.0f, 0, -cosf(m_rot.y)*2.0f), 100, 10, CBullet::BULLETTYPE_PLAYER);
-				m_pMotion->SetMotion(CMotion::MOTION_SHOT);
+			//弾の生成
+			CBullet::Create(
+				D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)),
+				D3DXVECTOR3(20.0f, 0.0f, 20.0f),
+				D3DXVECTOR3(-sinf(m_rot.y)*2.0f, 0, -cosf(m_rot.y)*2.0f),
+				100,
+				10,
+				CBullet::BULLETTYPE_PLAYER);
+			//射撃モーション
+			m_pMotion->SetMotion(CMotion::MOTION_SHOT);
 		}
 	}
 

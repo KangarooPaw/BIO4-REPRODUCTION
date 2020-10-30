@@ -9,6 +9,8 @@
 #include "manager.h"
 #include "renderer.h"
 #include "joystick.h"
+#include "game.h"
+#include "player.h"
 #include "enemy.h"
 #include "motion.h"
 
@@ -44,6 +46,7 @@ CEnemy::CEnemy(int nPriority) :CModelhierarchy(nPriority)
     m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_nCntFrame = 0;
 }
 
 //----------------------------------------
@@ -86,7 +89,6 @@ HRESULT CEnemy::Load(void)
             &m_pMesh[nCount]
         );
     }
-
     return E_NOTIMPL;
 }
 
@@ -139,7 +141,6 @@ HRESULT CEnemy::Init(void)
 
         SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
     }	
-	m_pMotion->SetMotion(CMotion::MOTION_IDLE);
     m_bChase = false;
     return S_OK;
 }
@@ -159,9 +160,8 @@ void CEnemy::Uninit(void)
 //----------------------------------------
 void CEnemy::Update(void)
 {
-    // モデルクラスの更新処理
-    CModelhierarchy::Update();
-
+	//プレイヤーの場所の取得
+	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
     // モーションの更新処理
     m_pMotion->UpdatePlayerMotion();
 
@@ -172,10 +172,29 @@ void CEnemy::Update(void)
 		m_modelParent[nCount].rot = m_pMotion->GetRot(nCount);
     }
 
-    // 座標、回転、サイズの受け取り
-    m_pos = GetPos();
-    m_rot = GetRot();
-    m_size = GetSize();
+	if (m_bChase == false)
+	{
+		//モーションセット(走る)
+		m_pMotion->SetMotion(CMotion::MOTION_RUN);
+
+		//向いている方向に進む
+		m_pos.x += -sinf(m_rot.y)*0.5f;
+		m_pos.z += -cosf(m_rot.y)*0.5f;
+
+		//2秒に1回90度回転
+		m_nCntFrame++;
+		if (m_nCntFrame % 120 == 0)
+		{
+			m_rot.y += D3DXToRadian(90);
+		}
+		if (m_pos.x - pPlayerPos.x >= -50 && m_pos.x - pPlayerPos.x <= 50 &&
+			m_pos.z - pPlayerPos.z >= -50 && m_pos.z - pPlayerPos.z <= 50)
+		{
+			m_bChase = true;
+			m_pMotion->SetMotion(CMotion::MOTION_IDLE);
+		}
+	}
+
 
     // 座標、回転、サイズのセット
     SetModel(m_pos, m_rot, m_size);
@@ -184,7 +203,7 @@ void CEnemy::Update(void)
     {
         // モデルのパーツごとのセット
         SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
-    }
+    }  
 }
 
 //----------------------------------------
