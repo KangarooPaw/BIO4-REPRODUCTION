@@ -1,0 +1,42 @@
+newmtl box:lambert4SG
+illum 4
+Kd 0.43 0.28 0.13
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl box:lambert6SG
+illum 4
+Kd 0.27 0.17 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl box02:lambert6SG
+illum 4
+Kd 0.27 0.17 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl box02:pasted__lambert6SG
+illum 4
+Kd 0.27 0.17 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl box03:lambert6SG
+illum 4
+Kd 0.27 0.17 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl box03:pasted__lambert6SG
+illum 4
+Kd 0.27 0.17 0.06
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl initialShadingGroup
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
