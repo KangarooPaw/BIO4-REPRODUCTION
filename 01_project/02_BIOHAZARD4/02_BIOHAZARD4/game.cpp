@@ -19,7 +19,7 @@
 #include "mode.h"
 #include "player.h"
 #include "enemy.h"
-#include"polygon.h"
+#include "polygon.h"
 #include "camera.h"
 #include "light.h"
 #include "scene.h"
@@ -34,6 +34,7 @@ CPlayer *CGame::m_pPlayer = NULL;
 //*****************************************************************************
 CGame::CGame()
 {
+	m_nCount = 0;
 }
 
 //*****************************************************************************

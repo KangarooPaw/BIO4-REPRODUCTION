@@ -12,6 +12,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "motion.h"
+#include "model.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -19,7 +20,9 @@
 LPD3DXMESH CPlayer::m_pMesh[MAX_PLAYER_PARTS] = {};
 LPD3DXBUFFER CPlayer::m_pBuffMat[MAX_PLAYER_PARTS] = {};
 DWORD CPlayer::m_nNumMat[MAX_PLAYER_PARTS] = {};
-CPlayer::MODELPARENT CPlayer::m_modelParent[MAX_PLAYER_PARTS] = {
+D3DXMATRIX CPlayer::m_mtxWorld[MAX_PLAYER_PARTS] = {};	 // 行列計算用
+int CPlayer::m_nldxModelParent[MAX_PLAYER_PARTS] = {};	 // 親モデルのインデックス
+char* CPlayer::m_apFileName[MAX_PLAYER_PARTS] = {
 	{ "data/MODEL/PLAYER/body.x" },			// 上半身
 	{ "data/MODEL/PLAYER/bodyUnder.x" },	// 下半身
 	{ "data/MODEL/PLAYER/head.x" },			// 頭
@@ -34,17 +37,21 @@ CPlayer::MODELPARENT CPlayer::m_modelParent[MAX_PLAYER_PARTS] = {
 	{ "data/MODEL/PLAYER/downArmRight.x" }, // 右前腕
 	{ "data/MODEL/PLAYER/handRight.x" },    // 右手
 };
+LPDIRECT3DTEXTURE9 CPlayer::m_pTexture[MAX_PLAYER_PARTS] = {};
 
 //----------------------------------------
 //インクリメント
 //----------------------------------------
-CPlayer::CPlayer(int nPriority) :CModelhierarchy(nPriority)
+CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 {
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_bMotion = false;
-	m_nMotionCnt = 0;
+	m_pMotion = NULL;
+	memset(m_pModel, NULL, sizeof(m_pModel));
+
+	memset(m_pTexture, NULL, sizeof(m_pTexture));
 }
 
 //----------------------------------------
@@ -62,8 +69,8 @@ CPlayer * CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
 	CPlayer *pPlayer;
 	pPlayer = new CPlayer;
-	pPlayer->SetPlayer(pos, rot, size);
 	pPlayer->Init();
+	pPlayer->SetPlayer(pos, rot, size);
 	return pPlayer;
 }
 
@@ -77,7 +84,7 @@ HRESULT CPlayer::Load(void)
 	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
 	{
 		// Xファイルの読み込み
-		D3DXLoadMeshFromX(m_modelParent[nCount].pFileName,
+		D3DXLoadMeshFromX(m_apFileName[nCount],
 			D3DXMESH_SYSTEMMEM,
 			pDevice,
 			NULL,
@@ -86,9 +93,13 @@ HRESULT CPlayer::Load(void)
 			&m_nNumMat[nCount],
 			&m_pMesh[nCount]
 		);
+
+		D3DXCreateTextureFromFile(pDevice,
+			m_apFileName[nCount],
+			&m_pTexture[nCount]);
 	}
 
-	return S_OK;
+	return E_NOTIMPL;
 }
 
 //----------------------------------------
@@ -111,6 +122,11 @@ void CPlayer::Unload(void)
 			m_pBuffMat[nCount]->Release();
 			m_pBuffMat[nCount] = NULL;
 		}
+
+		if (m_nNumMat[nCount] != NULL)
+		{
+			m_nNumMat[nCount] = NULL;
+		}
 	}
 }
 
@@ -119,22 +135,34 @@ void CPlayer::Unload(void)
 //----------------------------------------
 HRESULT CPlayer::Init(void)
 {
+	// モーションの生成
 	m_pMotion = CMotion::Create();
+
+	// モーションの読み込み
 	m_pMotion->Load(LOAD_PLAYER_TEXT);
-	m_pMotion->LoadMotion(MOTION_PLAYER_TEXT);	
+	m_pMotion->LoadMotion(MOTION_PLAYER_TEXT);
+
+	// モーションの初期設定
 	m_pMotion->SetMotion(CMotion::MOTION_IDLE);
+
 	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
 	{
-		m_modelParent[nCount].nIndex = m_pMotion->GetIndex(nCount);
-		m_modelParent[nCount].nParents = m_pMotion->GetParents(nCount);
-		m_modelParent[nCount].pos = m_pMotion->GetPos(nCount);
-		m_modelParent[nCount].rot = m_pMotion->GetRot(nCount);
+		// モデルの生成
+		m_pModel[nCount] = CModel::Create();
 
-		// モデルヒエラルキークラスのモデルのパーツごとの設定
-		CModelhierarchy::BindModel(m_pMesh[nCount], m_pBuffMat[nCount], m_nNumMat[nCount], m_modelParent[nCount].nParents);
+		// ペアレントの受け取り
+		m_nldxModelParent[nCount] = m_pMotion->GetParents(nCount);
 
-		SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
+		// モデルのバインド
+		m_pModel[nCount]->BindModel(m_pMesh[nCount], m_pBuffMat[nCount], m_nNumMat[nCount], m_nldxModelParent[nCount], m_pTexture[nCount]);
+
+		// モデルのパーツごとの座標と回転を受け取る
+		m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
 	}
+
+	// 座標、回転、サイズのセット
+	m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
+
 	return S_OK;
 }
 
@@ -143,8 +171,15 @@ HRESULT CPlayer::Init(void)
 //----------------------------------------
 void CPlayer::Uninit(void)
 {
-	// モデルヒエラルキークラスの終了処理
-	CModelhierarchy::Uninit();
+	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+	{
+		// モデルクラスの終了処理
+		m_pModel[nCount]->Uninit();
+		m_pModel[nCount] = NULL;
+	}
+
+	// モーションクラスの終了処理
+	m_pMotion->Uninit();
 	m_pMotion = NULL;
 }
 
@@ -153,26 +188,22 @@ void CPlayer::Uninit(void)
 //----------------------------------------
 void CPlayer::Update(void)
 {
+	// モーションの更新処理
+	m_pMotion->UpdateMotion();
+
 	//コントローラーの取得処理
 	DIJOYSTATE pStick;
 	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
 	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
+
 	if (pJoystickDevice != NULL)
 	{
 		pJoystickDevice->Poll();
 		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
 	}
 
-	// モーションの更新処理
-	m_pMotion->UpdatePlayerMotion();
-
-	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
-	{
-		// モデルのパーツごとの座標と回転を受け取る
-		m_modelParent[nCount].pos = m_pMotion->GetPos(nCount);
-		m_modelParent[nCount].rot = m_pMotion->GetRot(nCount);
-	}
-	if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false)
+	//ナイフモーション中なら
+	if (m_bMotion == true)
 	{
 		//ナイフモーション中なら
 		if (m_bMotion == true)
@@ -190,7 +221,6 @@ void CPlayer::Update(void)
 	if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false && pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
 	{
 		//通常モーション
-		m_pMotion->SetMotion(CMotion::MOTION_IDLE);
 		//--------------------------
 		//移動
 		//--------------------------
@@ -214,8 +244,9 @@ void CPlayer::Update(void)
 		//左スティックを後ろに倒す
 		if (pStick.lY >= 500)
 		{
-			m_pos.x += sinf(m_rot.y)*1.0f;
-			m_pos.z += cosf(m_rot.y)*1.0f;
+			m_pMotion->SetMotion(CMotion::MOTION_BACK);
+			m_pos.x += sinf(m_rot.y)*0.5f;
+			m_pos.z += cosf(m_rot.y)*0.5f;
 			//Aボタンを押して反転
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
 			{
@@ -256,6 +287,7 @@ void CPlayer::Update(void)
 	{
 		//銃を構えるモーション
 		m_pMotion->SetMotion(CMotion::MOTION_HOLDGUN);
+
 		// Xボタンを押したら弾を発射
 		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 		{
@@ -272,14 +304,14 @@ void CPlayer::Update(void)
 		}
 	}
 
-	// 座標、回転、サイズのセット
-	SetModel(m_pos, m_rot, m_size);
-
 	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
 	{
-		// モデルのパーツごとのセット
-		SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
+		// モデルのパーツごとの座標と回転を受け取る
+		m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
 	}
+
+	// 座標、回転、サイズのセット
+	m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
 }
 
 //----------------------------------------
@@ -287,8 +319,33 @@ void CPlayer::Update(void)
 //----------------------------------------
 void CPlayer::Draw(void)
 {
-	// モデルヒエラルキークラスの終了処理
-	CModelhierarchy::Draw();
+	D3DXMATRIX mtxRot, mtxTrans;
+
+	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+	{
+		//ワールドマトリクスの初期化
+		D3DXMatrixIdentity(&m_mtxWorld[nCount]);
+
+		//向きを反映
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+		D3DXMatrixMultiply(&m_mtxWorld[nCount], &m_mtxWorld[nCount], &mtxRot);
+
+		//位置を反映
+		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+		D3DXMatrixMultiply(&m_mtxWorld[nCount], &m_mtxWorld[nCount], &mtxTrans);
+
+		// ワールドマトリックスの設定
+		//m_pModel[nCount]->SetWorldMatrix(m_mtxWorld[nCount]);
+
+		// 親のモデルパーツ以外のペアレントをセット
+		if (m_nldxModelParent[nCount] != -1)
+		{
+			m_pModel[nCount]->SetParent(m_pModel[m_nldxModelParent[nCount]]);
+		}
+
+		// モデルクラスの描画処理
+		m_pModel[nCount]->Draw();
+	}
 }
 
 //----------------------------------------
@@ -299,6 +356,5 @@ void CPlayer::SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 	m_pos = pos;				//場所
 	m_rot = rot;				//角度
 	m_size = size;				//大きさ
-	SetModel(pos, rot, size);	//モデルの設定
 	SetObjType(OBJTYPE_PLAYER); //オブジェクトタイプの設定
 }

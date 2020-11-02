@@ -1,0 +1,99 @@
+#==============================================================================
+#
+# wƒ‚ƒfƒ‹ƒrƒ…[ƒxƒXƒNƒŠƒvƒgƒtƒ@ƒCƒ‹ [model.txt]
+# Author : AKIRA TANAKA
+#
+#==============================================================================
+SCRIPT			# ‚±‚Ìs‚Íâ‘ÎÁ‚³‚È‚¢‚±‚ÆI
+
+#------------------------------------------------------------------------------
+# “Ç‚Ýž‚Þƒ‚ƒfƒ‹”
+#------------------------------------------------------------------------------
+NUM_MODEL = 13
+
+#------------------------------------------------------------------------------
+# “Ç‚Ýž‚Þƒ‚ƒfƒ‹ƒtƒ@ƒCƒ‹–¼
+#------------------------------------------------------------------------------
+MODEL_FILENAME = data/MODEL/legLeft.x
+MODEL_FILENAME = data/MODEL/legMomoLeft.x
+MODEL_FILENAME = data/MODEL/legRight.x
+MODEL_FILENAME = data/MODEL/legMomoRight.x
+MODEL_FILENAME = data/MODEL/body.x
+MODEL_FILENAME = data/MODEL/bodyUnder.x
+MODEL_FILENAME = data/MODEL/head.x
+MODEL_FILENAME = data/MODEL/upArmLeft.x
+MODEL_FILENAME = data/MODEL/downArmLeft.x
+MODEL_FILENAME = data/MODEL/handLeft.x
+MODEL_FILENAME = data/MODEL/upArmRight.x
+MODEL_FILENAME = data/MODEL/downArmRight.x
+MODEL_FILENAME = data/MODEL/handRight.x
+
+#------------------------------------------------------------------------------
+# •\Ž¦‚·‚éƒ‚ƒfƒ‹‚Ì”z’uî•ñ
+#------------------------------------------------------------------------------
+MODELSET
+	TYPE = 0			# Ží—Þ ¶‘«
+	POS = -3 20 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 1			# Ží—Þ ¶‚à‚à
+	POS = -3 30 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 2			# Ží—Þ ‰E‘«
+	POS = 3 20 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 3			# Ží—Þ ‰E‚à‚à
+	POS = 3 30 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 4			# Ží—Þ ã”¼g
+	POS = 0 35 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 5			# Ží—Þ ‰º”¼g
+	POS = 0 32 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 6			# Ží—Þ “ª
+	POS = 0 51 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 7			# Ží—Þ ¶ã˜r
+	POS = -6 47 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 8			# Ží—Þ ¶‘O˜r
+	POS = -14 47 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 9			# Ží—Þ ¶Žè
+	POS = -22 47 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 10			# Ží—Þ ‰Eã˜r
+	POS = 6 47 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 11			# Ží—Þ ‰E‘O˜r
+	POS = 14 47 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+MODELSET
+	TYPE = 12			# Ží—Þ ‰EŽè
+	POS = 22 47 0			# ˆÊ’u(‚w^‚x^‚y)
+	ROT = 0 0 0			# Œü‚«(‚w^‚x^‚y)
+END_MODELSET
+END_SCRIPT		# ‚±‚Ìs‚Íâ‘ÎÁ‚³‚È‚¢‚±‚ÆI

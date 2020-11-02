@@ -10,7 +10,7 @@
 //=============================================================================
 // インクルードファイル
 //=============================================================================
-#include "model_hierarchy.h"
+#include "scene.h"
 
 //=============================================================================
 // マクロ定義
@@ -23,11 +23,12 @@
 // 前方宣言
 //=============================================================================
 class CMotion;
+class CModel;
 
 //=============================================================================
 // プレイヤークラス
 //=============================================================================
-class CPlayer :public CModelhierarchy
+class CPlayer :public CScene
 {
 public:
 	CPlayer(int nPriority = CScene::OBJTYPE_PLAYER);//コンストラクタ
@@ -49,24 +50,19 @@ public:
 	D3DXVECTOR3 GetPos(void) { return m_pos; }//場所
 	D3DXVECTOR3 GetRot(void) { return m_rot; }//角度
 private:
-	typedef struct {
-		char* pFileName;	   // 読み込みファイル名
-		int nIndex;			   // モデルナンバー
-		int nParents;		   // モデルの親子関係
-		D3DXVECTOR3 pos;	   // 位置
-		D3DXVECTOR3 rot;	   // 角度
-	}MODELPARENT;
+	static LPD3DXMESH m_pMesh[MAX_PLAYER_PARTS];	  // メッシュ情報のポインタ
+	static LPD3DXBUFFER m_pBuffMat[MAX_PLAYER_PARTS]; // マテリアル情報のポインタ
+	static DWORD m_nNumMat[MAX_PLAYER_PARTS];		  // マテリアル情報の数
+	static D3DXMATRIX m_mtxWorld[MAX_PLAYER_PARTS];	  // 行列計算用
+	static int m_nldxModelParent[MAX_PLAYER_PARTS];	  // 親モデルのインデックス
+	static char* m_apFileName[MAX_PLAYER_PARTS];	  // ファイルの名前
+	static LPDIRECT3DTEXTURE9 m_pTexture[MAX_PLAYER_PARTS];
 
-	static LPD3DXMESH m_pMesh[MAX_PLAYER_PARTS];
-	static LPD3DXBUFFER m_pBuffMat[MAX_PLAYER_PARTS];
-	static DWORD m_nNumMat[MAX_PLAYER_PARTS];
-	static MODELPARENT m_modelParent[MAX_PLAYER_PARTS];
-	D3DXVECTOR3 m_pos;			//場所
-	D3DXVECTOR3 m_rot;			//角度
-	D3DXVECTOR3 m_size;			//大きさ
-	CMotion *m_pMotion;
-	bool m_bMotion;
-	int m_nMotionCnt;
+	D3DXVECTOR3 m_pos;					// 場所
+	D3DXVECTOR3 m_rot;					// 角度
+	D3DXVECTOR3 m_size;					// 大きさ
+	CMotion *m_pMotion;					// モーションクラスのポインタ
+	CModel *m_pModel[MAX_PLAYER_PARTS]; // モデルクラスのポインタ
 };
 
 #endif

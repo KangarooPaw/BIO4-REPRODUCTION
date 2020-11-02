@@ -100,15 +100,20 @@ void CModelhierarchy::Draw(void)
 		//位置を反映
 		D3DXMatrixTranslation(&mtxTrans, m_modelParent[nCount].m_pos.x, m_modelParent[nCount].m_pos.y, m_modelParent[nCount].m_pos.z);
 		D3DXMatrixMultiply(&m_Model[nCount].m_mtxWorldParts, &m_Model[nCount].m_mtxWorldParts, &mtxTrans);
-		
-		//マテリアルデータへのポインタを取得する
-		pMat = (D3DXMATERIAL*)m_Model[nCount].m_pBuffMatParts->GetBufferPointer();
+
+		if (m_Model[nCount].m_pBuffMatParts != NULL)
+		{
+			//マテリアルデータへのポインタを取得する
+			pMat = (D3DXMATERIAL*)m_Model[nCount].m_pBuffMatParts->GetBufferPointer();
+		}
 
 		D3DXMATRIX mtxParent;
-		if (m_Model[nCount].m_nldxModelParent == -1) {
+		if (m_Model[nCount].m_nldxModelParent == -1)
+		{
 			mtxParent = m_mtxWorld;
 		}
-		else {
+		else
+		{
 			mtxParent = m_Model[m_Model[nCount].m_nldxModelParent].m_mtxWorldParts;
 		}
 
@@ -128,9 +133,13 @@ void CModelhierarchy::Draw(void)
 
 			pMat[nCntMat].MatD3D.Ambient = pMat[nCntMat].MatD3D.Diffuse;
 
-			//モデルパーツの描画
-			m_Model[nCount].m_pMeshParts->DrawSubset(nCntMat);
+			if (m_Model[nCount].m_pMeshParts != NULL)
+			{
+				//モデルパーツの描画
+				m_Model[nCount].m_pMeshParts->DrawSubset(nCntMat);
+			}
 		}
+
 		//保持していたマテリアルを戻す
 		pDevice->SetMaterial(&matDef);
 	}
