@@ -46,6 +46,8 @@ public:
 	static void CreateLight(void);
 	static void CreateFade(MODE mode);
 
+	void SetNumFPS(int nCountFPS) { m_nCountFPS = nCountFPS; }
+
 	static CRenderer *GetRenderer(void);	//レンダラー
 	static CInputKeyboard *GetInputKeyboard(void);	//キーボード
 	static CInputJoystick *GetInputJoystick(void);	//ゲームパッド
@@ -65,6 +67,7 @@ private:
 	static CDebugProc*m_pDebugProc;			//デバッグ
 	static CMode *m_pMode;					//モードのポインタ
 	static MODE m_mode;						//現在のモード
+	int m_nCountFPS;	// FPSの値
 };	
 
 #endif // !_MANAGER_H_

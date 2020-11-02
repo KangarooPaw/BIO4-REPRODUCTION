@@ -15,67 +15,67 @@ CHARACTERSET
 	RADIUS = 20.0					# 半径
 	NUM_PARTS = 13					# パーツ数
 
-	PARTSSET
+		PARTSSET
 		INDEX = 0					# 上半身
 		PARENT = -1					# (親)NULL
 		POS = 0.0 35.0 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = -0.06 0.69 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 1					# 下半身
 		PARENT = 0					# (親)上半身
 		POS = 0.0 -3.0 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = 0.06 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 2					# 頭
 		PARENT = 0					# (親)上半身
 		POS = 0.0 16.0 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = 0.00 -0.63 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 3					# 左もも
 		PARENT = 1					# (親)下半身
 		POS = -3.0 -2.5 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = 0.15 0.00 -0.35
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 4					# 左足
 		PARENT = 3					# (親)左もも
 		POS = 0.0 -10.0 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = -0.53 0.06 0.28
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 5					# 右もも
 		PARENT = 1					# (親)下半身
 		POS = 3.0 -2.5 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = 0.47 -0.60 0.00
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 6					# 右足
 		PARENT = 5					# (親)右もも
 		POS = 0.0 -10.0 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = -0.44 0.00 0.00
 	END_PARTSSET
 	
 	PARTSSET
 		INDEX = 7					# 左上腕
 		PARENT = 0					# (親)上半身
 		POS = -6.0 12.0 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = 0.00 -1.19 0.76
 	END_PARTSSET
 
 	PARTSSET
 		INDEX = 8					# 左前腕
 		PARENT = 7					# (親)左上腕
 		POS = -8.5 0.0 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = -0.25 -1.98 -0.94
 	END_PARTSSET
 
 	PARTSSET
@@ -89,21 +89,21 @@ CHARACTERSET
 		INDEX = 10					# 右上腕
 		PARENT = 0					# (親)上半身
 		POS = 6.0 12.0 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = -0.19 2.05 -0.52
 	END_PARTSSET
 	
 	PARTSSET
 		INDEX = 11					# 右前腕
 		PARENT = 10					# (親)右上腕
 		POS = 8.5 0.0 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = -0.03 1.26 1.22
 	END_PARTSSET
 	
 	PARTSSET
 		INDEX = 12					# 右手
 		PARENT = 11					# (親)右前腕
 		POS = 8.0 0.0 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = 0.00 0.00 0.22
 	END_PARTSSET
 	
 END_CHARACTERSET

@@ -9,10 +9,9 @@
 #include "manager.h"
 #include "renderer.h"
 #include "joystick.h"
-#include "game.h"
-#include "player.h"
 #include "enemy.h"
 #include "motion.h"
+#include "model.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -20,8 +19,9 @@
 LPD3DXMESH CEnemy::m_pMesh[MAX_ENEMY_PARTS] = {};
 LPD3DXBUFFER CEnemy::m_pBuffMat[MAX_ENEMY_PARTS] = {};
 DWORD CEnemy::m_nNumMat[MAX_ENEMY_PARTS] = {};
-bool CEnemy::m_bChase = false;
-CEnemy::MODELPARENT CEnemy::m_modelParent[MAX_ENEMY_PARTS] = {
+D3DXMATRIX CEnemy::m_mtxWorld[MAX_ENEMY_PARTS] = {};	 // 行列計算用
+int CEnemy::m_nldxModelParent[MAX_ENEMY_PARTS] = {};	 // 親モデルのインデックス
+char* CEnemy::m_apFileName[MAX_ENEMY_PARTS] = {
     { "data/MODEL/ENEMY/body.x" },			// 上半身
     { "data/MODEL/ENEMY/bodyUnder.x" },	// 下半身
     { "data/MODEL/ENEMY/head.x" },			// 頭
@@ -36,12 +36,13 @@ CEnemy::MODELPARENT CEnemy::m_modelParent[MAX_ENEMY_PARTS] = {
     { "data/MODEL/ENEMY/downArmRight.x" }, // 右前腕
     { "data/MODEL/ENEMY/handRight.x" },    // 右手
 };
-
+bool CEnemy::m_bChase = false;
+LPDIRECT3DTEXTURE9 CEnemy::m_pTexture[MAX_ENEMY_PARTS] = {};
 
 //----------------------------------------
 //インクリメント
 //----------------------------------------
-CEnemy::CEnemy(int nPriority) :CModelhierarchy(nPriority)
+CEnemy::CEnemy(int nPriority) :CScene(nPriority)
 {
     m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -79,7 +80,7 @@ HRESULT CEnemy::Load(void)
     for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
     {
         // Xファイルの読み込み
-        D3DXLoadMeshFromX(m_modelParent[nCount].pFileName,
+        D3DXLoadMeshFromX(m_apFileName[nCount],
             D3DXMESH_SYSTEMMEM,
             pDevice,
             NULL,
@@ -88,7 +89,12 @@ HRESULT CEnemy::Load(void)
             &m_nNumMat[nCount],
             &m_pMesh[nCount]
         );
+
+		D3DXCreateTextureFromFile(pDevice,
+			m_apFileName[nCount],
+			&m_pTexture[nCount]);
     }
+
     return E_NOTIMPL;
 }
 
@@ -126,21 +132,36 @@ void CEnemy::Unload(void)
 //----------------------------------------
 HRESULT CEnemy::Init(void)
 {
-    m_pMotion = CMotion::Create();
+	D3DXMATRIX mtxRot, mtxTrans;
+
+	// モーションの生成
+	m_pMotion = CMotion::Create();
+
+	// モーションの読み込み
     m_pMotion->Load(LOAD_ENEMY_TEXT);
     m_pMotion->LoadMotion(MOTION_ENEMY_TEXT);
-    for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
-    {
-        m_modelParent[nCount].nIndex = m_pMotion->GetIndex(nCount);
-        m_modelParent[nCount].nParents = m_pMotion->GetParents(nCount);
-        m_modelParent[nCount].pos = m_pMotion->GetPos(nCount);
-        m_modelParent[nCount].rot = m_pMotion->GetRot(nCount);
 
-        // モデルヒエラルキークラスのモデルのパーツごとの設定
-        CModelhierarchy::BindModel(m_pMesh[nCount], m_pBuffMat[nCount], m_nNumMat[nCount], m_modelParent[nCount].nParents);
+	// モーションの初期設定
+	m_pMotion->SetMotion(CMotion::MOTION_IDLE);
 
-        SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
-    }	
+	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
+	{
+		// モデルの生成
+		m_pModel[nCount] = CModel::Create();
+
+		// ペアレントの受け取り
+		m_nldxModelParent[nCount] = m_pMotion->GetParents(nCount);
+
+		// モデルのパーツごとの座標と回転を受け取る
+		m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
+
+		// モデルのバインド
+		m_pModel[nCount]->BindModel(m_pMesh[nCount], m_pBuffMat[nCount], m_nNumMat[nCount], m_nldxModelParent[nCount], m_pTexture[nCount]);
+	}
+
+	// 座標、回転、サイズのセット
+	m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
+
     m_bChase = false;
     return S_OK;
 }
@@ -150,9 +171,24 @@ HRESULT CEnemy::Init(void)
 //----------------------------------------
 void CEnemy::Uninit(void)
 {
-    // モデルクラスの終了処理
-    CModelhierarchy::Uninit();
-    m_pMotion = NULL;
+	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
+	{
+		if (m_pModel[nCount] != NULL)
+		{
+			// モデルクラスの終了処理
+			m_pModel[nCount]->Uninit();
+			m_pModel[nCount] = NULL;
+		}
+	}
+
+	if (m_pMotion != NULL)
+	{
+		// モーションクラスの終了処理
+		m_pMotion->Uninit();
+		m_pMotion = NULL;
+	}
+
+	Release();
 }
 
 //----------------------------------------
@@ -160,18 +196,12 @@ void CEnemy::Uninit(void)
 //----------------------------------------
 void CEnemy::Update(void)
 {
+	// モーションの更新処理
+	m_pMotion->UpdateMotion();
 	//プレイヤーの場所の取得
 	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
-    // モーションの更新処理
-    m_pMotion->UpdatePlayerMotion();
 
-    // モデルのパーツごとの座標と回転を受け取る
-    for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
-    {
-		m_modelParent[nCount].pos = m_pMotion->GetPos(nCount);
-		m_modelParent[nCount].rot = m_pMotion->GetRot(nCount);
-    }
-
+	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
 	if (m_bChase == false)
 	{
 		//モーションセット(走る)
@@ -200,18 +230,14 @@ void CEnemy::Update(void)
 		//向いている方向に進む
 		m_pos.x += -sinf(m_rot.y)*0.7f;
 		m_pos.z += -cosf(m_rot.y)*0.7f;
-
-
+	}
+	{
+		// モデルのパーツごとのモーションの座標と回転を受け取る
+		m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
 	}
 
-    // 座標、回転、サイズのセット
-    SetModel(m_pos, m_rot, m_size);
-
-    for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
-    {
-        // モデルのパーツごとのセット
-        SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
-    }  
+	// 座標、回転、サイズのセット(親のモデルだけ動かすため)
+	m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
 }
 
 //----------------------------------------
@@ -219,6 +245,31 @@ void CEnemy::Update(void)
 //----------------------------------------
 void CEnemy::Draw(void)
 {
-    // モデルクラスの描画処理
-    CModelhierarchy::Draw();
+	D3DXMATRIX mtxRot, mtxTrans;
+
+	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
+	{
+		//ワールドマトリクスの初期化
+		D3DXMatrixIdentity(&m_mtxWorld[nCount]);
+
+		//向きを反映
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+		D3DXMatrixMultiply(&m_mtxWorld[nCount], &m_mtxWorld[nCount], &mtxRot);
+
+		//位置を反映
+		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+		D3DXMatrixMultiply(&m_mtxWorld[nCount], &m_mtxWorld[nCount], &mtxTrans);
+
+		// ワールドマトリックスの設定
+		//m_pModel[nCount]->SetWorldMatrix(m_mtxWorld[nCount]);
+
+		// 親のモデルパーツ以外のペアレントをセット
+		if (m_nldxModelParent[nCount] != -1)
+		{
+			m_pModel[nCount]->SetParent(m_pModel[m_nldxModelParent[nCount]]);
+		}
+
+		// モデルクラスの描画処理
+		m_pModel[nCount]->Draw();
+	}
 }

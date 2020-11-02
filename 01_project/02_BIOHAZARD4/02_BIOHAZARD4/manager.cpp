@@ -162,6 +162,9 @@ void CManager::Update(void)
 
 	if (m_pRenderer != NULL)
 	{
+		// FPSのセット
+		m_pRenderer->SetNumFPS(m_nCountFPS);
+
 		//レンダラーの更新処理
 		m_pRenderer->Update();
 	}

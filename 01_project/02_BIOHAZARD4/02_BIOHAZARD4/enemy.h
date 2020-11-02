@@ -4,7 +4,7 @@
 //=============================================================================
 // インクルードファイル
 //=============================================================================
-#include "model_hierarchy.h"
+#include "scene.h"
 
 //=============================================================================
 // マクロ定義
@@ -17,11 +17,12 @@
 // 前方宣言
 //=============================================================================
 class CMotion;
+class CModel;
 
 //=============================================================================
 // エネミークラス
 //=============================================================================
-class CEnemy :public CModelhierarchy
+class CEnemy :public CScene
 {
 public:
 	CEnemy(int nPriority = CScene::OBJTYPE_ENEMY);//コンストラクタ
@@ -38,29 +39,27 @@ public:
 
 	void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size) {
 		m_pos = pos; m_rot = rot; m_size = size;
-		SetModel(pos, rot, size);
 		SetObjType(OBJTYPE_ENEMY);
 	}
 
+	D3DXVECTOR3 GetPos(void) { return m_pos; }
+	D3DXVECTOR3 GetRot(void) { return m_rot; }
+	D3DXVECTOR3 GetSize(void) { return m_size; }
 private:
-	typedef struct {
-		char* pFileName;	   // 読み込みファイル名
-		int nIndex;			   // モデルナンバー
-		int nParents;		   // モデルの親子関係
-		D3DXVECTOR3 pos;	   // 位置
-		D3DXVECTOR3 rot;	   // 角度
-	}MODELPARENT;
+	static LPD3DXMESH m_pMesh[MAX_ENEMY_PARTS];		 // メッシュ情報のポインタ
+	static LPD3DXBUFFER m_pBuffMat[MAX_ENEMY_PARTS]; // マテリアル情報のポインタ
+	static DWORD m_nNumMat[MAX_ENEMY_PARTS];		 // マテリアル情報の数
+	static D3DXMATRIX m_mtxWorld[MAX_ENEMY_PARTS];	 // 行列計算用
+	static int m_nldxModelParent[MAX_ENEMY_PARTS];	 // 親モデルのインデックス
+	static char* m_apFileName[MAX_ENEMY_PARTS];		 // ファイルの名前
+	static LPDIRECT3DTEXTURE9 m_pTexture[MAX_ENEMY_PARTS];
 
-	static LPD3DXMESH m_pMesh[MAX_ENEMY_PARTS];
-	static LPD3DXBUFFER m_pBuffMat[MAX_ENEMY_PARTS];
-	static DWORD m_nNumMat[MAX_ENEMY_PARTS];
-	static MODELPARENT m_modelParent[MAX_ENEMY_PARTS];
-	D3DXVECTOR3 m_pos;			//場所
-	D3DXVECTOR3 m_rot;			//角度
-	D3DXVECTOR3 m_size;			//大きさ
-	CMotion *m_pMotion;
+	D3DXVECTOR3 m_pos;					// 場所
+	D3DXVECTOR3 m_rot;					// 角度
+	D3DXVECTOR3 m_size;					// 大きさ
+	CMotion *m_pMotion;					// モーションクラスのポインタ
+	CModel *m_pModel[MAX_ENEMY_PARTS]; // モデルクラスのポインタ
 	static bool m_bChase;
-	int m_nCntFrame;
 };
 
 #endif

@@ -34,6 +34,7 @@ public:
 
 private:
 	static CPlayer *m_pPlayer;	//ƒvƒŒƒCƒ„[
+	int m_nCount;
 };
 
 #endif

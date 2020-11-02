@@ -16,6 +16,10 @@
 //*****************************************************************************
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+#ifdef _DEBUG
+int	m_nCountFPS = 0;			// FPSカウンタ
+#endif
+
 //*****************************************************************************
 // グローバル変数宣言
 //*****************************************************************************
@@ -110,12 +114,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			if ((dwCurrentTime - dwFPSLastTime) >= 500)
 			{// 0.5秒ごとに実行
 #ifdef _DEBUG
-			 // FPSを算出
-				//m_nCountFPS = dwFrameCount * 1000 / (dwCurrentTime - dwFPSLastTime);
+				// FPSを算出
+				m_nCountFPS = dwFrameCount * 1000 / (dwCurrentTime - dwFPSLastTime);
 #endif
 				dwFPSLastTime = dwCurrentTime;	// 現在の時間を保存
 				dwFrameCount = 0;
 			}
+
+#ifdef _DEBUG
+			g_pManager->SetNumFPS(m_nCountFPS);
+#endif
 
 			if ((dwCurrentTime - dwExecLastTime) >= (1000 / 60))
 			{// 1/60秒経過
