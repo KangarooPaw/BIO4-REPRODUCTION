@@ -65,6 +65,8 @@ private:
 	D3DXVECTOR3 m_rot;			//Šp“x
 	D3DXVECTOR3 m_size;			//‘å‚«‚³
 	CMotion *m_pMotion;
+	bool m_bMotion;
+	int m_nMotionCnt;
 };
 
 #endif

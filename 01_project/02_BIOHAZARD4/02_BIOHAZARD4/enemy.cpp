@@ -172,7 +172,7 @@ void CEnemy::Update(void)
 		m_modelParent[nCount].rot = m_pMotion->GetRot(nCount);
     }
 
-	if (m_bChase == true)
+	if (m_bChase == false)
 	{
 		//モーションセット(走る)
 		m_pMotion->SetMotion(CMotion::MOTION_RUN);
@@ -196,7 +196,7 @@ void CEnemy::Update(void)
 	else
 	{	
 		float angle = (float)atan2( pPlayerPos.x - m_pos.x,pPlayerPos.z - m_pos.z);
-		m_rot.y =angle-180;
+		m_rot.y =angle-D3DXToRadian(180);
 		//向いている方向に進む
 		m_pos.x += -sinf(m_rot.y)*0.7f;
 		m_pos.z += -cosf(m_rot.y)*0.7f;

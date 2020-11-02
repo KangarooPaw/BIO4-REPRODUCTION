@@ -43,6 +43,8 @@ CPlayer::CPlayer(int nPriority) :CModelhierarchy(nPriority)
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_bMotion = false;
+	m_nMotionCnt = 0;
 }
 
 //----------------------------------------
@@ -151,6 +153,16 @@ void CPlayer::Uninit(void)
 //----------------------------------------
 void CPlayer::Update(void)
 {
+	//コントローラーの取得処理
+	DIJOYSTATE pStick;
+	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
+	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
+	if (pJoystickDevice != NULL)
+	{
+		pJoystickDevice->Poll();
+		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
+	}
+
 	// モーションの更新処理
 	m_pMotion->UpdatePlayerMotion();
 
@@ -161,19 +173,20 @@ void CPlayer::Update(void)
 		m_modelParent[nCount].rot = m_pMotion->GetRot(nCount);
 	}
 
-	//コントローラーの取得処理
-	DIJOYSTATE pStick;
-	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
-	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
-
-	if (pJoystickDevice != NULL)
+	//ナイフモーション中なら
+	if (m_bMotion == true)
 	{
-		pJoystickDevice->Poll();
-		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
+		m_nMotionCnt++;
+		//70フレームでリセット
+		if (m_nMotionCnt == 60)
+		{
+			m_bMotion = false;
+			m_nMotionCnt = 0;
+		}
 	}
-
-	if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1)==false&&pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
+	if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false && pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
 	{
+
 		m_pMotion->SetMotion(CMotion::MOTION_IDLE);
 		//--------------------------
 		//移動
@@ -202,20 +215,35 @@ void CPlayer::Update(void)
 			//Aボタンを押して反転
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
 			{
-					m_rot.y += D3DXToRadian(180);
+				m_rot.y += D3DXToRadian(180);
 			}
 		}
 	}
 	//LBを押している場合
 	else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
 	{
-		//ナイフを構えるモーション
-		//m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
+		if (m_bMotion == false)
+		{
+			//ナイフを構えるモーション
+			m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
+		}
 		// Xボタンを押したらナイフを振る
 		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 		{
-			//ナイフを振るモーション
-			m_pMotion->SetMotion(CMotion::MOTION_SLASH);
+			if (m_bMotion == false)
+			{
+				//ナイフを振るモーション			
+				m_pMotion->SetMotion(CMotion::MOTION_SLASH);
+				//弾の生成
+				CBullet::Create(
+					D3DXVECTOR3(m_pos.x + cosf(m_rot.y)-10.0f, m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)- 10.0f),
+					D3DXVECTOR3(5.0f, 0.0f, 5.0f),
+					D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+					15,
+					10,
+					CBullet::BULLETTYPE_PLAYER);
+				m_bMotion = true;
+			}
 		}
 	}
 	//LTを押している場合
@@ -229,8 +257,8 @@ void CPlayer::Update(void)
 			//弾の生成
 			CBullet::Create(
 				D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)),
-				D3DXVECTOR3(20.0f, 0.0f, 20.0f),
-				D3DXVECTOR3(-sinf(m_rot.y)*2.0f, 0, -cosf(m_rot.y)*2.0f),
+				D3DXVECTOR3(5.0f, 0.0f, 5.0f),
+				D3DXVECTOR3(-sinf(m_rot.y)*5.0f, 0, -cosf(m_rot.y)*5.0f),
 				100,
 				10,
 				CBullet::BULLETTYPE_PLAYER);

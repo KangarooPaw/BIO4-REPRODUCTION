@@ -88,7 +88,8 @@ void CCamera::Update(void)
 		D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
 		//プレイヤーの角度の取得
 		D3DXVECTOR3 pPlayerRot = CGame::GetPlayer()->GetRot();
-		if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
+		if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false &&
+			pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
 		{
 			//カウントのリセット
 			m_nCount = 0;
@@ -129,7 +130,7 @@ void CCamera::Update(void)
 			if (pStick.lRx <= -500)
 			{
 				m_Distance = CAMERA_GAZE;	//距離
-				posR.x  += MOVE;
+				posR.x += MOVE;
 			}
 			//右スティックを右に倒す
 			if (pStick.lRx >= 500)
@@ -149,7 +150,8 @@ void CCamera::Update(void)
 			}
 		}
 		//LTで銃を構える/LBでナイフを構える
-		else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2)|| pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
+		else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) ||
+			pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
 		{
 			//10フレームだけ進める
 			if (m_nCount <= HOLD_FRAME)
