@@ -50,7 +50,7 @@ public:
 	void UpdatePlayerMotion(void);
 
 	void SetMotion(MOTIONSTATE motionstate);
-
+	MOTIONSTATE GetMotion(void) { return m_motionState; }
 	int GetIndex(int nCount) { return m_modelParent[nCount].m_nIndex; }
 	int GetParents(int nCount) { return m_modelParent[nCount].m_nParents; }
 	D3DXVECTOR3 GetPos(int nCount) { return m_modelParent[nCount].m_pos; }

@@ -172,21 +172,24 @@ void CPlayer::Update(void)
 		m_modelParent[nCount].pos = m_pMotion->GetPos(nCount);
 		m_modelParent[nCount].rot = m_pMotion->GetRot(nCount);
 	}
-
-	//ナイフモーション中なら
-	if (m_bMotion == true)
+	if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false)
 	{
-		m_nMotionCnt++;
-		//70フレームでリセット
-		if (m_nMotionCnt == 60)
+		//ナイフモーション中なら
+		if (m_bMotion == true)
 		{
-			m_bMotion = false;
-			m_nMotionCnt = 0;
+			m_nMotionCnt++;
+			//70フレームでリセット
+			if (m_nMotionCnt == 60)
+			{
+				m_bMotion = false;
+				m_nMotionCnt = 0;
+			}
 		}
 	}
+
 	if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false && pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
 	{
-
+		//通常モーション
 		m_pMotion->SetMotion(CMotion::MOTION_IDLE);
 		//--------------------------
 		//移動
@@ -203,6 +206,7 @@ void CPlayer::Update(void)
 		//左スティックを前に倒す	
 		if (pStick.lY <= -500)
 		{
+			//走るモーション
 			m_pMotion->SetMotion(CMotion::MOTION_RUN);
 			m_pos.x += -sinf(m_rot.y)*1.0f;
 			m_pos.z += -cosf(m_rot.y)*1.0f;
@@ -226,11 +230,12 @@ void CPlayer::Update(void)
 		{
 			//ナイフを構えるモーション
 			m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
+			m_bMotion = true;
 		}
 		// Xボタンを押したらナイフを振る
 		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 		{
-			if (m_bMotion == false)
+			if (m_bMotion == true)
 			{
 				//ナイフを振るモーション			
 				m_pMotion->SetMotion(CMotion::MOTION_SLASH);
@@ -242,7 +247,7 @@ void CPlayer::Update(void)
 					15,
 					10,
 					CBullet::BULLETTYPE_PLAYER);
-				m_bMotion = true;
+				//ナイフモーションフラグの起動
 			}
 		}
 	}
@@ -275,8 +280,6 @@ void CPlayer::Update(void)
 		// モデルのパーツごとのセット
 		SetModelParts(m_modelParent[nCount].pos, m_modelParent[nCount].rot, nCount);
 	}
-	// モデルヒエラルキークラスの更新処理
-	//CModelhierarchy::Update();
 }
 
 //----------------------------------------
