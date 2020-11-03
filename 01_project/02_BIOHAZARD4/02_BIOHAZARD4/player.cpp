@@ -221,6 +221,7 @@ void CPlayer::Update(void)
 	if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false && pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
 	{
 		//’Êíƒ‚[ƒVƒ‡ƒ“
+		m_pMotion->SetMotion(CMotion::MOTION_IDLE);
 		//--------------------------
 		//ˆÚ“®
 		//--------------------------

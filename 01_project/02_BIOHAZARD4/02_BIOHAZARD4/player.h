@@ -63,6 +63,8 @@ private:
 	D3DXVECTOR3 m_size;					// 大きさ
 	CMotion *m_pMotion;					// モーションクラスのポインタ
 	CModel *m_pModel[MAX_PLAYER_PARTS]; // モデルクラスのポインタ
+	bool m_bMotion;
+	int m_nMotionCnt;
 };
 
 #endif
