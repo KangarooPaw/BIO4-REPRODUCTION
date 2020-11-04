@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="life.cpp" />
     <ClCompile Include="motion.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -174,6 +175,7 @@
     <ClCompile Include="scene3d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="life.h" />
     <ClInclude Include="motion.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
