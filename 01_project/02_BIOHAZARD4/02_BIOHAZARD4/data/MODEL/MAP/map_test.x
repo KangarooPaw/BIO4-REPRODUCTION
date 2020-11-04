@@ -6900,7 +6900,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "data/TEXURE/roof_01.png";
+    "data/TEXTURE/roof_01.png";
    }
   }
   Material {
@@ -6915,7 +6915,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "data/TEXURE/brown_planks_02.png";
+    "data/TEXTURE/brown_planks_02.png";
    }
   }
   Material {
@@ -6924,7 +6924,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "data/TEXURE/Concrete01_Color.png";
+    "data/TEXTURE/Concrete_01_Color.png";
    }
   }
   Material {
@@ -6933,7 +6933,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "data/TEXURE/WoodFloor_02_Color.png";
+    "data/TEXTURE/WoodFloor_02_Color.png";
    }
   }
   Material {
