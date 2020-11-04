@@ -50,6 +50,9 @@ CEnemy::CEnemy(int nPriority) :CScene(nPriority)
     m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nCntFrame = 0;
+	m_nDamageCnt = 0;
+	m_nEnemyLife = 30;
+	m_bHit = false;
 }
 
 //----------------------------------------
@@ -203,8 +206,18 @@ void CEnemy::Update(void)
 	if (m_bChase == false)
 	{
 		//モーションセット(走る)
-		m_pMotion->SetMotion(CMotion::MOTION_RUN);
-
+		if (m_bHit == false)
+		{
+			m_pMotion->SetMotion(CMotion::MOTION_RUN);
+		}
+		if (m_bHit == true)
+		{
+			m_nDamageCnt++;
+			if (m_nDamageCnt % 60 == 0)
+			{
+				m_bHit = false;
+			}
+		}
 		//向いている方向に進む
 		m_pos.x += -sinf(m_rot.y)*0.5f;
 		m_pos.z += -cosf(m_rot.y)*0.5f;
@@ -270,5 +283,16 @@ void CEnemy::Draw(void)
 
 		// モデルクラスの描画処理
 		m_pModel[nCount]->Draw();
+	}
+}
+
+void CEnemy::HitBullet(int nDamage)
+{
+	m_pMotion->SetMotion(CMotion::MOTION_DAMAGE);
+	m_bHit = true;
+	m_nEnemyLife -= nDamage;
+	if (m_nEnemyLife <= 0)
+	{
+		Uninit();
 	}
 }

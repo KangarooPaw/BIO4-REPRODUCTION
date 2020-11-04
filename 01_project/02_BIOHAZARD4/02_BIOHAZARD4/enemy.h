@@ -64,6 +64,7 @@ private:
 	bool m_bHit;
 	int m_nEnemyLife;
 	int m_nCntFrame;
+	int m_nDamageCnt;
 };
 
 #endif
