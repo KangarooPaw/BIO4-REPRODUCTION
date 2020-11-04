@@ -27,6 +27,8 @@ CCamera::CCamera()
 	m_lTheta = 1.0f;
 	m_lPhi = 1.7f;	
 	m_nCount = 0;
+	m_bTurn = false;
+	m_nTurnCnt = 0;
 }
 
 //--------------------------------------
@@ -88,84 +90,97 @@ void CCamera::Update(void)
 		D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
 		//プレイヤーの角度の取得
 		D3DXVECTOR3 pPlayerRot = CGame::GetPlayer()->GetRot();
-		if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false &&
-			pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
+		//ターン中なら
+		if (m_bTurn == true)
 		{
-			//カウントのリセット
-			m_nCount = 0;
-
-			//--------------------------
-			//移動
-			//--------------------------		
-			//左スティックを左に倒す
-			if (pStick.lX <= -500)
+			m_lPhi -= D3DXToRadian(3);
+			m_nTurnCnt++;
+			//ターンの終了
+			if (m_nTurnCnt == 60)
 			{
-				m_lPhi += D3DXToRadian(1);
-			}
-			//左スティックを右に倒す
-			if (pStick.lX >= 500)
-			{
-				m_lPhi -= D3DXToRadian(1);
-			}
-			//左スティックを後ろに倒す//Aボタンを押して反転
-			if (pStick.lY >= 500 && pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
-			{
-				m_lPhi += D3DXToRadian(180);
-			}
-			//注視点
-			m_Distance = CAMERA_GAZE;	//距離
-			posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;
-			posR.y = pPlayerPos.y + GAZE_Y;
-			posR.z = m_Distance*sinf(-pPlayerRot.y) + pPlayerPos.z;
-
-			//視点	
-			m_Distance = CAMERA_VIEW;	//距離
-			posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi)) + posR.x;
-			posV.y = m_Distance*cosf(m_lTheta) + posR.y;
-			posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
-
-			//---------------------------
-			//カメラの角度変更
-			//---------------------------
-			//右スティックを左に倒す
-			if (pStick.lRx <= -500)
-			{
-				m_Distance = CAMERA_GAZE;	//距離
-				posR.x += MOVE;
-			}
-			//右スティックを右に倒す
-			if (pStick.lRx >= 500)
-			{
-				m_Distance = CAMERA_GAZE;	//距離
-				posR.x -= MOVE;
-			}
-			//右スティックを上に倒す
-			if (pStick.lRy <= -500)
-			{
-				posR.y = pPlayerPos.y + GAZE_Y + MOVE;
-			}
-			//右スティックを下に倒す
-			if (pStick.lRy >= 500)
-			{
-				posR.y = pPlayerPos.y + GAZE_Y - MOVE;
+				m_bTurn = false;
+				m_nTurnCnt = 0;
 			}
 		}
-		//LTで銃を構える/LBでナイフを構える
-		else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) ||
-			pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
+		else
 		{
-			//10フレームだけ進める
-			if (m_nCount <= HOLD_FRAME)
+			if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false &&
+				pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
 			{
-				//注視点
-				posR.x += (float)-sin(pPlayerRot.y);
-				posR.z += (float)-cos(pPlayerRot.y);
-				//視点	
-				posV.x += (float)-sin(pPlayerRot.y);
-				posV.z += (float)-cos(pPlayerRot.y);
+				//カウントのリセット
+				m_nCount = 0;
+				//--------------------------
+				//移動
+				//--------------------------		
+				//左スティックを左に倒す
+				if (pStick.lX <= -500)
+				{
+					m_lPhi += D3DXToRadian(2);
+				}
+				//左スティックを右に倒す
+				if (pStick.lX >= 500)
+				{
+					m_lPhi -= D3DXToRadian(2);
+				}
+				//左スティックを後ろに倒す//Aボタンを押して反転
+				if (pStick.lY >= 500 && pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
+				{
+					m_bTurn = true;
+				}
+				//---------------------------
+				//カメラの角度変更
+				//---------------------------
+				//右スティックを左に倒す
+				if (pStick.lRx <= -500)
+				{
+					m_Distance = CAMERA_GAZE;	//距離
+					posR.x += MOVE;
+				}
+				//右スティックを右に倒す
+				if (pStick.lRx >= 500)
+				{
+					m_Distance = CAMERA_GAZE;	//距離
+					posR.x -= MOVE;
+				}
+				//右スティックを上に倒す
+				if (pStick.lRy <= -500)
+				{
+					posR.y = pPlayerPos.y + GAZE_Y + MOVE;
+				}
+				//右スティックを下に倒す
+				if (pStick.lRy >= 500)
+				{
+					posR.y = pPlayerPos.y + GAZE_Y - MOVE;
+				}
 			}
-			m_nCount++;
+			//LTで銃を構える/LBでナイフを構える
+			else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) ||
+				pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
+			{
+				//10フレームだけ進める
+				if (m_nCount <= HOLD_FRAME)
+				{
+					//注視点
+					posR.x += (float)-sin(pPlayerRot.y);
+					posR.z += (float)-cos(pPlayerRot.y);
+					//視点	
+					posV.x += (float)-sin(pPlayerRot.y);
+					posV.z += (float)-cos(pPlayerRot.y);
+				}
+				m_nCount++;
+			}
 		}
+		//注視点
+		m_Distance = CAMERA_GAZE;	//距離
+		posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;
+		posR.y = pPlayerPos.y + GAZE_Y;
+		posR.z = m_Distance*sinf(-pPlayerRot.y) + pPlayerPos.z;
+
+		//視点	
+		m_Distance = CAMERA_VIEW;	//距離
+		posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi)) + posR.x;
+		posV.y = m_Distance*cosf(m_lTheta) + posR.y;
+		posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 		//--------------------------------------
 		//カメラ描画
 		//--------------------------------------
