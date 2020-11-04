@@ -203,23 +203,20 @@ void CPlayer::Update(void)
 		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
 	}
 
+
 	//ナイフモーション中なら
 	if (m_bMotion == true)
 	{
-		//ナイフモーション中なら
-		if (m_bMotion == true)
+		m_nMotionCnt++;
+		//60フレームでリセット
+		if (m_nMotionCnt%60== 0)
 		{
-			m_nMotionCnt++;
-			//70フレームでリセット
-			if (m_nMotionCnt == 60)
-			{
-				m_bMotion = false;
-				m_nMotionCnt = 0;
-			}
+			m_bMotion = false;
+			m_nMotionCnt = 0;
 		}
 	}
 	//ターン中なら
-	else if (m_bTurn == true)
+	if (m_bTurn == true)
 	{
 		m_rot.y += D3DXToRadian(3);
 		m_nTurnCnt++;
@@ -230,7 +227,7 @@ void CPlayer::Update(void)
 			m_nTurnCnt = 0;
 		}
 	}
-	else if (m_bTurn == false && m_bMotion == false)
+	else if (m_bTurn == false )
 	{
 		if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false && pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
 		{
@@ -276,12 +273,12 @@ void CPlayer::Update(void)
 			{
 				//ナイフを構えるモーション
 				m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
-				m_bMotion = true;
+
 			}
 			// Xボタンを押したらナイフを振る
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 			{
-				if (m_bMotion == true)
+				if (m_bMotion == false)
 				{
 					//ナイフを振るモーション			
 					m_pMotion->SetMotion(CMotion::MOTION_SLASH);
@@ -293,6 +290,7 @@ void CPlayer::Update(void)
 						15,
 						10,
 						CBullet::BULLETTYPE_PLAYER);
+					m_bMotion = true;
 				}
 			}
 		}

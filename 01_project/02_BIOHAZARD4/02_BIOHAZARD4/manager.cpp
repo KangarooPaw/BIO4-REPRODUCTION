@@ -29,6 +29,7 @@
 #include "title.h"
 #include "game.h"
 #include "fade.h"
+#include "map.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -206,6 +207,7 @@ void CManager::Draw(void)
 void CManager::LoadAll(void)
 {
 	CUi::Load();
+	CMap::Load();
 	CPolygon::Load();
 	CPlayer::Load();
 	CEnemy::Load();
@@ -221,6 +223,7 @@ void CManager::UnloadAll(void)
 	CEnemy::Unload();
 	CPlayer::Unload();
 	CPolygon::Unload();
+	CMap::Unload();
 	CUi::Unload();
 }
 
