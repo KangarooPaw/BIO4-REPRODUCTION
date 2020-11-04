@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="life.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="motion.cpp" />
     <ClCompile Include="bullet.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="scene3d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="life.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="motion.h" />
     <ClInclude Include="bullet.h" />

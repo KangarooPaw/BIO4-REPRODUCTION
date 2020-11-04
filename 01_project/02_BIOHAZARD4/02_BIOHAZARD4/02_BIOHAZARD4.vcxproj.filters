@@ -129,6 +129,9 @@
     <ClCompile Include="map.cpp">
       <Filter>ソース ファイル\Scene\3D</Filter>
     </ClCompile>
+    <ClCompile Include="life.cpp">
+      <Filter>ソース ファイル\Scene\2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -214,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="map.h">
       <Filter>ヘッダー ファイル\Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="life.h">
+      <Filter>ヘッダー ファイル\Scene\2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

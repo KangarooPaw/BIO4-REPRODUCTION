@@ -109,7 +109,7 @@ HRESULT CMap::Init(void)
 		m_pModel = CModel::Create();
 
 		// モデルのバインド
-		m_pModel->BindModel(m_pMesh, m_pBuffMat, m_nNumMat, 0, m_pTexture);
+		m_pModel->BindModel(m_pMesh, m_pBuffMat, m_nNumMat, 0);
 
 
 	return S_OK;

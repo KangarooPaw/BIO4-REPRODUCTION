@@ -132,7 +132,7 @@ void CBullet::Update(void)
 				if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
 				{
 					// “G‚ğÁ‚·
-					pScene->Uninit();
+					((CEnemy*)pScene)->HitBullet(m_nDamage);
 
 					// ’e‚ğÁ‚·
 					Uninit();

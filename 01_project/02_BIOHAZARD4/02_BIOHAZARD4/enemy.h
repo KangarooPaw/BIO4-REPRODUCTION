@@ -38,6 +38,7 @@ public:
 	void Uninit(void);//I—¹ˆ—
 	void Update(void);//XVˆ—
 	void Draw(void);//•`‰æˆ—
+	void HitBullet(int nDamage);
 
 	void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size) {
 		m_pos = pos; m_rot = rot; m_size = size;
