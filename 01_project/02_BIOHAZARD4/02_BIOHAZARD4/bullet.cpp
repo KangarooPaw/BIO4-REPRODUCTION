@@ -133,6 +133,7 @@ void CBullet::Update(void)
 				{
 					// “G‚ğÁ‚·
 					pScene->Uninit();
+
 					// ’e‚ğÁ‚·
 					Uninit();
 					return;

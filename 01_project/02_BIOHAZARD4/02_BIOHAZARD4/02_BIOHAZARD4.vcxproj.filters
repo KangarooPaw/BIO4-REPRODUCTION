@@ -126,9 +126,6 @@
     <ClCompile Include="motion.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="life.cpp">
-      <Filter>ソース ファイル\Scene\2D</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -211,9 +208,6 @@
     </ClInclude>
     <ClInclude Include="motion.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="life.h">
-      <Filter>ヘッダー ファイル\Scene\2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

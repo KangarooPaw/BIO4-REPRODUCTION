@@ -10,7 +10,7 @@
 //--------------------------------
 //コンストラクタ
 //--------------------------------
-CScene2D::CScene2D(int nPriority) :CScene(nPriority)
+CScene2D::CScene2D(int nPriority):CScene(nPriority)
 {
 	m_pTexture = NULL;
 	m_pVtxBuff = NULL;
@@ -107,6 +107,7 @@ HRESULT CScene2D::Init(void)
 	pVtx += 4;
 	//頂点バッファのアンロック
 	m_pVtxBuff->Unlock();
+
 	return S_OK;
 }
 
@@ -223,6 +224,57 @@ void CScene2D::SetColor(D3DXCOLOR color)
 void CScene2D::SetRotation(D3DXVECTOR3 rot)
 {
 	m_rot = rot;
+    // 変数宣言
+    // 各頂点
+    D3DXVECTOR3 vertex1;
+    D3DXVECTOR3 vertex2;
+    D3DXVECTOR3 vertex3;
+    D3DXVECTOR3 vertex4;
+
+    //==========================================================================================================
+    //画像を、画像の中心を軸に回転させる
+    //左上の頂点
+    vertex1.x = -(sizeX / 2)*cosf(fAngle)
+        - (-(sizeY / 2))*sinf(fAngle);
+    vertex1.y = -(sizeX / 2)*sinf(fAngle)
+        + (-(sizeY / 2))*cosf(fAngle);
+    vertex1.z = 0.0f;
+
+    //右上の頂点
+    vertex2.x = (sizeX / 2)*cosf(fAngle)
+        - (-(sizeY / 2))*sinf(fAngle);
+    vertex2.y = (sizeX / 2)*sinf(fAngle)
+        + (-(sizeY / 2))*cosf(fAngle);
+    vertex2.z = 0.0f;
+
+    //左下の頂点
+    vertex3.x = -(sizeX / 2)*cosf(fAngle)
+        - (sizeY / 2)*sinf(fAngle);
+    vertex3.y = -(sizeX / 2)*sinf(fAngle)
+        + (sizeY / 2)*cosf(fAngle);
+    vertex3.z = 0.0f;
+
+    //右下の頂点
+    vertex4.x = (sizeX / 2)*cosf(fAngle)
+        - (sizeY / 2)*sinf(fAngle);
+    vertex4.y = (sizeX / 2)*sinf(fAngle)
+        + (sizeY / 2)*cosf(fAngle);
+    vertex4.z = 0.0f;
+    //==========================================================================================================
+
+    VERTEX_2D *pVtx = NULL;	// 頂点情報へのポインタ
+
+    // 頂点データの範囲をロックし、頂点バッファへのポインタを取得
+    m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);	// この書式は変えないこと
+
+   // 頂点座標の設定
+    pVtx[0].pos = m_pos + vertex1;
+    pVtx[1].pos = m_pos + vertex2;
+    pVtx[2].pos = m_pos + vertex3;
+    pVtx[3].pos = m_pos + vertex4;
+
+    //頂点データをアンロックする
+    m_pVtxBuff->Unlock();
 }
 
 //--------------------------------
