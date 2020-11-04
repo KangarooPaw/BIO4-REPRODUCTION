@@ -39,7 +39,7 @@ char* CEnemy::m_apFileName[MAX_ENEMY_PARTS] = {
     { "data/MODEL/ENEMY/handRight.x" },    // 右手
 };
 bool CEnemy::m_bChase = false;
-LPDIRECT3DTEXTURE9 CEnemy::m_pTexture[MAX_ENEMY_PARTS] = {};
+LPDIRECT3DTEXTURE9 CEnemy::m_pTexture[MAX_ENEMY_PARTS][MAX_MATERIAL] = {};
 
 //----------------------------------------
 //インクリメント
@@ -94,12 +94,9 @@ HRESULT CEnemy::Load(void)
             &m_nNumMat[nCount],
             &m_pMesh[nCount]
         );
-
-		D3DXCreateTextureFromFile(pDevice,
-			m_apFileName[nCount],
-			&m_pTexture[nCount]);
     }
 
+	LoadTexture();
     return E_NOTIMPL;
 }
 
@@ -133,6 +130,38 @@ void CEnemy::Unload(void)
 }
 
 //----------------------------------------
+// テクスチャの読み込み
+//----------------------------------------
+HRESULT CEnemy::LoadTexture(void)
+{
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
+	{
+		// マテリアル情報を取り出す
+		D3DXMATERIAL* pMat = (D3DXMATERIAL*)m_pBuffMat[nCount]->GetBufferPointer();
+		for (int nCntMat = 0; nCntMat < (signed)m_nNumMat[nCount]; nCntMat++)
+		{
+			// 使用しているテクスチャがあれば読み込む
+			if (pMat[nCntMat].pTextureFilename != NULL)
+			{
+				// テクスチャ読み込み
+				if (FAILED(D3DXCreateTextureFromFile(
+					pDevice,
+					pMat[nCntMat].pTextureFilename,
+					&m_pTexture[nCount][nCntMat])))
+				{
+					return E_FAIL;
+				}
+			}
+		}
+	}
+
+	return E_NOTIMPL;
+}
+
+
+//----------------------------------------
 //初期化処理
 //----------------------------------------
 HRESULT CEnemy::Init(void)
@@ -160,8 +189,14 @@ HRESULT CEnemy::Init(void)
 		// モデルのパーツごとの座標と回転を受け取る
 		m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
 
+		for (int nCntMat = 0; nCntMat < (signed)m_nNumMat[nCount]; nCntMat++)
+		{
+			// テクスチャのバインド
+			m_pModel[nCount]->BindTexture(m_pTexture[nCount][nCntMat], nCntMat);
+		}
+
 		// モデルのバインド
-		m_pModel[nCount]->BindModel(m_pMesh[nCount], m_pBuffMat[nCount], m_nNumMat[nCount], m_nldxModelParent[nCount], m_pTexture[nCount]);
+		m_pModel[nCount]->BindModel(m_pMesh[nCount], m_pBuffMat[nCount], m_nNumMat[nCount], m_nldxModelParent[nCount]);
 	}
 
 	// 座標、回転、サイズのセット
@@ -185,12 +220,14 @@ void CEnemy::Uninit(void)
 			m_pModel[nCount] = NULL;
 		}
 	}
+
 	if (m_pMotion != NULL)
 	{
 		// モーションクラスの終了処理
 		m_pMotion->Uninit();
 		m_pMotion = NULL;
 	}
+
 	Release();
 }
 

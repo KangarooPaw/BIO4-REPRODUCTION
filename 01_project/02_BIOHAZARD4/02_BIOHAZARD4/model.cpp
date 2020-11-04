@@ -23,6 +23,8 @@ CModel::CModel()
 	memset(m_mtxWorld, 0, sizeof(m_mtxWorld));
 	m_nldxModelParent = 0;
 
+	memset(m_pTexture, 0, sizeof(m_pTexture));
+
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -144,11 +146,13 @@ void CModel::Draw(void)
 	//現在のマテリアルを取得する
 	pDevice->GetMaterial(&matDef);
 
+	
+
 	for (int nCntMat = 0; nCntMat < (int)m_nNumMat; nCntMat++)
 	{
 		//マテリアルの設定
 		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
-		pDevice->SetTexture(0, m_pTexture);
+		pDevice->SetTexture(0, m_pTexture[nCntMat]);
 
 		pMat[nCntMat].MatD3D.Ambient = pMat[nCntMat].MatD3D.Diffuse;
 
@@ -167,14 +171,21 @@ void CModel::Draw(void)
 //=============================================================================
 // モデルのテクスチャ設定
 //=============================================================================
-void CModel::BindModel(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD nNumMat, int nldxModelParent, LPDIRECT3DTEXTURE9 Texture)
+void CModel::BindModel(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD nNumMat, int nldxModelParent)
 {
 	// メッシュ、マテリアル情報のポインタ、マテリアル情報の数、親モデルのインデックスのバインド、テクスチャの情報
 	m_pMesh = pMesh;
 	m_pBuffMat = pBuffMat;
 	m_nNumMat = nNumMat;
 	m_nldxModelParent = nldxModelParent;
-	m_pTexture = Texture;
+}
+
+//=============================================================================
+// モデルのテクスチャ設定
+//=============================================================================
+void CModel::BindTexture(LPDIRECT3DTEXTURE9 Texture, int nCount)
+{
+	m_pTexture[nCount] = Texture;
 }
 
 //=============================================================================

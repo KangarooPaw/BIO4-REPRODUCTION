@@ -72,10 +72,10 @@ HRESULT CScene3d::Init(void)
 	pVtx[3].nor = D3DXVECTOR3(0, 1, 0);
 
 	//カラーの設定
-	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 0);
-	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 0);
-	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 0);
-	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 0);
+	pVtx[0].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[1].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[2].col = D3DCOLOR_RGBA(255, 255, 255, 255);
+	pVtx[3].col = D3DCOLOR_RGBA(255, 255, 255, 255);
 
 	//テクスチャ座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);

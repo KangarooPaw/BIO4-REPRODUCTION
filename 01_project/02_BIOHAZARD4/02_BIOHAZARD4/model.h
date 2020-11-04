@@ -21,7 +21,8 @@ public:
 	void Draw(void);
 
 	void BindModel(LPD3DXMESH pMesh, LPD3DXBUFFER pBuffMat, DWORD nNumMat, 
-		int nldxModelParent, LPDIRECT3DTEXTURE9 Texture);
+		int nldxModelParent);
+	void BindTexture(LPDIRECT3DTEXTURE9 Texture, int nCount);
 	void SetModel(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);
 
 	void SetParent(CModel *cmodel);
@@ -37,8 +38,7 @@ private:
 	DWORD m_nNumMat;		 // マテリアル情報の数
 	D3DXMATRIX m_mtxWorld;	 // 行列計算用
 	int m_nldxModelParent;	 // 親モデルのインデックス
-
-	LPDIRECT3DTEXTURE9 m_pTexture; // テクスチャの情報
+	LPDIRECT3DTEXTURE9 m_pTexture[50]; // テクスチャの情報
 
 	D3DXVECTOR3 m_pos;		 // 位置
 	D3DXVECTOR3 m_rot;		 // 角度
