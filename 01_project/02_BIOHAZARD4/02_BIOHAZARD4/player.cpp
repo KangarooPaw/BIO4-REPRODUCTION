@@ -9,6 +9,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "joystick.h"
+#include "keyboard.h"
 #include "player.h"
 #include "bullet.h"
 #include "motion.h"
@@ -47,10 +48,17 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	m_bulletRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	
+	m_bulletRotX = 0;
+	m_bulletRotY = 0;
+
+	m_nMotionCnt = 0;
+	m_nTurnCnt = 0;	
+
 	m_bMotion = false;
 	m_bTurn = false;
-	m_nMotionCnt = 0;
-	m_nTurnCnt = 0;
+
 	m_pMotion = NULL;
 	memset(m_pModel, NULL, sizeof(m_pModel));
 }
@@ -133,6 +141,7 @@ void CPlayer::Unload(void)
 //----------------------------------------
 HRESULT CPlayer::LoadTexture(void)
 {
+	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
@@ -226,11 +235,12 @@ void CPlayer::Update(void)
 	// モーションの更新処理
 	m_pMotion->UpdateMotion();
 
+	//キーボードの取得処理
+	CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
 	//コントローラーの取得処理
 	DIJOYSTATE pStick;
 	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
 	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
-
 	if (pJoystickDevice != NULL)
 	{
 		pJoystickDevice->Poll();
@@ -244,7 +254,7 @@ void CPlayer::Update(void)
 		if (m_bMotion == true)
 		{
 			m_nMotionCnt++;
-			//70フレームでリセット
+			//60フレームでリセット
 			if (m_nMotionCnt == 60)
 			{
 				m_bMotion = false;
@@ -252,8 +262,9 @@ void CPlayer::Update(void)
 			}
 		}
 	}
+
 	//ターン中なら
-	else if (m_bTurn == true)
+	if (m_bTurn == true)
 	{
 		m_rot.y += D3DXToRadian(3);
 		m_nTurnCnt++;
@@ -264,25 +275,28 @@ void CPlayer::Update(void)
 			m_nTurnCnt = 0;
 		}
 	}
-	else if (m_bTurn == false && m_bMotion == false)
+	//ターンしてないなら
+	else if (m_bTurn == false)
 	{
-		if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false && pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
+		//LB/LTを押していないなら
+		if ((pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false && pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false))
 		{
 			//通常モーション
 			m_pMotion->SetMotion(CMotion::MOTION_IDLE);
 			//--------------------------
 			//移動
 			//--------------------------
+			//左スティックを左に倒す
 			if (pStick.lX <= -500)
 			{
 				m_rot.y -= D3DXToRadian(2);
 			}
-			//左スティックを右に倒す	
+			//左スティックを右に倒す
 			if (pStick.lX >= 500)
 			{
 				m_rot.y += D3DXToRadian(2);
 			}
-			//左スティックを前に倒す	
+			//左スティックを前に倒す
 			if (pStick.lY <= -500)
 			{
 				//走るモーション
@@ -293,6 +307,7 @@ void CPlayer::Update(void)
 			//左スティックを後ろに倒す
 			if (pStick.lY >= 500)
 			{
+				//戻るモーション
 				m_pMotion->SetMotion(CMotion::MOTION_BACK);
 				m_pos.x += sinf(m_rot.y)*0.5f;
 				m_pos.z += cosf(m_rot.y)*0.5f;
@@ -302,6 +317,13 @@ void CPlayer::Update(void)
 					m_bTurn = true;
 				}
 			}
+
+			//弾の角度をプレイヤーの角度と同じにする
+			m_bulletRot = m_rot;
+
+			//弾の角度変更数のカウントのリセット
+			m_bulletRotX = 0;
+			m_bulletRotY = 0;
 		}
 		//LBを押している場合
 		else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
@@ -312,6 +334,48 @@ void CPlayer::Update(void)
 				m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
 				m_bMotion = true;
 			}
+
+			//右スティックを左に倒す
+			if (pStick.lRx <= -500)
+			{
+				m_bulletRot.y += D3DXToRadian(1);
+				m_bulletRotY++;
+				if (m_bulletRotY >= 10)
+				{
+					m_bulletRot.y -= D3DXToRadian(1);
+				}
+			}
+			//右スティックを右に倒す
+			if (pStick.lRx >= 500)
+			{
+				m_bulletRot.y -= D3DXToRadian(1);
+				m_bulletRotY--;
+				if (m_bulletRotY <= 10)
+				{
+					m_bulletRot.y += D3DXToRadian(1);
+				}
+			}
+			//右スティックを上に倒す
+			if (pStick.lRy <= -500)
+			{
+				m_bulletRot.x += D3DXToRadian(1);
+				m_bulletRotX++;
+				if (m_bulletRotX >= 10)
+				{
+					m_bulletRot.x -= D3DXToRadian(1);
+				}
+			}
+			//右スティックを下に倒す
+			if (pStick.lRy >= 500)
+			{
+				m_bulletRot.x -= D3DXToRadian(1);
+				m_bulletRotX--;
+				if (m_bulletRotX >= 10)
+				{
+					m_bulletRot.x += D3DXToRadian(1);
+				}
+			}
+
 			// Xボタンを押したらナイフを振る
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 			{
@@ -321,7 +385,7 @@ void CPlayer::Update(void)
 					m_pMotion->SetMotion(CMotion::MOTION_SLASH);
 					//弾の生成
 					CBullet::Create(
-						D3DXVECTOR3(m_pos.x + cosf(m_rot.y) - 10.0f, m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y) - 10.0f),
+						D3DXVECTOR3(m_pos.x + cosf(m_bulletRot.y) - 25.0f, m_pos.y + 20.0f, m_pos.z + sinf(m_bulletRot.y) - 25.0f),
 						D3DXVECTOR3(5.0f, 0.0f, 5.0f),
 						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 						15,
@@ -336,6 +400,47 @@ void CPlayer::Update(void)
 			//銃を構えるモーション
 			m_pMotion->SetMotion(CMotion::MOTION_HOLDGUN);
 
+			//右スティックを左に倒す
+			if (pStick.lX <= -500)
+			{
+				m_bulletRot.y += D3DXToRadian(1);
+				m_bulletRotY++;
+				if (m_bulletRotY >= 20)
+				{
+					m_bulletRot.y -= D3DXToRadian(1);
+				}
+			}
+			//右スティックを右に倒す
+			if (pStick.lRx >= 500)
+			{
+				m_bulletRot.y -= D3DXToRadian(1);
+				m_bulletRotY--;
+				if (m_bulletRotY <= 20)
+				{
+					m_bulletRot.y += D3DXToRadian(1);
+				}
+			}
+			//右スティックを上に倒す
+			if (pStick.lRy <= -500)
+			{
+				m_bulletRot.x += D3DXToRadian(1);
+				m_bulletRotX++;
+				if (m_bulletRotX >= 20)
+				{
+					m_bulletRot.x -= D3DXToRadian(1);
+				}
+			}
+			//右スティックを下に倒す
+			if (pStick.lRy >= 500)
+			{
+				m_bulletRot.x -= D3DXToRadian(1);
+				m_bulletRotX--;
+				if (m_bulletRotX >= 20)
+				{
+					m_bulletRot.x += D3DXToRadian(1);
+				}
+			}
+
 			// Xボタンを押したら弾を発射
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 			{
@@ -343,7 +448,7 @@ void CPlayer::Update(void)
 				CBullet::Create(
 					D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)),
 					D3DXVECTOR3(5.0f, 0.0f, 5.0f),
-					D3DXVECTOR3(-sinf(m_rot.y)*5.0f, 0, -cosf(m_rot.y)*5.0f),
+					D3DXVECTOR3(-sinf(m_bulletRot.y)*5.0f, sinf(m_bulletRot.x), -cosf(m_bulletRot.y)*5.0f),
 					100,
 					10,
 					CBullet::BULLETTYPE_PLAYER);
@@ -352,6 +457,7 @@ void CPlayer::Update(void)
 			}
 		}
 	}
+
 	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
 	{
 		// モデルのパーツごとの座標と回転を受け取る

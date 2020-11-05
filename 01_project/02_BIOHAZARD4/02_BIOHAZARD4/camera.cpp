@@ -101,6 +101,17 @@ void CCamera::Update(void)
 				m_bTurn = false;
 				m_nTurnCnt = 0;
 			}
+			//注視点
+			m_Distance = CAMERA_GAZE;	//距離
+			posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;
+			posR.y = pPlayerPos.y + GAZE_Y;
+			posR.z = m_Distance*sinf(-pPlayerRot.y) + pPlayerPos.z;
+
+			//視点	
+			m_Distance = CAMERA_VIEW;	//距離
+			posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi)) + posR.x;
+			posV.y = m_Distance*cosf(m_lTheta) + posR.y;
+			posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 		}
 		else
 		{
@@ -127,6 +138,17 @@ void CCamera::Update(void)
 				{
 					m_bTurn = true;
 				}
+				//注視点
+				m_Distance = CAMERA_GAZE;	//距離
+				posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;
+				posR.y = pPlayerPos.y + GAZE_Y;
+				posR.z = m_Distance*sinf(-pPlayerRot.y) + pPlayerPos.z;
+
+				//視点	
+				m_Distance = CAMERA_VIEW;	//距離
+				posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi)) + posR.x;
+				posV.y = m_Distance*cosf(m_lTheta) + posR.y;
+				posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 				//---------------------------
 				//カメラの角度変更
 				//---------------------------
@@ -170,17 +192,6 @@ void CCamera::Update(void)
 				m_nCount++;
 			}
 		}
-		//注視点
-		m_Distance = CAMERA_GAZE;	//距離
-		posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;
-		posR.y = pPlayerPos.y + GAZE_Y;
-		posR.z = m_Distance*sinf(-pPlayerRot.y) + pPlayerPos.z;
-
-		//視点	
-		m_Distance = CAMERA_VIEW;	//距離
-		posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi)) + posR.x;
-		posV.y = m_Distance*cosf(m_lTheta) + posR.y;
-		posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 
 		//--------------------------------------
 		//カメラ描画

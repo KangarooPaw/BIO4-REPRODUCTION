@@ -64,12 +64,18 @@ private:
 	D3DXVECTOR3 m_pos;					// 場所
 	D3DXVECTOR3 m_rot;					// 角度
 	D3DXVECTOR3 m_size;					// 大きさ
+
+	D3DXVECTOR3 m_bulletRot;			// 弾の角度
+	int m_bulletRotX;					// 弾の角度(X)変更数のカウント
+	int m_bulletRotY;					// 弾の角度(Y)変更数のカウント
+
 	CMotion *m_pMotion;					// モーションクラスのポインタ
 	CModel *m_pModel[MAX_PLAYER_PARTS]; // モデルクラスのポインタ
-	int m_nMotionCnt;
-	int m_nTurnCnt;
-	bool m_bMotion;
-	bool m_bTurn;
+
+	int m_nMotionCnt;					// モーションのカウント
+	int m_nTurnCnt;						// ターンのカウント
+	bool m_bMotion;						// モーションの判定
+	bool m_bTurn;						// ターンの判定
 };
 
 #endif

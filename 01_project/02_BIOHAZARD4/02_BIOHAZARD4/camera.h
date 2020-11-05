@@ -27,8 +27,8 @@ private:
 	float m_lTheta;			//シータ
 	float m_lPhi;			//ファイ
 	int m_nCount;			//構えのカウント
-	int m_nTurnCnt;
-	bool m_bTurn;
+	int m_nTurnCnt;			//ターンのカウント
+	bool m_bTurn;			//ターンの判定
 };
 
 #endif

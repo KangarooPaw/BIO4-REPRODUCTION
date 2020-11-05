@@ -12,7 +12,6 @@
 #include "manager.h"
 #include "keyboard.h"
 #include "joystick.h"
-#include "time.h"
 //#include "sound.h"
 #include "ui.h"
 #include "mode.h"
@@ -37,7 +36,7 @@ CTitle::~CTitle()
 HRESULT CTitle::Init(void)
 {
 	//ゲームタイトルのUIの生成
-	CUi::Create(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f), D3DXVECTOR3(800.0f, 420.0f, 0.0f)/*, CUi::UI_TYPE_TITLE*/);
+	CUi::Create(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f), D3DXVECTOR3(800.0f, 420.0f, 0.0f));
 
 	return S_OK;
 }
@@ -58,9 +57,11 @@ void CTitle::Update(void)
 {
 	if (CScene::GetUpdateStop() == false)
 	{
+
+		//Enterキー または Bボタンを押したとき
 		if (CManager::GetInputKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetInputJoystick()->GetJoystickTrigger(CInputJoystick::BUTTON_B))
-		{ //Enterキー または Bボタンを押したとき
-		  //フェードの生成
+		{ 
+			//フェードの生成
 			CManager::CreateFade(CManager::MODE_TUTORIAL);
 		}
 	}
@@ -71,4 +72,5 @@ void CTitle::Update(void)
 //*****************************************************************************
 void CTitle::Draw(void)
 {
+
 }
