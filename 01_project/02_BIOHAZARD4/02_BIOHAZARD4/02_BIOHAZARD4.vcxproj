@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="billboard.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="motion.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="model_hierarchy.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="result.cpp" />
+    <ClCompile Include="reticle.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="UI.cpp" />
@@ -176,6 +178,7 @@
     <ClCompile Include="scene3d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="billboard.h" />
     <ClInclude Include="life.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="motion.h" />
@@ -196,6 +199,7 @@
     <ClInclude Include="model_hierarchy.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="result.h" />
+    <ClInclude Include="reticle.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="ui.h" />
