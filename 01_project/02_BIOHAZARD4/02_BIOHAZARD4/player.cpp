@@ -45,17 +45,17 @@ LPDIRECT3DTEXTURE9 CPlayer::m_pTexture[MAX_PLAYER_PARTS][MAX_MATERIAL] = {};
 //----------------------------------------
 CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 {
+	//プレイヤー
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-
+	//弾
 	m_bulletRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	
 	m_bulletRotX = 0;
 	m_bulletRotY = 0;
-
+	//モーション
 	m_nMotionCnt = 0;
 	m_nTurnCnt = 0;	
-
 	m_bMotion = false;
 	m_bTurn = false;
 
@@ -103,7 +103,7 @@ HRESULT CPlayer::Load(void)
 			&m_pMesh[nCount]
 		);
 	}
-
+	//テクスチャの読み込み
 	LoadTexture();
 	return E_NOTIMPL;
 }
@@ -338,21 +338,23 @@ void CPlayer::Update(void)
 			//右スティックを左に倒す
 			if (pStick.lRx <= -500)
 			{
-				m_bulletRot.y += D3DXToRadian(1);
-				m_bulletRotY++;
-				if (m_bulletRotY >= 10)
+				m_bulletRot.y -= D3DXToRadian(1);
+				m_bulletRotY--;
+				if (m_bulletRotY <= MIN_BULLET_ROT_Y)
 				{
-					m_bulletRot.y -= D3DXToRadian(1);
+					m_bulletRot.y += D3DXToRadian(1);
+					m_bulletRotY = MIN_BULLET_ROT_Y;
 				}
 			}
 			//右スティックを右に倒す
 			if (pStick.lRx >= 500)
 			{
-				m_bulletRot.y -= D3DXToRadian(1);
-				m_bulletRotY--;
-				if (m_bulletRotY <= 10)
+				m_bulletRot.y += D3DXToRadian(1);
+				m_bulletRotY++;
+				if (m_bulletRotY >= MAX_BULLET_ROT_Y)
 				{
-					m_bulletRot.y += D3DXToRadian(1);
+					m_bulletRot.y -= D3DXToRadian(1);
+					m_bulletRotY = MAX_BULLET_ROT_Y;
 				}
 			}
 			//右スティックを上に倒す
@@ -360,9 +362,11 @@ void CPlayer::Update(void)
 			{
 				m_bulletRot.x += D3DXToRadian(1);
 				m_bulletRotX++;
-				if (m_bulletRotX >= 10)
+				if (m_bulletRotX >= MAX_BULLET_ROT_X)
 				{
 					m_bulletRot.x -= D3DXToRadian(1);
+					m_bulletRotX = MAX_BULLET_ROT_X;
+
 				}
 			}
 			//右スティックを下に倒す
@@ -370,9 +374,10 @@ void CPlayer::Update(void)
 			{
 				m_bulletRot.x -= D3DXToRadian(1);
 				m_bulletRotX--;
-				if (m_bulletRotX >= 10)
+				if (m_bulletRotX <= MIN_BULLET_ROT_X)
 				{
 					m_bulletRot.x += D3DXToRadian(1);
+					m_bulletRotX = MIN_BULLET_ROT_X;
 				}
 			}
 
@@ -388,7 +393,7 @@ void CPlayer::Update(void)
 						D3DXVECTOR3(m_pos.x + cosf(m_bulletRot.y) - 25.0f, m_pos.y + 20.0f, m_pos.z + sinf(m_bulletRot.y) - 25.0f),
 						D3DXVECTOR3(5.0f, 0.0f, 5.0f),
 						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-						15,
+						5,
 						10,
 						CBullet::BULLETTYPE_PLAYER);
 				}
@@ -401,23 +406,25 @@ void CPlayer::Update(void)
 			m_pMotion->SetMotion(CMotion::MOTION_HOLDGUN);
 
 			//右スティックを左に倒す
-			if (pStick.lX <= -500)
+			if (pStick.lRx <= -500)
 			{
-				m_bulletRot.y += D3DXToRadian(1);
-				m_bulletRotY++;
-				if (m_bulletRotY >= 20)
+				m_bulletRot.y -= D3DXToRadian(1);
+				m_bulletRotY--;
+				if (m_bulletRotY <= MIN_BULLET_ROT_Y)
 				{
-					m_bulletRot.y -= D3DXToRadian(1);
+					m_bulletRot.y += D3DXToRadian(1);
+					m_bulletRotY = MIN_BULLET_ROT_Y;
 				}
 			}
 			//右スティックを右に倒す
 			if (pStick.lRx >= 500)
 			{
-				m_bulletRot.y -= D3DXToRadian(1);
-				m_bulletRotY--;
-				if (m_bulletRotY <= 20)
+				m_bulletRot.y += D3DXToRadian(1);
+				m_bulletRotY++;
+				if (m_bulletRotY >= MAX_BULLET_ROT_Y)
 				{
-					m_bulletRot.y += D3DXToRadian(1);
+					m_bulletRot.y -= D3DXToRadian(1);
+					m_bulletRotY = MAX_BULLET_ROT_Y;
 				}
 			}
 			//右スティックを上に倒す
@@ -425,9 +432,11 @@ void CPlayer::Update(void)
 			{
 				m_bulletRot.x += D3DXToRadian(1);
 				m_bulletRotX++;
-				if (m_bulletRotX >= 20)
+				if (m_bulletRotX >= MAX_BULLET_ROT_X)
 				{
 					m_bulletRot.x -= D3DXToRadian(1);
+					m_bulletRotX = MAX_BULLET_ROT_X;
+
 				}
 			}
 			//右スティックを下に倒す
@@ -435,9 +444,10 @@ void CPlayer::Update(void)
 			{
 				m_bulletRot.x -= D3DXToRadian(1);
 				m_bulletRotX--;
-				if (m_bulletRotX >= 20)
+				if (m_bulletRotX <= MIN_BULLET_ROT_X)
 				{
 					m_bulletRot.x += D3DXToRadian(1);
+					m_bulletRotX = MIN_BULLET_ROT_X;
 				}
 			}
 
