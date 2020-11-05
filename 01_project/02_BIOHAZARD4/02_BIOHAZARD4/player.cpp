@@ -14,7 +14,7 @@
 #include "bullet.h"
 #include "motion.h"
 #include "model.h"
-
+#include "reticle.h"
 //----------------------------------------
 //静的メンバ変数
 //----------------------------------------
@@ -404,7 +404,7 @@ void CPlayer::Update(void)
 		{
 			//銃を構えるモーション
 			m_pMotion->SetMotion(CMotion::MOTION_HOLDGUN);
-
+			CReticle::Create(m_pos, D3DXVECTOR3(RETICLE_SIZE_X / 2, RETICLE_SIZE_Y / 2, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
 			//右スティックを左に倒す
 			if (pStick.lRx <= -500)
 			{

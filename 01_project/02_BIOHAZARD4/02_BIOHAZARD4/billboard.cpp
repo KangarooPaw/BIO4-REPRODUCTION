@@ -25,7 +25,7 @@ CBillboard::~CBillboard()
 //---------------------------------------------
 //@‰Šú‰»
 //---------------------------------------------
-HRESULT CBillboard::Init(D3DXVECTOR3 pos)
+HRESULT CBillboard::Init()
 {
 	//ƒŒƒ“ƒ_ƒ‰[Žæ“¾
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
