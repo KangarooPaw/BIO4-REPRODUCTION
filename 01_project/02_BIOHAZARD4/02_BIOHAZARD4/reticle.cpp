@@ -148,11 +148,10 @@ void CReticle::Update(void)
 		Uninit();
 		return;
 	}
-	// 位置更新
+
 	m_pos.x = pos.x;
 	m_pos.y = pos.y + 10;
 	m_pos.z = pos.z;
-
 	// カラー設定
 	SetColor(m_col);
 

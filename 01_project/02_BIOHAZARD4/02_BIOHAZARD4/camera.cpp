@@ -53,6 +53,8 @@ void CCamera::Init(void)
 	m_lTheta = 1.0f;
 	m_lPhi = 1.7f;
 	m_nCount = 0;
+	m_RotX = 0;
+	m_RotY = 0;
 }
 
 //--------------------------------------
@@ -120,6 +122,8 @@ void CCamera::Update(void)
 			{
 				//カウントのリセット
 				m_nCount = 0;
+				m_RotX = 0;
+				m_RotY = 0;
 				//--------------------------
 				//移動
 				//--------------------------		
@@ -174,11 +178,56 @@ void CCamera::Update(void)
 				{
 					posR.y = pPlayerPos.y + GAZE_Y - MOVE;
 				}
+				m_rotY = pPlayerRot.y;
 			}
 			//LTで銃を構える/LBでナイフを構える
 			else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) ||
 				pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
 			{
+				//右スティックを左に倒す
+				if (pStick.lRx <= -500)
+				{
+					posR.x += D3DXToRadian(1);
+					m_RotX++;
+					if (m_RotX >= MAX_ROT_Y)
+					{
+						posR.x -= MOVE;
+						m_RotX = MAX_ROT_Y;
+					}
+				}
+				//右スティックを右に倒す
+				if (pStick.lRx >= 500)
+				{
+					posR.x -= D3DXToRadian(1);
+					m_RotX--;
+					if (m_RotX <= MIN_ROT_Y)
+					{
+						posR.x += MOVE;
+						m_RotX = MIN_ROT_Y;
+					}
+				}
+				//右スティックを上に倒す
+				if (pStick.lRy <= -500)
+				{
+					posR.y += D3DXToRadian(1);
+					m_RotY++;
+					if (m_RotY >= MAX_ROT_X)
+					{
+						posR.y -= MOVE;
+						m_RotY = MAX_ROT_X;
+					}
+				}
+				//右スティックを下に倒す
+				if (pStick.lRy >= 500)
+				{
+					posR.y -= D3DXToRadian(1);
+					m_RotY--;
+					if (m_RotY <= MIN_ROT_X)
+					{
+						posR.y += MOVE;
+						m_RotY = MIN_ROT_X;
+					}
+				}
 				//10フレームだけ進める
 				if (m_nCount <= HOLD_FRAME)
 				{

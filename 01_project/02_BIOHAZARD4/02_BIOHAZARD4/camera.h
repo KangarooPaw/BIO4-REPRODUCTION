@@ -8,6 +8,11 @@
 #define CAMERA_VIEW	(25)
 #define MOVE		(15.0f)
 #define HOLD_FRAME	(10)
+#define MAX_ROT_Y	(20)
+#define MIN_ROT_Y	(-20)
+#define MAX_ROT_X	(15)
+#define MIN_ROT_X	(-15)
+
 class CCamera
 {
 public:
@@ -29,6 +34,9 @@ private:
 	int m_nCount;			//構えのカウント
 	int m_nTurnCnt;			//ターンのカウント
 	bool m_bTurn;			//ターンの判定
+	float m_rotY;
+	int m_RotX;
+	int m_RotY;
 };
 
 #endif

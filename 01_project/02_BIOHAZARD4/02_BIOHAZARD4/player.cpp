@@ -58,6 +58,7 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_nTurnCnt = 0;	
 	m_bMotion = false;
 	m_bTurn = false;
+	m_bHold = false;
 
 	m_pMotion = NULL;
 	memset(m_pModel, NULL, sizeof(m_pModel));
@@ -324,6 +325,7 @@ void CPlayer::Update(void)
 			//弾の角度変更数のカウントのリセット
 			m_bulletRotX = 0;
 			m_bulletRotY = 0;
+			m_bHold = false;
 		}
 		//LBを押している場合
 		else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
@@ -404,7 +406,13 @@ void CPlayer::Update(void)
 		{
 			//銃を構えるモーション
 			m_pMotion->SetMotion(CMotion::MOTION_HOLDGUN);
-			CReticle::Create(m_pos, D3DXVECTOR3(RETICLE_SIZE_X / 2, RETICLE_SIZE_Y / 2, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+
+			if (m_bHold == false)
+			{
+				CReticle::Create(m_pos, D3DXVECTOR3(RETICLE_SIZE_X / 2, RETICLE_SIZE_Y / 2, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+				m_bHold = true;
+			}
+
 			//右スティックを左に倒す
 			if (pStick.lRx <= -500)
 			{
@@ -450,7 +458,6 @@ void CPlayer::Update(void)
 					m_bulletRotX = MIN_BULLET_ROT_X;
 				}
 			}
-
 			// Xボタンを押したら弾を発射
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 			{
