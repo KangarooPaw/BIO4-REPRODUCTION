@@ -191,7 +191,7 @@ void CCamera::Update(void)
 					m_RotX++;
 					if (m_RotX >= MAX_ROT_Y)
 					{
-						posR.x -= MOVE;
+						posR.x -= D3DXToRadian(1);
 						m_RotX = MAX_ROT_Y;
 					}
 				}
@@ -202,7 +202,7 @@ void CCamera::Update(void)
 					m_RotX--;
 					if (m_RotX <= MIN_ROT_Y)
 					{
-						posR.x += MOVE;
+						posR.x += D3DXToRadian(1);
 						m_RotX = MIN_ROT_Y;
 					}
 				}
@@ -213,7 +213,7 @@ void CCamera::Update(void)
 					m_RotY++;
 					if (m_RotY >= MAX_ROT_X)
 					{
-						posR.y -= MOVE;
+						posR.y -= D3DXToRadian(1);
 						m_RotY = MAX_ROT_X;
 					}
 				}
@@ -224,7 +224,7 @@ void CCamera::Update(void)
 					m_RotY--;
 					if (m_RotY <= MIN_ROT_X)
 					{
-						posR.y += MOVE;
+						posR.y += D3DXToRadian(1);
 						m_RotY = MIN_ROT_X;
 					}
 				}

@@ -11,6 +11,7 @@
 #include "joystick.h"
 #include "keyboard.h"
 #include "player.h"
+#include "enemy.h"
 #include "bullet.h"
 #include "motion.h"
 #include "model.h"
@@ -392,7 +393,7 @@ void CPlayer::Update(void)
 					m_pMotion->SetMotion(CMotion::MOTION_SLASH);
 					//’e‚Ì¶¬
 					CBullet::Create(
-						D3DXVECTOR3(m_pos.x + cosf(m_bulletRot.y) - 25.0f, m_pos.y + 20.0f, m_pos.z + sinf(m_bulletRot.y) - 25.0f),
+						D3DXVECTOR3(m_pos.x + cosf(m_bulletRot.y) + 25.0f, m_pos.y + 20.0f, m_pos.z + sinf(m_bulletRot.y) - 25.0f),
 						D3DXVECTOR3(5.0f, 0.0f, 5.0f),
 						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 						5,
@@ -471,6 +472,7 @@ void CPlayer::Update(void)
 					CBullet::BULLETTYPE_PLAYER);
 				//ŽËŒ‚ƒ‚[ƒVƒ‡ƒ“
 				m_pMotion->SetMotion(CMotion::MOTION_SHOT);
+				CEnemy::SetChase(true);
 			}
 		}
 	}

@@ -40,6 +40,7 @@ public:
 	void Draw(void);//ï`âÊèàóù
 	void HitBullet(int nDamage);
 
+	static void SetChase(bool bChase);
 	void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size) {
 		m_pos = pos; m_rot = rot; m_size = size;
 		SetObjType(OBJTYPE_ENEMY);
