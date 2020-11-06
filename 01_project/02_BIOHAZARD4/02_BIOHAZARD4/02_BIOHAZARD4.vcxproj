@@ -36,7 +36,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -81,6 +81,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -146,7 +148,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="billboard.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="motion.cpp" />
@@ -167,7 +168,6 @@
     <ClCompile Include="model_hierarchy.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="result.cpp" />
-    <ClCompile Include="reticle.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="UI.cpp" />
@@ -178,7 +178,6 @@
     <ClCompile Include="scene3d.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="billboard.h" />
     <ClInclude Include="life.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="motion.h" />
@@ -199,7 +198,6 @@
     <ClInclude Include="model_hierarchy.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="result.h" />
-    <ClInclude Include="reticle.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="ui.h" />

@@ -12,7 +12,10 @@ public:
 	void Uninit(void);						//I—¹ˆ—
 	void Update(void);						//XVˆ—
 	void Draw(void);						//•`‰æˆ—
+
+#ifdef _DEBUG
 	void SetNumFPS(int nCountFPS) { m_nCountFPS = nCountFPS; }
+#endif
 
 	LPDIRECT3DDEVICE9 GetDevice(void) { return m_pD3DDevice; }
 private:

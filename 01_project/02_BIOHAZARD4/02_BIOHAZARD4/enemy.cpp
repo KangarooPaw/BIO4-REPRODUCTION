@@ -96,7 +96,9 @@ HRESULT CEnemy::Load(void)
         );
     }
 
+	// テクスチャの読み込み
 	LoadTexture();
+
     return E_NOTIMPL;
 }
 

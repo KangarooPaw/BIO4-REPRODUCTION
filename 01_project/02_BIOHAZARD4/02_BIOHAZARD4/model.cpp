@@ -146,8 +146,6 @@ void CModel::Draw(void)
 	//現在のマテリアルを取得する
 	pDevice->GetMaterial(&matDef);
 
-	
-
 	for (int nCntMat = 0; nCntMat < (int)m_nNumMat; nCntMat++)
 	{
 		//マテリアルの設定

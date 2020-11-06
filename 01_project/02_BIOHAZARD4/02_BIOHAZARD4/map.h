@@ -13,6 +13,11 @@
 #include "scene.h"
 
 //=============================================================================
+// マクロ定義
+//=============================================================================
+#define MAX_MATERIAL (50)
+
+//=============================================================================
 // 前方宣言
 //=============================================================================
 class CModel;
@@ -29,7 +34,7 @@ public:
 	static CMap *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);//生成処理
 	static HRESULT Load(void);//テクスチャの読み込み
 	static void Unload(void);//テクスチャの破棄
-
+	static HRESULT LoadTexture(void);
 	HRESULT Init(void);//初期化処理
 	void Uninit(void);//終了処理
 	void Update(void);//更新処理
@@ -47,7 +52,7 @@ private:
 	static DWORD m_nNumMat;		  // マテリアル情報の数
 	static D3DXMATRIX m_mtxWorld;	  // 行列計算用
 	static char* m_apFileName;	  // ファイルの名前
-	static LPDIRECT3DTEXTURE9 m_pTexture;
+	static LPDIRECT3DTEXTURE9 m_pTexture[MAX_MATERIAL];
 
 	D3DXVECTOR3 m_pos;					// 場所
 	D3DXVECTOR3 m_rot;					// 角度

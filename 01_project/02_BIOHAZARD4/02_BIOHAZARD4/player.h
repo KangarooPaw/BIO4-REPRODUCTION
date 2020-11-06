@@ -15,7 +15,7 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define MAX_PLAYER_PARTS (13) // プレイヤーのモデルのパーツの最大数
+#define MAX_PLAYER_PARTS (15) // プレイヤーのモデルのパーツの最大数
 #define MAX_MATERIAL (50)
 #define MOTION_PLAYER_TEXT ("data/MODEL/PLAYER/MOTION/motion.txt") // モーションのテキスト
 #define LOAD_PLAYER_TEXT ("data/MODEL/PLAYER/MOTION/player.txt") // 各モデルパーツの初期値
