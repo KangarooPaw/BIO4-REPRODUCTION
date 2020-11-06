@@ -32,12 +32,14 @@ char* CPlayer::m_apFileName[MAX_PLAYER_PARTS] = {
 	{ "data/MODEL/PLAYER/legLeft.x" },		// 左足
 	{ "data/MODEL/PLAYER/legMomoRight.x" }, // 右もも
 	{ "data/MODEL/PLAYER/legRight.x" },		// 右足
-	{ "data/MODEL/PLAYER/upArmLeft.x" },    // 左上腕
+	{ "data/MODEL/PLAYER/upArmLeft.x" },	// 左上腕
 	{ "data/MODEL/PLAYER/downArmLeft.x" },  // 左前腕
-	{ "data/MODEL/PLAYER/handLeft.x" },	    // 左手
+	{ "data/MODEL/PLAYER/handLeft.x" },		// 左手
 	{ "data/MODEL/PLAYER/upArmRight.x" },   // 右上腕
 	{ "data/MODEL/PLAYER/downArmRight.x" }, // 右前腕
-	{ "data/MODEL/PLAYER/handRight.x" },    // 右手
+	{ "data/MODEL/PLAYER/handRight.x" },	// 右手
+	{ "data/MODEL/PLAYER/gun.x" },			// 銃
+	{ "data/MODEL/PLAYER/knife.x" },		// ナイフ
 };
 LPDIRECT3DTEXTURE9 CPlayer::m_pTexture[MAX_PLAYER_PARTS][MAX_MATERIAL] = {};
 
@@ -105,8 +107,10 @@ HRESULT CPlayer::Load(void)
 			&m_pMesh[nCount]
 		);
 	}
-	//テクスチャの読み込み
+
+	// テクスチャの読み込み
 	LoadTexture();
+
 	return E_NOTIMPL;
 }
 
@@ -243,6 +247,7 @@ void CPlayer::Update(void)
 	DIJOYSTATE pStick;
 	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
 	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
+
 	if (pJoystickDevice != NULL)
 	{
 		pJoystickDevice->Poll();
@@ -252,19 +257,14 @@ void CPlayer::Update(void)
 	//ナイフモーション中なら
 	if (m_bMotion == true)
 	{
-		//ナイフモーション中なら
-		if (m_bMotion == true)
+		m_nMotionCnt++;
+		//70フレームでリセット
+		if (m_nMotionCnt == 45)
 		{
-			m_nMotionCnt++;
-			//60フレームでリセット
-			if (m_nMotionCnt == 60)
-			{
-				m_bMotion = false;
-				m_nMotionCnt = 0;
-			}
+			m_bMotion = false;
+			m_nMotionCnt = 0;
 		}
 	}
-
 	//ターン中なら
 	if (m_bTurn == true)
 	{
@@ -399,6 +399,8 @@ void CPlayer::Update(void)
 						5,
 						10,
 						CBullet::BULLETTYPE_PLAYER);
+
+					m_bMotion = true;
 				}
 			}
 		}
@@ -466,7 +468,7 @@ void CPlayer::Update(void)
 				CBullet::Create(
 					D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)),
 					D3DXVECTOR3(5.0f, 0.0f, 5.0f),
-					D3DXVECTOR3(-sinf(m_bulletRot.y)*5.0f, sinf(m_bulletRot.x), -cosf(m_bulletRot.y)*5.0f),
+					D3DXVECTOR3(-sinf(m_rot.y)*5.0f, 0, -cosf(m_rot.y)*5.0f),
 					100,
 					10,
 					CBullet::BULLETTYPE_PLAYER);
@@ -476,7 +478,6 @@ void CPlayer::Update(void)
 			}
 		}
 	}
-
 	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
 	{
 		// モデルのパーツごとの座標と回転を受け取る

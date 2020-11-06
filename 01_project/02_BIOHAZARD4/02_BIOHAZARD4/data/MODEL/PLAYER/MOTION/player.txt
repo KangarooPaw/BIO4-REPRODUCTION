@@ -82,7 +82,7 @@ CHARACTERSET
 		INDEX = 9					# 左手
 		PARENT = 8					# (親)左前腕
 		POS = -8.0 0.0 0.0
-		ROT = 0.0 0.0 0.0
+		ROT = -1.07 0.00 0.00
 	END_PARTSSET
 
 	PARTSSET
@@ -104,6 +104,20 @@ CHARACTERSET
 		PARENT = 11					# (親)右前腕
 		POS = 8.0 0.0 0.0
 		ROT = 0.00 0.00 0.22
+	END_PARTSSET
+	
+		PARTSSET
+		INDEX = 13					# 銃
+		PARENT = 9					# (親)右前腕
+		POS = -4.5 0.0 0.0
+		ROT = 0.0 0.0 0.0
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 14					# ナイフ
+		PARENT = 9					# (親)右前腕
+		POS = -3.0 0.0 0.0
+		ROT = 0.00 0.00 -1.54
 	END_PARTSSET
 	
 END_CHARACTERSET

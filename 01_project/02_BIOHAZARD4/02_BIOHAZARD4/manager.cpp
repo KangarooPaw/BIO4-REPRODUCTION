@@ -163,9 +163,10 @@ void CManager::Update(void)
 
 	if (m_pRenderer != NULL)
 	{
+#ifdef _DEBUG
 		// FPSのセット
 		m_pRenderer->SetNumFPS(m_nCountFPS);
-
+#endif
 		//レンダラーの更新処理
 		m_pRenderer->Update();
 	}

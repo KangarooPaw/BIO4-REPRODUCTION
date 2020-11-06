@@ -1,8 +1,3 @@
-//-----------------------------------------------------------
-// Billboard
-// billboard.h
-// Author : ä«å¥Å@éi
-//-----------------------------------------------------------
 #ifndef _BILLBOARD_H_
 #define _BILLBOARD_H_
 #include "scene.h"
@@ -14,7 +9,7 @@ class CBillboard : public CScene
 public:
 	CBillboard(int nPriority = 3);
 	~CBillboard();
-	HRESULT Init();
+	HRESULT Init(D3DXVECTOR3 pos);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);

@@ -19,7 +19,7 @@ LPD3DXBUFFER CMap::m_pBuffMat = NULL;
 DWORD CMap::m_nNumMat = NULL;
 D3DXMATRIX CMap::m_mtxWorld = {};	 // 行列計算用
 char* CMap::m_apFileName = {"data/MODEL/MAP/map_test.x"};// マップ
-LPDIRECT3DTEXTURE9 CMap::m_pTexture = NULL;
+LPDIRECT3DTEXTURE9 CMap::m_pTexture[MAX_MATERIAL] = {};
 
 //----------------------------------------
 //インクリメント
@@ -69,9 +69,9 @@ HRESULT CMap::Load(void)
 			&m_pMesh
 		);
 
-		D3DXCreateTextureFromFile(pDevice,
-			m_apFileName,
-			&m_pTexture);
+		// テクスチャの読み込み
+		LoadTexture();
+
 	return E_NOTIMPL;
 }
 
@@ -101,6 +101,34 @@ void CMap::Unload(void)
 }
 
 //----------------------------------------
+// テクスチャの読み込み
+//----------------------------------------
+HRESULT CMap::LoadTexture(void)
+{
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	// マテリアル情報を取り出す
+	D3DXMATERIAL* pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
+	for (int nCntMat = 0; nCntMat < (signed)m_nNumMat; nCntMat++)
+	{
+		// 使用しているテクスチャがあれば読み込む
+		if (pMat[nCntMat].pTextureFilename != NULL)
+		{
+			// テクスチャ読み込み
+			if (FAILED(D3DXCreateTextureFromFile(
+				pDevice,
+				pMat[nCntMat].pTextureFilename,
+				&m_pTexture[nCntMat])))
+			{
+				return E_FAIL;
+			}
+		}
+	}
+
+	return E_NOTIMPL;
+}
+
+//----------------------------------------
 //初期化処理
 //----------------------------------------
 HRESULT CMap::Init(void)
@@ -111,7 +139,11 @@ HRESULT CMap::Init(void)
 		// モデルのバインド
 		m_pModel->BindModel(m_pMesh, m_pBuffMat, m_nNumMat, 0);
 
-
+		for (int nCntMat = 0; nCntMat < (signed)m_nNumMat; nCntMat++)
+		{
+			// テクスチャのバインド
+			m_pModel->BindTexture(m_pTexture[nCntMat], nCntMat);
+		}
 	return S_OK;
 }
 

@@ -12,6 +12,7 @@
 #include "manager.h"
 #include "keyboard.h"
 #include "joystick.h"
+#include "time.h"
 //#include "sound.h"
 #include "ui.h"
 #include "mode.h"
@@ -36,7 +37,7 @@ CTitle::~CTitle()
 HRESULT CTitle::Init(void)
 {
 	//ゲームタイトルのUIの生成
-	CUi::Create(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f), D3DXVECTOR3(800.0f, 420.0f, 0.0f));
+	CUi::Create(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f), D3DXVECTOR3(800.0f, 420.0f, 0.0f)/*, CUi::UI_TYPE_TITLE*/);
 
 	return S_OK;
 }
@@ -72,5 +73,4 @@ void CTitle::Update(void)
 //*****************************************************************************
 void CTitle::Draw(void)
 {
-
 }
