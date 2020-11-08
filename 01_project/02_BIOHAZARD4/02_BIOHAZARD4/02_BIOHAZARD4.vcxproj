@@ -146,6 +146,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="box.cpp" />
+    <ClCompile Include="item.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="motion.cpp" />
@@ -176,6 +178,8 @@
     <ClCompile Include="scene3d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="box.h" />
+    <ClInclude Include="item.h" />
     <ClInclude Include="life.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="motion.h" />
