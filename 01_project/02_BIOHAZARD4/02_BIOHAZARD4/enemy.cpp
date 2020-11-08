@@ -53,6 +53,7 @@ CEnemy::CEnemy(int nPriority) :CScene(nPriority)
 	m_nDamageCnt = 0;
 	m_nEnemyLife = 30;
 	m_bHit = false;
+	m_bAttack = false;
 }
 
 //----------------------------------------
@@ -96,7 +97,9 @@ HRESULT CEnemy::Load(void)
         );
     }
 
+	// テクスチャの読み込み
 	LoadTexture();
+
     return E_NOTIMPL;
 }
 
@@ -240,13 +243,13 @@ void CEnemy::Update(void)
 	m_pMotion->UpdateMotion();
 	//プレイヤーの場所の取得
 	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
+	//モーションセット(走る)
+	if (m_bHit == false)
+	{
+		m_pMotion->SetMotion(CMotion::MOTION_RUN);
+	}
 	if (m_bChase == false)
 	{
-		//モーションセット(走る)
-		if (m_bHit == false)
-		{
-			m_pMotion->SetMotion(CMotion::MOTION_RUN);
-		}
 		if (m_bHit == true)
 		{
 			m_nDamageCnt++;
@@ -271,13 +274,23 @@ void CEnemy::Update(void)
 			m_bChase = true;
 		}
 	}
-	else
-	{	
-		float angle = (float)atan2( pPlayerPos.x - m_pos.x,pPlayerPos.z - m_pos.z);
-		m_rot.y =angle-D3DXToRadian(180);
+	else if(m_bAttack==false)
+	{
+		float angle = (float)atan2(pPlayerPos.x - m_pos.x, pPlayerPos.z - m_pos.z);
+		m_rot.y = angle - D3DXToRadian(180);
 		//向いている方向に進む
 		m_pos.x += -sinf(m_rot.y)*0.5f;
 		m_pos.z += -cosf(m_rot.y)*0.5f;
+		if (m_pos.x - pPlayerPos.x >= -20 && m_pos.x - pPlayerPos.x <=20 &&
+			m_pos.z - pPlayerPos.z >= -20 && m_pos.z - pPlayerPos.z <=20)
+		{
+			//とまって攻撃
+			m_bAttack = true;
+		}
+	}
+	else
+	{
+		
 	}
 	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
 	{
@@ -332,4 +345,9 @@ void CEnemy::HitBullet(int nDamage)
 	{
 		Uninit();
 	}
+}
+
+void CEnemy::SetChase(bool bChase)
+{
+	m_bChase = bChase;
 }

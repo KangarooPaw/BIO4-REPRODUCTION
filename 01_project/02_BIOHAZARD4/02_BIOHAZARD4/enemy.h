@@ -40,6 +40,7 @@ public:
 	void Draw(void);//描画処理
 	void HitBullet(int nDamage);
 
+	static void SetChase(bool bChase);
 	void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size) {
 		m_pos = pos; m_rot = rot; m_size = size;
 		SetObjType(OBJTYPE_ENEMY);
@@ -63,8 +64,9 @@ private:
 	D3DXVECTOR3 m_size;					// 大きさ
 	CMotion *m_pMotion;					// モーションクラスのポインタ
 	CModel *m_pModel[MAX_ENEMY_PARTS]; // モデルクラスのポインタ
-	static bool m_bChase;
-	bool m_bHit;
+	static bool m_bChase;				//チェイス判定
+	bool m_bHit;						//ダメージを受けている判定
+	bool m_bAttack;						//攻撃判定
 	int m_nEnemyLife;
 	int m_nCntFrame;
 	int m_nDamageCnt;

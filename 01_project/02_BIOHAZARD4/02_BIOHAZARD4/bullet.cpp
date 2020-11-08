@@ -125,7 +125,7 @@ void CBullet::Update(void)
 			if (objType == OBJTYPE_ENEMY)
 			{
 				// 座標とサイズの受け取り
- 				m_Getpos = ((CEnemy*)pScene)->GetPos();
+				m_Getpos = ((CEnemy*)pScene)->GetPos();
 				m_Getsize = ((CEnemy*)pScene)->GetSize();
 
 				// 当たり判定
@@ -138,14 +138,14 @@ void CBullet::Update(void)
 					Uninit();
 					return;
 				}
-				else if (m_nLife <= 0)
-				{ // ライフがなくなったら消す
-					Uninit();
-					return;
-				}
 			}
 		}
 	} while (pScene != NULL);
+	if (m_nLife <= 0)
+	{ // ライフがなくなったら消す
+		Uninit();
+		return;
+	}
 
 	// 座標のセット
 	SetPosition(m_pos);

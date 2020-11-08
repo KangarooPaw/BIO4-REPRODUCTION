@@ -15,16 +15,21 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define MAX_PLAYER_PARTS (13) // プレイヤーのモデルのパーツの最大数
+#define MAX_PLAYER_PARTS (15) // プレイヤーのモデルのパーツの最大数
 #define MAX_MATERIAL (50)
 #define MOTION_PLAYER_TEXT ("data/MODEL/PLAYER/MOTION/motion.txt") // モーションのテキスト
 #define LOAD_PLAYER_TEXT ("data/MODEL/PLAYER/MOTION/player.txt") // 各モデルパーツの初期値
+#define MAX_BULLET_ROT_X	(15)	//弾の角度(X)最大値
+#define MAX_BULLET_ROT_Y	(20)	//弾の角度(Y)最大値
+#define MIN_BULLET_ROT_X	(-15)	//弾の角度(X)最小値
+#define MIN_BULLET_ROT_Y	(-20)	//弾の角度(Y)最小値
 
 //=============================================================================
 // 前方宣言
 //=============================================================================
 class CMotion;
 class CModel;
+class CReticle;
 
 //=============================================================================
 // プレイヤークラス
@@ -76,6 +81,7 @@ private:
 	int m_nTurnCnt;						// ターンのカウント
 	bool m_bMotion;						// モーションの判定
 	bool m_bTurn;						// ターンの判定
+	bool m_bHold;						// 銃を構えた時の判定
 };
 
 #endif

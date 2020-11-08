@@ -9,7 +9,7 @@ class CBillboard : public CScene
 public:
 	CBillboard(int nPriority = 3);
 	~CBillboard();
-	HRESULT Init(D3DXVECTOR3 pos);
+	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);

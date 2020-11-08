@@ -18,7 +18,7 @@
 //=============================================================================
 // マクロ定義
 //=============================================================================
-#define MAX_PARTS (13)			  // モデルパーツの最大数
+#define MAX_PARTS (15)			  // モデルパーツの最大数
 #define MOTION_ANIMATION_NUM (60) // アニメーション数
 #define MOTION_KEYSET_MAX (60)	  // キーセット最大数
 #define MOTION_KEY_MAX (60)		  // キー最大数
@@ -58,14 +58,17 @@ class CMotion
 {
 public:
 	typedef enum {
-		MOTION_IDLE = 0,  // 待機モーション
-		MOTION_RUN,		  // 歩きモーション
-		MOTION_HOLDGUN,	  // 銃構えモーション
-		MOTION_SHOT,	  // 射撃モーション
-		MOTION_HOLDKNIFE, // ナイフ構えモーション
-		MOTION_SLASH,	  // ナイフを振るモーション
-		MOTION_DAMAGE,	  // ダメージを受けるモーション
-		MOTION_BACK,	  // 後ろに下がるモーション
+		MOTION_IDLE = 0,	 // 待機モーション
+		MOTION_RUN,			 // 歩きモーション
+		MOTION_HOLDGUN,		 // 銃構えモーション
+		MOTION_SHOT,		 // 射撃モーション
+		MOTION_HOLDKNIFE,	 // ナイフ構えモーション
+		MOTION_SLASH,		 // ナイフを振るモーション
+		MOTION_DAMAGE,		 // ダメージを受けるモーション
+		MOTION_BACK,		 // 後ろに下がるモーション
+		MOTION_DYINGNEUTRAL, // 瀕死状態の待機モーション
+		MOTION_DYINGRUNNING, // 瀕死状態の歩きモーション
+		MOTION_DEATH,		 // 死ぬモーション
 		MOTION_MAX
 	}MOTIONSTATE;
 
