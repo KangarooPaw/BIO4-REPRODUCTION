@@ -64,8 +64,9 @@ private:
 	D3DXVECTOR3 m_size;					// 大きさ
 	CMotion *m_pMotion;					// モーションクラスのポインタ
 	CModel *m_pModel[MAX_ENEMY_PARTS]; // モデルクラスのポインタ
-	static bool m_bChase;
-	bool m_bHit;
+	static bool m_bChase;				//チェイス判定
+	bool m_bHit;						//ダメージを受けている判定
+	bool m_bAttack;						//攻撃判定
 	int m_nEnemyLife;
 	int m_nCntFrame;
 	int m_nDamageCnt;

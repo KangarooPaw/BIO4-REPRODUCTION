@@ -420,10 +420,12 @@ void CPlayer::Update(void)
 			if (pStick.lRx <= -500)
 			{
 				m_bulletRot.y -= D3DXToRadian(1);
+				m_rot.y -= D3DXToRadian(1);
 				m_bulletRotY--;
 				if (m_bulletRotY <= MIN_BULLET_ROT_Y)
 				{
 					m_bulletRot.y += D3DXToRadian(1);
+					m_rot.y += D3DXToRadian(1);
 					m_bulletRotY = MIN_BULLET_ROT_Y;
 				}
 			}
@@ -431,10 +433,12 @@ void CPlayer::Update(void)
 			if (pStick.lRx >= 500)
 			{
 				m_bulletRot.y += D3DXToRadian(1);
+				m_rot.y += D3DXToRadian(1);
 				m_bulletRotY++;
 				if (m_bulletRotY >= MAX_BULLET_ROT_Y)
 				{
 					m_bulletRot.y -= D3DXToRadian(1);
+					m_rot.y -= D3DXToRadian(1);
 					m_bulletRotY = MAX_BULLET_ROT_Y;
 				}
 			}
@@ -468,7 +472,7 @@ void CPlayer::Update(void)
 				CBullet::Create(
 					D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)),
 					D3DXVECTOR3(5.0f, 0.0f, 5.0f),
-					D3DXVECTOR3(-sinf(m_rot.y)*5.0f, 0, -cosf(m_rot.y)*5.0f),
+					D3DXVECTOR3(-sinf(m_bulletRot.y)/**5.0f*/, sinf(m_bulletRot.x), -cosf(m_bulletRot.y)/**5.0f*/),
 					100,
 					10,
 					CBullet::BULLETTYPE_PLAYER);

@@ -53,6 +53,7 @@ CEnemy::CEnemy(int nPriority) :CScene(nPriority)
 	m_nDamageCnt = 0;
 	m_nEnemyLife = 30;
 	m_bHit = false;
+	m_bAttack = false;
 }
 
 //----------------------------------------
@@ -247,11 +248,10 @@ void CEnemy::Update(void)
 	{
 		m_pMotion->SetMotion(CMotion::MOTION_RUN);
 	}
-	if (m_bHit == true)
+	if (m_bChase == false)
 	{
-		if (m_bChase == false)
+		if (m_bHit == true)
 		{
-
 			m_nDamageCnt++;
 			if (m_nDamageCnt % 60 == 0)
 			{
@@ -274,7 +274,7 @@ void CEnemy::Update(void)
 			m_bChase = true;
 		}
 	}
-	else
+	else if(m_bAttack==false)
 	{
 		float angle = (float)atan2(pPlayerPos.x - m_pos.x, pPlayerPos.z - m_pos.z);
 		m_rot.y = angle - D3DXToRadian(180);
@@ -285,8 +285,12 @@ void CEnemy::Update(void)
 			m_pos.z - pPlayerPos.z >= -20 && m_pos.z - pPlayerPos.z <=20)
 		{
 			//‚Æ‚Ü‚Á‚ÄUŒ‚
-
+			m_bAttack = true;
 		}
+	}
+	else
+	{
+		
 	}
 	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
 	{

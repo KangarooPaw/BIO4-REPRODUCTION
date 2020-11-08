@@ -21,6 +21,7 @@ public:
 	void Init(void);		//初期化処理
 	void Uninit(void);		//終了処理
 	void Update(void);		//更新処理
+	void JoyStickMove(void);	//ゲームパッド用のカメラワーク処理
 	D3DXVECTOR3 GetPosR(void) { return posR; }		//角度の受け取り処理
 private:
 	D3DXVECTOR3 posV;		//位置
