@@ -12,6 +12,7 @@
 #define MIN_ROT_Y	(-20)
 #define MAX_ROT_X	(15)
 #define MIN_ROT_X	(-15)
+#define RETICLE_MOVE	(0.28f)
 
 class CCamera
 {

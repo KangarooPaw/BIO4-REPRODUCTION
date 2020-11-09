@@ -139,6 +139,7 @@ void CCamera::JoyStickMove(void)
 			m_nCount = 0;
 			m_RotX = 0;
 			m_RotY = 0;
+			m_lTheta = 1.0f;
 			//--------------------------
 			//移動
 			//--------------------------		
@@ -201,30 +202,34 @@ void CCamera::JoyStickMove(void)
 		{
 			//右スティックを左に倒す
 			if (pStick.lRx <= -500)
-			{
+			{			
+				posR.x += cosf(pPlayerRot.y)*RETICLE_MOVE;
+				posR.z -= sinf(pPlayerRot.y)*RETICLE_MOVE;
+				
 				m_lPhi += D3DXToRadian(1);
-				posR.x -= sinf(pPlayerRot.y);
-				posR.z += cosf(pPlayerRot.y);
 				m_RotX++;
 				if (m_RotX >= MAX_ROT_Y)
-				{
+				{					
+					posR.x -= cosf(pPlayerRot.y)*RETICLE_MOVE;
+					posR.z += sinf(pPlayerRot.y)*RETICLE_MOVE;
+
 					m_lPhi -= D3DXToRadian(1);
-					posR.x += sinf(pPlayerRot.y);
-					posR.z -= cosf(pPlayerRot.y);
 					m_RotX = MAX_ROT_Y;
 				}
 			}
 			//右スティックを右に倒す
 			if (pStick.lRx >= 500)
 			{
+				posR.x -= cosf(pPlayerRot.y)*RETICLE_MOVE;
+				posR.z += sinf(pPlayerRot.y)*RETICLE_MOVE;
+
 				m_lPhi -= D3DXToRadian(1);
-				posR.x += sinf(pPlayerRot.y);
-				posR.z -= cosf(pPlayerRot.y);
 				m_RotX--;
 				if (m_RotX <= MIN_ROT_Y)
 				{
-					posR.x -= sinf(pPlayerRot.y);
-					posR.z += cosf(pPlayerRot.y);
+					posR.x += cosf(pPlayerRot.y)*RETICLE_MOVE;
+					posR.z -= sinf(pPlayerRot.y)*RETICLE_MOVE;
+
 					m_lPhi += D3DXToRadian(1);
 					m_RotX = MIN_ROT_Y;
 				}
@@ -232,10 +237,13 @@ void CCamera::JoyStickMove(void)
 			//右スティックを上に倒す
 			if (pStick.lRy <= -500)
 			{
+				
 				m_lTheta += D3DXToRadian(1);
+				posR.y += cosf(m_lTheta);
 				m_RotY++;
 				if (m_RotY >= MAX_ROT_X)
 				{
+					posR.y -= cosf(m_lTheta);
 					m_lTheta -= D3DXToRadian(1);
 					m_RotY = MAX_ROT_X;
 				}
@@ -243,25 +251,28 @@ void CCamera::JoyStickMove(void)
 			//右スティックを下に倒す
 			if (pStick.lRy >= 500)
 			{
+				
 				m_lTheta -= D3DXToRadian(1);
+				posR.y -= cosf(m_lTheta);
 				m_RotY--;
 				if (m_RotY <= MIN_ROT_X)
 				{
+					posR.y += cosf(m_lTheta);
 					m_lTheta += D3DXToRadian(1);
 					m_RotY = MIN_ROT_X;
 				}
 			}
 
-			//10フレームだけ進める
-			if (m_nCount <= HOLD_FRAME)
-			{
-				//注視点
-				posR.x += (float)-sin(pPlayerRot.y);
-				posR.z += (float)-cos(pPlayerRot.y);
-				//視点	
-				posV.x += (float)-sin(pPlayerRot.y);
-				posV.z += (float)-cos(pPlayerRot.y);
-			}
+			////10フレームだけ進める
+			//if (m_nCount <= HOLD_FRAME)
+			//{
+			//	//注視点
+			//	posR.x += (float)-sin(pPlayerRot.y);
+			//	posR.z += (float)-cos(pPlayerRot.y);
+			//	//視点	
+			//	posV.x += (float)-sin(pPlayerRot.y);
+			//	posV.z += (float)-cos(pPlayerRot.y);
+			//}
 			m_nCount++;
 			//if (m_nCount >= HOLD_FRAME)
 			//{				
