@@ -35,7 +35,7 @@ HRESULT CBillboard::Init(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// 頂点バッファの生成
-	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX * MAX_POLYGON,	// 頂点データ用に確保するバッファサイズ(バイト単位)
+	if (FAILED(pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * NUM_VERTEX,	// 頂点データ用に確保するバッファサイズ(バイト単位)
 		D3DUSAGE_WRITEONLY,			// 頂点バッファの使用法　
 		FVF_VERTEX_3D,				// 使用する頂点フォーマット
 		D3DPOOL_MANAGED,			// リソースのバッファを保持するメモリクラスを指定
@@ -75,7 +75,7 @@ HRESULT CBillboard::Init(void)
 	pVtx[2].tex = D3DXVECTOR2(m_fTexX, m_fTexY2);
 	pVtx[3].tex = D3DXVECTOR2(m_fTexX2, m_fTexY2);
 
-	pVtx += 4;
+	//pVtx += 4;
 
 	//頂点バッファのアンロック
 	m_pVtxBuff->Unlock();
@@ -125,7 +125,7 @@ void CBillboard::Update(void)
 	pVtx[2].tex = D3DXVECTOR2(m_fTexX, m_fTexY2);
 	pVtx[3].tex = D3DXVECTOR2(m_fTexX2, m_fTexY2);
 
-	pVtx += 4;
+	//pVtx += 4;
 
 	//頂点バッファのアンロック
 	m_pVtxBuff->Unlock();
