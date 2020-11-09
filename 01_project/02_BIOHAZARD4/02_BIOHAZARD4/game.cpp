@@ -25,6 +25,8 @@
 #include "light.h"
 #include "scene.h"
 #include "map.h"
+#include "item.h"
+#include "box.h"
 
 //*****************************************************************************
 //静的メンバ変数
@@ -63,6 +65,13 @@ HRESULT CGame::Init(void)
 	CLife::Create(D3DXVECTOR3(1100.0f, 450.0f, 0.0f), D3DXVECTOR3(LIFE_SIZE_X, LIFE_SIZE_Y, 0.0f), 7.0f);
 	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 100.0f));
 	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 100.0f));
+	for (int nCountX = 1; nCountX < 5; nCountX++)
+	{
+		for (int nCountZ = 1; nCountZ < 5; nCountZ++)
+		{
+			CBox::Create(D3DXVECTOR3(400.0f + (nCountX * 50.0f), 20.0f, 100.0f + (nCountZ * 50.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+		}
+	}//ボックス
 
 	return S_OK;
 }

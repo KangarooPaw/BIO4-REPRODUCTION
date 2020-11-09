@@ -30,6 +30,8 @@
 #include "game.h"
 #include "fade.h"
 #include "map.h"
+#include "item.h"
+#include "box.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -213,6 +215,8 @@ void CManager::LoadAll(void)
 	CPlayer::Load();
 	CEnemy::Load();
 	CBullet::Load();
+	CItem::Load();
+	CBox::Load();
 }
 
 //=============================================================================
@@ -226,6 +230,8 @@ void CManager::UnloadAll(void)
 	CPolygon::Unload();
 	CMap::Unload();
 	CUi::Unload();
+	CItem::Unload();
+	CBox::Unload();
 }
 
 //=============================================================================
