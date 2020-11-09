@@ -115,7 +115,6 @@ void CBullet::Update(void)
 	//’e‚ÌŽË’ö‚ðŒˆ‚ß‚é
 	m_nLife--;
 
-
 	CScene *pScene = NULL;
 	do
 	{
