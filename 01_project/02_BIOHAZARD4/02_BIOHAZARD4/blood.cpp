@@ -12,7 +12,7 @@
 #include "billboard.h"
 #include "blood.h"
 
-#define BLOOD_VALUE 300//木片の量
+#define BLOOD_VALUE 50//木片の量
 #define BLOOD_SPEED 2.5f//木片の飛び散る速さ
 #define BLOOD_UP_VALUE 5.5f//木片の上に上がる力
 #define BLOOD_FALL_SPEED 0.5f //落下スピード
