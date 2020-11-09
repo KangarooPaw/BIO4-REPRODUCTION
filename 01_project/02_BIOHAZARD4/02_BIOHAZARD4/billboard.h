@@ -18,6 +18,7 @@ public:
 	void SetRotation(D3DXVECTOR3 rot);
 	void SetSize(D3DXVECTOR3 size);
 	void SetColor(D3DXCOLOR col);
+	void SetTexture(float fTexX, float fTexY, float fTexX2, float fTexY2);
 	void SetScale(float fScale);
 	void BindTexture(LPDIRECT3DTEXTURE9 pTexture);
 
@@ -27,7 +28,11 @@ private:
 	D3DXVECTOR3 m_pos;						// 位置座標
 	D3DXVECTOR3 m_size;						// サイズ
 	D3DXVECTOR3 m_rot;						// 向き
-	D3DXCOLOR m_col;						// カラー
+	D3DXCOLOR m_col;	// カラー
+	float                              m_fTexX;      //テクスチャX座標
+	float                              m_fTexX2;      //テクスチャX2座標
+	float                              m_fTexY;      //テクスチャY座標
+	float                              m_fTexY2;      //テクスチャY座標
 	D3DXMATRIX m_mtxWorld;					// マトリックス
 	float m_fScale;							// 拡大
 };

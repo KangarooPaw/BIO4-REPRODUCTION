@@ -16,11 +16,14 @@
 #define SHARD_VALUE 20//木片の量
 #define SHARD_SPEED 1.5f//木片の飛び散る速さ
 #define SHARD_UP_VALUE 1.5f//木片の上に上がる力
+#define SMOKE_ANIM_PATTERN 25 //煙のアニメーションパターン
+#define SMOKE_ANIM_COUNT 3 //このフレーム毎で更新
+#define SMOKE_SIZE 70.0f //煙サイズ
 #define FALL_SPEED 0.08f //落下スピード
 //-----------------------------------------------------------
 //静的メンバ変数宣言
 //-----------------------------------------------------------
-LPDIRECT3DTEXTURE9 CBoxEffect::m_pTexture = NULL;
+LPDIRECT3DTEXTURE9 CBoxEffect::m_pTexture[TYPE_MAX] = {};
 //-----------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------
@@ -31,6 +34,9 @@ CBoxEffect::CBoxEffect(int nPriority) : CBillboard(nPriority)
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+	m_type = TYPE_NONE;
+	m_nPatternAnim = 0;
+	m_nCounterAnim = 0;
 	m_nLife = EFFECT_LIFE;
 }
 //-----------------------------------------------------------
@@ -42,14 +48,15 @@ CBoxEffect::~CBoxEffect()
 //-----------------------------------------------------------
 // 生成
 //-----------------------------------------------------------
-CBoxEffect * CBoxEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
+CBoxEffect * CBoxEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, TYPE type)
 {
 	// CReticleポインタ
 	CBoxEffect *pBoxEffect;
 
 	// メモリ確保
 	pBoxEffect = new CBoxEffect(5);
-	
+	//タイプ
+	pBoxEffect->m_type = type;
 	// 初期化
 	pBoxEffect->Init(pos, size, rot, col);
 	//移動量
@@ -67,8 +74,9 @@ HRESULT CBoxEffect::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	 //テクスチャ読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/wood_shard.png", &m_pTexture);
-
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/wood_shard.png", &m_pTexture[TYPE_SHARD]);
+	//テクスチャ読み込み
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/smoke02.png", &m_pTexture[TYPE_SMOKE]);
 	return S_OK;
 }
 //-----------------------------------------------------------
@@ -76,14 +84,17 @@ HRESULT CBoxEffect::Load(void)
 //-----------------------------------------------------------
 void CBoxEffect::Unload(void)
 {
-	// テクスチャの破棄
-	if (m_pTexture != NULL)
+	for (int nCount = 0; nCount < TYPE_MAX; nCount++)
 	{
-		// テクスチャRelease
-		m_pTexture->Release();
+		// テクスチャの破棄
+		if (m_pTexture[nCount] != NULL)
+		{
+			// テクスチャRelease
+			m_pTexture[nCount]->Release();
 
-		// m_pTextureをNULLに
-		m_pTexture = NULL;
+			// m_pTextureをNULLに
+			m_pTexture[nCount] = NULL;
+		}
 	}
 }
 //-----------------------------------------------------------
@@ -116,8 +127,19 @@ HRESULT CBoxEffect::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3D
 	// カラー設定
 	SetColor(m_col);
 
+	//煙
+	if (m_type == TYPE_SMOKE)
+	{
+		//テクスチャ座標のセット
+		SetTexture(
+			m_nPatternAnim * 0.04f,
+			0.0f,
+			m_nPatternAnim * 0.04f + 0.04f,
+			1.0f);
+	}
+
 	// テクスチャ受け渡し
-	BindTexture(m_pTexture);
+	BindTexture(m_pTexture[m_type]);
 
 	return S_OK;
 }
@@ -137,23 +159,53 @@ void CBoxEffect::Update(void)
 	// 更新
 	CBillboard::Update();
 
-	m_move.y += -FALL_SPEED;
+	if (m_type == TYPE_SHARD)
+	{
+		m_move.y += -FALL_SPEED;
+	}
+
 	//位置更新
 	m_pos += m_move;
 	//ライフ減算
 	m_nLife--;
-
-	if (m_nLife < 0)
-	{
-		Uninit();
-		return;
-	}
 
 	// カラー設定
 	SetColor(m_col);
 
 	// 位置座標設定
 	SetPosition(m_pos);
+
+	//テクスチャアニメーション更新
+	if (m_type == TYPE_SMOKE)
+	{
+		m_nCounterAnim++;
+		if (m_nCounterAnim > SMOKE_ANIM_COUNT)
+		{
+			m_nCounterAnim = 0;
+			m_nPatternAnim++;
+		}
+
+		if (m_nPatternAnim > SMOKE_ANIM_PATTERN)
+		{
+			Uninit();
+			return;
+		}
+		
+			//テクスチャ座標のセット
+		SetTexture(
+			m_nPatternAnim * 0.04f,
+			0.0f,
+			m_nPatternAnim * 0.04f + 0.04f,
+			1.0f);
+		
+	}
+
+	//ライフ０で消す
+	if (m_nLife < 0)
+	{
+		Uninit();
+		return;
+	}
 
 }
 //-----------------------------------------------------------
@@ -172,6 +224,7 @@ void CBoxEffect::BreakBox(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3
 		float fRandRot = float(rand() % 360);
 		float fRandRotY = float(rand() % 360);
 		float fRandRotZ = float(rand() % 360);
-		CBoxEffect::Create(D3DXVECTOR3(pos.x,pos.y + (BOX_SIZE / 2),pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*SHARD_SPEED, sinf(D3DXToRadian(fRandRot))*-(SHARD_SPEED + SHARD_UP_VALUE), sinf(D3DXToRadian(fRandRot))*SHARD_SPEED), D3DXVECTOR3(EFFECT_SIZE_X,EFFECT_SIZE_Y,0.0f), D3DXVECTOR3(fRandRot, fRandRotY, fRandRotZ), D3DCOLOR_RGBA(255, 255, 255, 255));
+		CBoxEffect::Create(D3DXVECTOR3(pos.x,pos.y + (BOX_SIZE / 2),pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*SHARD_SPEED, sinf(D3DXToRadian(fRandRot))*-(SHARD_SPEED + SHARD_UP_VALUE), tanf(D3DXToRadian(fRandRot))*SHARD_SPEED), D3DXVECTOR3(EFFECT_SIZE_X,EFFECT_SIZE_Y,0.0f), D3DXVECTOR3(fRandRot, fRandRotY, fRandRotZ), D3DCOLOR_RGBA(255, 255, 255, 255),TYPE_SHARD);
+		CBoxEffect::Create(D3DXVECTOR3(pos.x, pos.y + (BOX_SIZE / 2), pos.z), D3DXVECTOR3(0.0f,0.0f,0.0f ), D3DXVECTOR3(SMOKE_SIZE, SMOKE_SIZE, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SMOKE);
 	}
 }
