@@ -43,6 +43,12 @@
     <Filter Include="ヘッダー ファイル\mode">
       <UniqueIdentifier>{b0fb7529-d731-4b94-8d79-04de6feae6a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Scene\3D\particle">
+      <UniqueIdentifier>{d9a70a2b-09b1-41f7-8962-beae12fa9dd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\3D\particle">
+      <UniqueIdentifier>{6a2368b3-718d-4180-8acc-4a802e766b8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -147,11 +153,26 @@
     <ClCompile Include="boxeffect.cpp">
       <Filter>ソース ファイル\Scene\3D</Filter>
     </ClCompile>
-    <ClCompile Include="particle.cpp">
-      <Filter>ソース ファイル\Scene\3D</Filter>
-    </ClCompile>
     <ClCompile Include="blood.cpp">
       <Filter>ソース ファイル\Scene\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="particle.cpp">
+      <Filter>ソース ファイル\Scene\3D\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="explosion.cpp">
+      <Filter>ソース ファイル\Scene\3D\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="circleparticle.cpp">
+      <Filter>ソース ファイル\Scene\3D\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="mazleflash.cpp">
+      <Filter>ソース ファイル\Scene\3D\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="smoke.cpp">
+      <Filter>ソース ファイル\Scene\3D\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="spark.cpp">
+      <Filter>ソース ファイル\Scene\3D\particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -257,11 +278,26 @@
     <ClInclude Include="boxeffect.h">
       <Filter>ヘッダー ファイル\Scene\3D</Filter>
     </ClInclude>
-    <ClInclude Include="particle.h">
-      <Filter>ヘッダー ファイル\Scene\3D</Filter>
-    </ClInclude>
     <ClInclude Include="blood.h">
       <Filter>ヘッダー ファイル\Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="particle.h">
+      <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="explosion.h">
+      <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="circleparticle.h">
+      <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="smoke.h">
+      <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="spark.h">
+      <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="mazleflash.h">
+      <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
