@@ -15,6 +15,10 @@ CBillboard::CBillboard(int nPriority) :  CScene(nPriority)
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_fScale = 0.0f;
 	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f,0.0f);
+	m_fTexX = 0.0f;
+	m_fTexX2 = 1.0f;
+	m_fTexY = 0.0f;
+	m_fTexY2 = 1.0f;
 }
 //---------------------------------------------
 //　デストラクタ
@@ -66,10 +70,10 @@ HRESULT CBillboard::Init(void)
 	pVtx[3].col = m_col ;
 
 	//テクスチャ座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+	pVtx[0].tex = D3DXVECTOR2(m_fTexX, m_fTexY);
+	pVtx[1].tex = D3DXVECTOR2(m_fTexX2, m_fTexY);
+	pVtx[2].tex = D3DXVECTOR2(m_fTexX, m_fTexY2);
+	pVtx[3].tex = D3DXVECTOR2(m_fTexX2, m_fTexY2);
 
 	pVtx += 4;
 
@@ -116,10 +120,10 @@ void CBillboard::Update(void)
 	pVtx[3].col = m_col;
 
 	//テクスチャ座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+	pVtx[0].tex = D3DXVECTOR2(m_fTexX, m_fTexY);
+	pVtx[1].tex = D3DXVECTOR2(m_fTexX2, m_fTexY);
+	pVtx[2].tex = D3DXVECTOR2(m_fTexX, m_fTexY2);
+	pVtx[3].tex = D3DXVECTOR2(m_fTexX2, m_fTexY2);
 
 	pVtx += 4;
 
@@ -206,6 +210,13 @@ void CBillboard::SetColor(D3DXCOLOR col)
 {
 	//代入
 	m_col = col;
+}
+void CBillboard::SetTexture(float fTexX, float fTexY, float fTexX2, float fTexY2)
+{
+	m_fTexX = fTexX;
+	m_fTexY = fTexY;
+	m_fTexX2 = fTexX2;
+	m_fTexY2 = fTexY2;
 }
 //---------------------------------------------
 //　拡大率設定
