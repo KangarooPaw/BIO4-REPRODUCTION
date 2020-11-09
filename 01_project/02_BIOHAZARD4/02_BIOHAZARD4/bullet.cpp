@@ -14,6 +14,7 @@
 #include "camera.h"
 #include "manager.h"
 #include "renderer.h"
+#include "box.h"
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -141,6 +142,41 @@ void CBullet::Update(void)
 			}
 		}
 	} while (pScene != NULL);
+
+	do//箱の当たり判定
+	{
+		pScene = GetScene(OBJTYPE_BOX);
+		if (pScene != NULL)
+		{
+			OBJTYPE objType = pScene->GetObjType();
+			if (objType == OBJTYPE_BOX)
+			{
+				// 座標とサイズの受け取り
+				m_Getpos = ((CBox*)pScene)->GetPos();
+				m_Getsize = ((CBox*)pScene)->GetSize();
+
+				// 当たり判定
+				if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
+				{
+					// 箱を破壊する
+					bool bHit = ((CBox*)pScene)->HitBox();
+					//破壊したら消す（すでに破壊されているものは貫通する）
+					if (bHit == true)
+					{
+						// 弾を消す
+						Uninit();
+						return;
+					}
+				}
+				else if (m_nLife <= 0)
+				{ // ライフがなくなったら消す
+					Uninit();
+					return;
+				}
+			}
+		}
+	} while (pScene != NULL);
+
 	if (m_nLife <= 0)
 	{ // ライフがなくなったら消す
 		Uninit();
