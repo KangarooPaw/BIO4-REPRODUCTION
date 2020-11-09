@@ -13,6 +13,9 @@
 #include "item.h"
 #include "model.h"
 
+#define ROT_ADDSPEED 0.01f //向き加算
+#define UPDOWN_SPEED 0.05f //上下運動スピード
+
 //----------------------------------------
 //静的メンバ変数
 //----------------------------------------
@@ -31,10 +34,11 @@ LPDIRECT3DTEXTURE9 CItem::m_pTexture[TYPE_MAX][50] = {};
 CItem::CItem(int nPriority) :CScene(nPriority)
 {
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_rot = D3DXVECTOR3(ITEM_ROT_X, 0.0f, ITEM_ROT_X);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_type = TYPE_NONE;
 	m_pModel = NULL;
+	m_fRd = 0.0f;
 	m_mtxWorld = {};
 }
 
@@ -182,7 +186,23 @@ void CItem::Uninit(void)
 void CItem::Update(void)
 {
 	/*CScene3d::Update();*/
+
+	m_pModel->Update();
+	//回転
+	m_rot.y += ROT_ADDSPEED;
+
+	//上下運動
+	m_fRd += 0.1f;
+	if (m_fRd >= 360)
+	{
+		m_fRd = 0;
+	}
+	m_pos.y += (UPDOWN_SPEED * sin(m_fRd));
+	
+	//情報更新
 	SetItem(m_pos, m_rot, m_size);
+
+	//当たり判定処理
 	CScene *pScene = NULL;
 
 	do
@@ -201,12 +221,14 @@ void CItem::Update(void)
 				if (CollisionItem(m_pos, m_size, Getpos, Getsize) == true)
 				{
 					//// アイテムを消す
-					/*Uninit();
+				/*	Uninit();
 					return;*/
 				}
 			}
 		}
 	} while (pScene != NULL);
+
+
 }
 
 //----------------------------------------

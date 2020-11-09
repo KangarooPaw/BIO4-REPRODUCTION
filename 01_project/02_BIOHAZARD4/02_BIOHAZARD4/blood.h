@@ -1,39 +1,38 @@
 //-----------------------------------------------------------
-// 木箱破壊エフェクト
-// boxeffect.h
+// 血しぶきエフェクト
+// blood.h
 // Author : 林川紗梨夏
 //-----------------------------------------------------------
-#ifndef _BOXEFFECT_H_
-#define _BOXEFFECT_H_
+#ifndef _BLOOD_H_
+#define _BLOOD_H_
 //----------------------------------------------------
 // マクロ定義
 //----------------------------------------------------
-#define EFFECT_SIZE_X 20
-#define EFFECT_SIZE_Y 20
-#define EFFECT_LIFE 100
+#define SPLACH_BLOOD_SIZE_X 5
+#define SPLACH_BLOOD_SIZE_Y 5
+#define BLOOD_LIFE 50
 
 #include "billboard.h"
 
-class CBoxEffect : public CBillboard
+class CBlood : public CBillboard
 {
 public:
 	typedef enum
 	{
 		TYPE_NONE = -1,
 		TYPE_SHARD,
-		TYPE_SMOKE,
 		TYPE_MAX,
 	}TYPE;
-	CBoxEffect(int nPriority = 5);
-	~CBoxEffect();
-	static CBoxEffect *Create(D3DXVECTOR3 pos, D3DXVECTOR3 move,D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col,TYPE type);
+	CBlood(int nPriority = 5);
+	~CBlood();
+	static CBlood *Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, TYPE type);
 	static HRESULT Load(void);
 	static void Unload(void);
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	static void BreakBox(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col);
+	static void BloodSplash(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col);
 private:
 
 	static LPDIRECT3DTEXTURE9 m_pTexture[TYPE_MAX];			// texture

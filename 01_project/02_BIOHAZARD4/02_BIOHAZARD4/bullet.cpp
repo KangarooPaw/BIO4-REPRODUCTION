@@ -16,6 +16,7 @@
 #include "box.h"
 #include "ui.h"
 #include "camera.h"
+#include "blood.h"
 
 
 //=============================================================================
@@ -160,7 +161,7 @@ void CBullet::Update(void)
 				{
 					m_Getpos = ((CPlayer*)pScene)->GetPos();
 					m_Getsize = ((CPlayer*)pScene)->GetSize();
-
+					CBlood::BloodSplash(m_pos, D3DXVECTOR3(SPLACH_BLOOD_SIZE_X, SPLACH_BLOOD_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 0, 0, 255));
 					// “–‚½‚è”»’è
 					if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
 					{

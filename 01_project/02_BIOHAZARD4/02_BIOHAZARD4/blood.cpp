@@ -1,6 +1,6 @@
 //-----------------------------------------------------------
-// 木箱破壊エフェクト
-// boxeffect.cpp
+// 血しぶきエフェクト
+// blood.cpp
 // Author : 林川紗梨夏
 //-----------------------------------------------------------
 #include "main.h"
@@ -10,24 +10,20 @@
 #include "scene.h"
 #include "joystick.h"
 #include "billboard.h"
-#include "boxeffect.h"
-#include "box.h"
+#include "blood.h"
 
-#define SHARD_VALUE 20//木片の量
-#define SHARD_SPEED 0.5f//木片の飛び散る速さ
-#define SHARD_UP_VALUE 1.5f//木片の上に上がる力
-#define SMOKE_ANIM_PATTERN 25 //煙のアニメーションパターン
-#define SMOKE_ANIM_COUNT 1 //このフレーム毎で更新
-#define SMOKE_SIZE 60.0f //煙サイズ
-#define FALL_SPEED 0.08f //落下スピード
+#define BLOOD_VALUE 300//木片の量
+#define BLOOD_SPEED 2.5f//木片の飛び散る速さ
+#define BLOOD_UP_VALUE 5.5f//木片の上に上がる力
+#define BLOOD_FALL_SPEED 0.5f //落下スピード
 //-----------------------------------------------------------
 //静的メンバ変数宣言
 //-----------------------------------------------------------
-LPDIRECT3DTEXTURE9 CBoxEffect::m_pTexture[TYPE_MAX] = {};
+LPDIRECT3DTEXTURE9 CBlood::m_pTexture[TYPE_MAX] = {};
 //-----------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------
-CBoxEffect::CBoxEffect(int nPriority) : CBillboard(nPriority)
+CBlood::CBlood(int nPriority) : CBillboard(nPriority)
 {
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -37,24 +33,24 @@ CBoxEffect::CBoxEffect(int nPriority) : CBillboard(nPriority)
 	m_type = TYPE_NONE;
 	m_nPatternAnim = 0;
 	m_nCounterAnim = 0;
-	m_nLife = EFFECT_LIFE;
+	m_nLife = BLOOD_LIFE;
 }
 //-----------------------------------------------------------
 // デストラクタ
 //-----------------------------------------------------------
-CBoxEffect::~CBoxEffect()
+CBlood::~CBlood()
 {
 }
 //-----------------------------------------------------------
 // 生成
 //-----------------------------------------------------------
-CBoxEffect * CBoxEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, TYPE type)
+CBlood * CBlood::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, TYPE type)
 {
 	// CReticleポインタ
-	CBoxEffect *pBoxEffect;
+	CBlood *pBoxEffect;
 
 	// メモリ確保
-	pBoxEffect = new CBoxEffect(5);
+	pBoxEffect = new CBlood(5);
 	//タイプ
 	pBoxEffect->m_type = type;
 	// 初期化
@@ -68,21 +64,20 @@ CBoxEffect * CBoxEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 s
 //-----------------------------------------------------------
 // テクスチャ読み込み
 //-----------------------------------------------------------
-HRESULT CBoxEffect::Load(void)
+HRESULT CBlood::Load(void)
 {
 	// レンダラー取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	 //テクスチャ読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/wood_shard.png", &m_pTexture[TYPE_SHARD]);
 	//テクスチャ読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/smoke03.png", &m_pTexture[TYPE_SMOKE]);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/blood.png", &m_pTexture[TYPE_SHARD]);
+
 	return S_OK;
 }
 //-----------------------------------------------------------
 // テクスチャ破棄
 //-----------------------------------------------------------
-void CBoxEffect::Unload(void)
+void CBlood::Unload(void)
 {
 	for (int nCount = 0; nCount < TYPE_MAX; nCount++)
 	{
@@ -100,7 +95,7 @@ void CBoxEffect::Unload(void)
 //-----------------------------------------------------------
 // 初期化
 //-----------------------------------------------------------
-HRESULT CBoxEffect::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
+HRESULT CBlood::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
 {
 	// 代入
 	// 位置座標
@@ -127,17 +122,6 @@ HRESULT CBoxEffect::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3D
 	// カラー設定
 	SetColor(m_col);
 
-	//煙
-	if (m_type == TYPE_SMOKE)
-	{
-		//テクスチャ座標のセット
-		SetTexture(
-			m_nPatternAnim * 0.04f,
-			0.0f,
-			m_nPatternAnim * 0.04f + 0.04f,
-			1.0f);
-	}
-
 	// テクスチャ受け渡し
 	BindTexture(m_pTexture[m_type]);
 
@@ -146,7 +130,7 @@ HRESULT CBoxEffect::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3D
 //-----------------------------------------------------------
 // 終了
 //-----------------------------------------------------------
-void CBoxEffect::Uninit(void)
+void CBlood::Uninit(void)
 {
 	// 終了
 	CBillboard::Uninit();
@@ -154,15 +138,13 @@ void CBoxEffect::Uninit(void)
 //-----------------------------------------------------------
 // 更新
 //-----------------------------------------------------------
-void CBoxEffect::Update(void)
+void CBlood::Update(void)
 {
 	// 更新
 	CBillboard::Update();
 
-	if (m_type == TYPE_SHARD)
-	{
-		m_move.y += -FALL_SPEED;
-	}
+	m_move.y += -BLOOD_FALL_SPEED;
+
 
 	//位置更新
 	m_pos += m_move;
@@ -175,31 +157,6 @@ void CBoxEffect::Update(void)
 	// 位置座標設定
 	SetPosition(m_pos);
 
-	//テクスチャアニメーション更新
-	if (m_type == TYPE_SMOKE)
-	{
-		m_nCounterAnim++;
-		if (m_nCounterAnim > SMOKE_ANIM_COUNT)
-		{
-			m_nCounterAnim = 0;
-			m_nPatternAnim++;
-		}
-
-		if (m_nPatternAnim >= SMOKE_ANIM_PATTERN)
-		{
-			Uninit();
-			return;
-		}
-		
-			//テクスチャ座標のセット
-		SetTexture(
-			m_nPatternAnim * 0.04f,
-			0.0f,
-			m_nPatternAnim * 0.04f + 0.04f,
-			1.0f);
-		
-	}
-
 	//ライフ０で消す
 	if (m_nLife < 0)
 	{
@@ -211,20 +168,36 @@ void CBoxEffect::Update(void)
 //-----------------------------------------------------------
 // 描画
 //-----------------------------------------------------------
-void CBoxEffect::Draw(void)
+void CBlood::Draw(void)
 {
 	// 描画
 	CBillboard::Draw();
 }
-
-void CBoxEffect::BreakBox(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
+//-----------------------------------------------------------
+// 血しぶき生成
+//-----------------------------------------------------------
+void CBlood::BloodSplash(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
 {
-	for (int nCount = 0; nCount < SHARD_VALUE; nCount++)
+	for (int nCount = 0; nCount < BLOOD_VALUE; nCount++)
 	{
-		float fRandRot = float(rand() % 360);
+		float fRandRot = float(rand() % 360 + -360);
 		float fRandRotY = float(rand() % 360);
 		float fRandRotZ = float(rand() % 360);
-		CBoxEffect::Create(D3DXVECTOR3(pos.x,pos.y + (BOX_SIZE / 2),pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*SHARD_SPEED, sinf(D3DXToRadian(fRandRot))*-(SHARD_SPEED + SHARD_UP_VALUE), tanf(D3DXToRadian(fRandRot))*SHARD_SPEED), D3DXVECTOR3(EFFECT_SIZE_X,EFFECT_SIZE_Y,0.0f), D3DXVECTOR3(fRandRot, fRandRotY, fRandRotZ), D3DCOLOR_RGBA(255, 255, 255, 255),TYPE_SHARD);
-		CBoxEffect::Create(D3DXVECTOR3(pos.x, pos.y + (BOX_SIZE / 2), pos.z), D3DXVECTOR3(0.0f,0.0f,0.0f ), D3DXVECTOR3(SMOKE_SIZE, SMOKE_SIZE, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SMOKE);
+		float fRandSize = float(rand() % SPLACH_BLOOD_SIZE_X);
+		float fRandSpeed = float(rand() % int(BLOOD_SPEED * 10));//十倍にしてランダムにする
+		//元の値の倍率に戻す
+		fRandSpeed = fRandSpeed / 10;
+		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRot))*-(fRandSpeed + BLOOD_UP_VALUE), sinf(D3DXToRadian(fRandRot))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SHARD);
+	}
+	for (int nCount = 0; nCount < BLOOD_VALUE; nCount++)
+	{
+		float fRandRot = float(rand() % 360 + -360);
+		float fRandRotY = float(rand() % 360);
+		float fRandRotZ = float(rand() % 360);
+		float fRandSize = float(rand() % SPLACH_BLOOD_SIZE_X);
+		float fRandSpeed = float(rand() % int(BLOOD_SPEED * 10));//十倍にしてランダムにする
+																 //元の値の倍率に戻す
+		fRandSpeed = (fRandSpeed / 10) / 2;
+		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRot))*-(fRandSpeed + BLOOD_UP_VALUE), sinf(D3DXToRadian(fRandRot))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SHARD);
 	}
 }
