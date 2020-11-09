@@ -8,13 +8,15 @@
 //=============================================================================
 // インクルードファイル
 //=============================================================================
-#include "bullet.h"
-#include "enemy.h"
-#include "ui.h"
-#include "camera.h"
 #include "manager.h"
 #include "renderer.h"
+#include "bullet.h"
+#include "enemy.h"
+#include "player.h"
 #include "box.h"
+#include "ui.h"
+#include "camera.h"
+
 
 //=============================================================================
 // 静的メンバ変数宣言
@@ -108,7 +110,7 @@ void CBullet::Uninit(void)
 //=============================================================================
 void CBullet::Update(void)
 {
-
+	
 	//移動量を反映させる
 	m_pos += m_move;
 
@@ -116,27 +118,59 @@ void CBullet::Update(void)
 	m_nLife--;
 
 	CScene *pScene = NULL;
+
 	do
 	{
 		pScene = GetScene(OBJTYPE_ENEMY);
 		if (pScene != NULL)
-		{
-			OBJTYPE objType = pScene->GetObjType();
-			if (objType == OBJTYPE_ENEMY)
+		{	
+			if (m_type==BULLETTYPE_PLAYER)
 			{
-				// 座標とサイズの受け取り
-				m_Getpos = ((CEnemy*)pScene)->GetPos();
-				m_Getsize = ((CEnemy*)pScene)->GetSize();
-
-				// 当たり判定
-				if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
+				OBJTYPE objType = pScene->GetObjType();
+				if (objType == OBJTYPE_ENEMY)
 				{
-					// 敵を消す
-					((CEnemy*)pScene)->HitBullet(m_nDamage);
+					// 座標とサイズの受け取り
+					m_Getpos = ((CEnemy*)pScene)->GetPos();
+					m_Getsize = ((CEnemy*)pScene)->GetSize();
 
-					// 弾を消す
-					Uninit();
-					return;
+					// 当たり判定
+					if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
+					{
+						// 敵を消す
+						((CEnemy*)pScene)->HitBullet(m_nDamage);
+
+						// 弾を消す
+						Uninit();
+						return;
+					}
+				}
+			}
+		}
+	} while (pScene != NULL);
+
+	do//プレイヤーの当たり判定
+	{
+		pScene = GetScene(OBJTYPE_PLAYER);
+		if (pScene != NULL)
+		{
+			if (m_type == BULLETTYPE_ENEMY)
+			{
+				OBJTYPE objType = pScene->GetObjType();
+				if (objType == OBJTYPE_PLAYER)
+				{
+					m_Getpos = ((CPlayer*)pScene)->GetPos();
+					m_Getsize = ((CPlayer*)pScene)->GetSize();
+
+					// 当たり判定
+					if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
+					{
+						// 敵を消す
+						((CPlayer*)pScene)->HitDamage(m_nDamage);
+
+						// 弾を消す
+						Uninit();
+						return;
+					}
 				}
 			}
 		}

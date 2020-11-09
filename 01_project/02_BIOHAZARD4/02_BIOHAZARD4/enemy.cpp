@@ -14,6 +14,7 @@
 #include "model.h"
 #include "player.h"
 #include "game.h"
+#include "bullet.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -24,19 +25,19 @@ DWORD CEnemy::m_nNumMat[MAX_ENEMY_PARTS] = {};
 D3DXMATRIX CEnemy::m_mtxWorld[MAX_ENEMY_PARTS] = {};	 // 行列計算用
 int CEnemy::m_nldxModelParent[MAX_ENEMY_PARTS] = {};	 // 親モデルのインデックス
 char* CEnemy::m_apFileName[MAX_ENEMY_PARTS] = {
-    { "data/MODEL/ENEMY/body.x" },			// 上半身
-    { "data/MODEL/ENEMY/bodyUnder.x" },	// 下半身
-    { "data/MODEL/ENEMY/head.x" },			// 頭
-    { "data/MODEL/ENEMY/legMomoLeft.x" },	// 左もも
-    { "data/MODEL/ENEMY/legLeft.x" },		// 左足
-    { "data/MODEL/ENEMY/legMomoRight.x" }, // 右もも
-    { "data/MODEL/ENEMY/legRight.x" },		// 右足
-    { "data/MODEL/ENEMY/upArmLeft.x" },    // 左上腕
-    { "data/MODEL/ENEMY/downArmLeft.x" },  // 左前腕
-    { "data/MODEL/ENEMY/handLeft.x" },	    // 左手
-    { "data/MODEL/ENEMY/upArmRight.x" },   // 右上腕
-    { "data/MODEL/ENEMY/downArmRight.x" }, // 右前腕
-    { "data/MODEL/ENEMY/handRight.x" },    // 右手
+	{ "data/MODEL/ENEMY/body.x" },			// 上半身
+	{ "data/MODEL/ENEMY/bodyUnder.x" },	// 下半身
+	{ "data/MODEL/ENEMY/head.x" },			// 頭
+	{ "data/MODEL/ENEMY/legMomoLeft.x" },	// 左もも
+	{ "data/MODEL/ENEMY/legLeft.x" },		// 左足
+	{ "data/MODEL/ENEMY/legMomoRight.x" }, // 右もも
+	{ "data/MODEL/ENEMY/legRight.x" },		// 右足
+	{ "data/MODEL/ENEMY/upArmLeft.x" },    // 左上腕
+	{ "data/MODEL/ENEMY/downArmLeft.x" },  // 左前腕
+	{ "data/MODEL/ENEMY/handLeft.x" },	    // 左手
+	{ "data/MODEL/ENEMY/upArmRight.x" },   // 右上腕
+	{ "data/MODEL/ENEMY/downArmRight.x" }, // 右前腕
+	{ "data/MODEL/ENEMY/handRight.x" },    // 右手
 };
 bool CEnemy::m_bChase = false;
 LPDIRECT3DTEXTURE9 CEnemy::m_pTexture[MAX_ENEMY_PARTS][MAX_MATERIAL] = {};
@@ -49,9 +50,10 @@ CEnemy::CEnemy(int nPriority) :CScene(nPriority)
     m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_nEnemyLife = 30;
 	m_nCntFrame = 0;
 	m_nDamageCnt = 0;
-	m_nEnemyLife = 30;
+	m_nCntAttack = 0;
 	m_bHit = false;
 	m_bAttack = false;
 }
@@ -81,26 +83,26 @@ CEnemy * CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 //----------------------------------------
 HRESULT CEnemy::Load(void)
 {
-    LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-    for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
-    {
-        // Xファイルの読み込み
-        D3DXLoadMeshFromX(m_apFileName[nCount],
-            D3DXMESH_SYSTEMMEM,
-            pDevice,
-            NULL,
-            &m_pBuffMat[nCount],
-            NULL,
-            &m_nNumMat[nCount],
-            &m_pMesh[nCount]
-        );
-    }
+	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
+	{
+		// Xファイルの読み込み
+		D3DXLoadMeshFromX(m_apFileName[nCount],
+			D3DXMESH_SYSTEMMEM,
+			pDevice,
+			NULL,
+			&m_pBuffMat[nCount],
+			NULL,
+			&m_nNumMat[nCount],
+			&m_pMesh[nCount]
+		);
+	}
 
 	// テクスチャの読み込み
 	LoadTexture();
 
-    return E_NOTIMPL;
+	return E_NOTIMPL;
 }
 
 //----------------------------------------
@@ -108,29 +110,29 @@ HRESULT CEnemy::Load(void)
 //----------------------------------------
 void CEnemy::Unload(void)
 {
-    for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
-    {
-        // メッシュの破棄
-        if (m_pMesh[nCount] != NULL)
-        {
-            m_pMesh[nCount]->Release();
-            m_pMesh[nCount] = NULL;
-        }
+	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
+	{
+		// メッシュの破棄
+		if (m_pMesh[nCount] != NULL)
+		{
+			m_pMesh[nCount]->Release();
+			m_pMesh[nCount] = NULL;
+		}
 
-        // マテリアルの破棄
-        if (m_pBuffMat[nCount] != NULL)
-        {
-            m_pBuffMat[nCount]->Release();
-            m_pBuffMat[nCount] = NULL;
-        }
+		// マテリアルの破棄
+		if (m_pBuffMat[nCount] != NULL)
+		{
+			m_pBuffMat[nCount]->Release();
+			m_pBuffMat[nCount] = NULL;
+		}
 
-        if (m_nNumMat[nCount] != NULL)
-        {
-            m_nNumMat[nCount] = NULL;
-        }
-    }
-
+		if (m_nNumMat[nCount] != NULL)
+		{
+			m_nNumMat[nCount] = NULL;
+		}
+	}
 }
+
 
 //----------------------------------------
 // テクスチャの読み込み
@@ -243,9 +245,9 @@ void CEnemy::Update(void)
 	m_pMotion->UpdateMotion();
 	//プレイヤーの場所の取得
 	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
-	//モーションセット(走る)
 	if (m_bHit == false)
-	{
+	{	
+		//モーションセット(走る)
 		m_pMotion->SetMotion(CMotion::MOTION_RUN);
 	}
 	if (m_bChase == false)
@@ -284,14 +286,28 @@ void CEnemy::Update(void)
 		if (m_pos.x - pPlayerPos.x >= -20 && m_pos.x - pPlayerPos.x <=20 &&
 			m_pos.z - pPlayerPos.z >= -20 && m_pos.z - pPlayerPos.z <=20)
 		{
-			//とまって攻撃
+			//攻撃判定
 			m_bAttack = true;
 		}
 	}
 	else
 	{
-		
+		m_nCntAttack++;
+		//2秒で攻撃
+		if (m_nCntAttack % 120 == false)
+		{
+			//攻撃の判定
+			CBullet::Create(
+				D3DXVECTOR3(m_pos.x , m_pos.y + 20.0f, m_pos.z  ),
+				D3DXVECTOR3(10.0f, 0.0f, 10.0f),
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				5,
+				10,
+				CBullet::BULLETTYPE_ENEMY);
+			m_bAttack = false;
+		}
 	}
+
 	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
 	{
 		// モデルのパーツごとのモーションの座標と回転を受け取る
@@ -338,6 +354,7 @@ void CEnemy::Draw(void)
 
 void CEnemy::HitBullet(int nDamage)
 {
+	//ダメージモーション
 	m_pMotion->SetMotion(CMotion::MOTION_DAMAGE);
 	m_bHit = true;
 	m_nEnemyLife -= nDamage;
@@ -347,7 +364,21 @@ void CEnemy::HitBullet(int nDamage)
 	}
 }
 
+//----------------------------------------
+//チェイス判定処理
+//----------------------------------------
 void CEnemy::SetChase(bool bChase)
 {
 	m_bChase = bChase;
+}
+
+//----------------------------------------
+//各種設定
+//----------------------------------------
+void CEnemy::SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
+{
+	m_pos = pos;
+	m_rot = rot; 
+	m_size = size;
+	SetObjType(OBJTYPE_ENEMY);
 }

@@ -63,30 +63,30 @@ void CFade::SetFade(CManager::MODE mode)
 
 void CFade::FadeIn(void)
 {
-	D3DXCOLOR color = GetColor();
-	color.a += 0.02f;
-	if (color.a >= 1.0f)
+	//D3DXCOLOR color = GetColor();
+	m_color.a += 0.02f;
+	if (m_color.a >= 1.0f)
 	{
-		color.a = 1.0f;
+		m_color.a = 1.0f;
 		m_fade = FADE_OUT;
 		GetManager()->SetMode(m_mode);
 		return;
 	}
-	SetColor(color);
+	SetColor(m_color);
 	CScene2D::Update();
 }
 
 void CFade::FadeOut(void)
 {	
-	D3DXCOLOR color = GetColor();
-	color.a -= 0.02f;
-	if (color.a <= 0.0f)
+	//D3DXCOLOR color = GetColor();
+	m_color.a -= 0.02f;
+	if (m_color.a <= 0.0f)
 	{
-		color.a = 0.0f;
+		m_color.a = 0.0f;
 		m_fade = FADE_NONE;
 		SetUpdateStop(false);
 		return;
 	}
-	SetColor(color);
+	SetColor(m_color);
 	CScene2D::Update();
 }

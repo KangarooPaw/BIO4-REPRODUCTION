@@ -52,7 +52,7 @@ public:
 
 	//初期設定
 	void SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);
-
+	void HitDamage(int nDamage);
 	//受け渡し処理
 	D3DXVECTOR3 GetPos(void) { return m_pos; }//場所
 	D3DXVECTOR3 GetRot(void) { return m_rot; }//角度
@@ -78,9 +78,11 @@ private:
 	CMotion *m_pMotion;					// モーションクラスのポインタ
 	CModel *m_pModel[MAX_PLAYER_PARTS]; // モデルクラスのポインタ
 
-	int m_nMotionCnt;					// モーションのカウント
+	int m_nKnifeMotionCnt;				// ナイフモーションのカウント
+	int m_nDamageMotionCnt;				// ダメージモーションのカウント
 	int m_nTurnCnt;						// ターンのカウント
-	bool m_bMotion;						// モーションの判定
+	bool m_bKnifeMotion;				// ナイフモーションの判定
+	bool m_bDamageMotion;				// ダメージモーションの判定
 	bool m_bTurn;						// ターンの判定
 	bool m_bHold;						// 銃を構えた時の判定
 };

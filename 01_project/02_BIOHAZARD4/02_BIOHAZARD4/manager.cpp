@@ -344,9 +344,8 @@ void CManager::CreateFade(MODE mode)
 	if (m_pFade == NULL)
 	{
 		m_pFade = new CFade(CScene::OBJTYPE_FADE);
-
-		m_pFade->SetFade(mode);
 		m_pFade->Init();
+		m_pFade->SetFade(mode);
 	}
 	else if (m_pFade != NULL)
 	{

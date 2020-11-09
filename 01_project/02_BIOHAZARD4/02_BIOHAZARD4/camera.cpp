@@ -173,24 +173,24 @@ void CCamera::JoyStickMove(void)
 			//カメラの角度変更
 			//---------------------------
 			//右スティックを左に倒す
-			if (pStick.lRx <= -500)
+			if (pStick.lRx <= -500 || pStick.lZ <= -500)
 			{
 				m_Distance = CAMERA_GAZE;	//距離
 				posR.x += MOVE;
 			}
 			//右スティックを右に倒す
-			if (pStick.lRx >= 500)
+			if (pStick.lRx >= 500 || pStick.lZ >= 500)
 			{
 				m_Distance = CAMERA_GAZE;	//距離
 				posR.x -= MOVE;
 			}
 			//右スティックを上に倒す
-			if (pStick.lRy <= -500)
+			if (pStick.lRy <= -500 || pStick.lRz <= -500)
 			{
 				posR.y = pPlayerPos.y + GAZE_Y + MOVE;
 			}
 			//右スティックを下に倒す
-			if (pStick.lRy >= 500)
+			if (pStick.lRy >= 500 || pStick.lRz >= 500)
 			{
 				posR.y = pPlayerPos.y + GAZE_Y - MOVE;
 			}
@@ -201,7 +201,7 @@ void CCamera::JoyStickMove(void)
 			pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
 		{
 			//右スティックを左に倒す
-			if (pStick.lRx <= -500)
+			if (pStick.lRx <= -500|| pStick.lZ <= -500)
 			{			
 				posR.x += cosf(pPlayerRot.y)*RETICLE_MOVE;
 				posR.z -= sinf(pPlayerRot.y)*RETICLE_MOVE;
@@ -218,7 +218,7 @@ void CCamera::JoyStickMove(void)
 				}
 			}
 			//右スティックを右に倒す
-			if (pStick.lRx >= 500)
+			if (pStick.lRx >= 500 || pStick.lZ >= 500 )
 			{
 				posR.x -= cosf(pPlayerRot.y)*RETICLE_MOVE;
 				posR.z += sinf(pPlayerRot.y)*RETICLE_MOVE;
@@ -235,7 +235,7 @@ void CCamera::JoyStickMove(void)
 				}
 			}
 			//右スティックを上に倒す
-			if (pStick.lRy <= -500)
+			if (pStick.lRy <= -500|| pStick.lRz <= -500)
 			{
 				
 				m_lTheta += D3DXToRadian(1);
@@ -249,7 +249,7 @@ void CCamera::JoyStickMove(void)
 				}
 			}
 			//右スティックを下に倒す
-			if (pStick.lRy >= 500)
+			if (pStick.lRy >= 500 || pStick.lRz >= 500)
 			{
 				
 				m_lTheta -= D3DXToRadian(1);
