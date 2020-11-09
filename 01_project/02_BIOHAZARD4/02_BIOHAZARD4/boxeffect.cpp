@@ -14,11 +14,11 @@
 #include "box.h"
 
 #define SHARD_VALUE 20//木片の量
-#define SHARD_SPEED 1.5f//木片の飛び散る速さ
+#define SHARD_SPEED 0.5f//木片の飛び散る速さ
 #define SHARD_UP_VALUE 1.5f//木片の上に上がる力
 #define SMOKE_ANIM_PATTERN 25 //煙のアニメーションパターン
-#define SMOKE_ANIM_COUNT 3 //このフレーム毎で更新
-#define SMOKE_SIZE 70.0f //煙サイズ
+#define SMOKE_ANIM_COUNT 1 //このフレーム毎で更新
+#define SMOKE_SIZE 60.0f //煙サイズ
 #define FALL_SPEED 0.08f //落下スピード
 //-----------------------------------------------------------
 //静的メンバ変数宣言
@@ -76,7 +76,7 @@ HRESULT CBoxEffect::Load(void)
 	 //テクスチャ読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/wood_shard.png", &m_pTexture[TYPE_SHARD]);
 	//テクスチャ読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/smoke02.png", &m_pTexture[TYPE_SMOKE]);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/smoke03.png", &m_pTexture[TYPE_SMOKE]);
 	return S_OK;
 }
 //-----------------------------------------------------------
@@ -185,7 +185,7 @@ void CBoxEffect::Update(void)
 			m_nPatternAnim++;
 		}
 
-		if (m_nPatternAnim > SMOKE_ANIM_PATTERN)
+		if (m_nPatternAnim >= SMOKE_ANIM_PATTERN)
 		{
 			Uninit();
 			return;
