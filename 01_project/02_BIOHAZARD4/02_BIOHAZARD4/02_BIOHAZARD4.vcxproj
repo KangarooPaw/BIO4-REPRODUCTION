@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="billboard.cpp" />
+    <ClCompile Include="blood.cpp" />
     <ClCompile Include="box.cpp" />
     <ClCompile Include="boxeffect.cpp" />
     <ClCompile Include="item.cpp" />
@@ -185,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="billboard.h" />
+    <ClInclude Include="blood.h" />
     <ClInclude Include="box.h" />
     <ClInclude Include="boxeffect.h" />
     <ClInclude Include="item.h" />

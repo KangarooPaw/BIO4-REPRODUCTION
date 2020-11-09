@@ -14,6 +14,9 @@
 #define MOTION_ENEMY_TEXT ("data/MODEL/ENEMY/MOTION/motion.txt") // モーションのテキスト
 #define LOAD_ENEMY_TEXT ("data/MODEL/ENEMY/MOTION/enemy.txt") // 各モデルパーツの初期値
 
+#define ENEMY_SIZE_X 20.0f//　当たり判定サイズ
+#define ENEMY_SIZE_Y 100.0f
+#define ENEMY_SIZE_Z 20.0f
 //=============================================================================
 // 前方宣言
 //=============================================================================

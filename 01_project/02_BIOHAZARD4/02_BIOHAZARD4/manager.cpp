@@ -34,6 +34,7 @@
 #include "box.h"
 #include "boxeffect.h"
 #include "particle.h"
+#include "blood.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -221,6 +222,7 @@ void CManager::LoadAll(void)
 	CItem::Load();
 	CBox::Load();
 	CBoxEffect::Load();
+	CBlood::Load();
 }
 
 //=============================================================================
@@ -238,6 +240,7 @@ void CManager::UnloadAll(void)
 	CBox::Unload();
 	CBoxEffect::Unload();
 	CParticle::Unload();
+	CBlood::Unload();
 }
 
 //=============================================================================

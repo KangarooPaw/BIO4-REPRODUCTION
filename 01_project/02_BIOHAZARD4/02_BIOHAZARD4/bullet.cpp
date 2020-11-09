@@ -15,6 +15,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "box.h"
+#include "blood.h"
 
 //=============================================================================
 // ê√ìIÉÅÉìÉoïœêîêÈåæ
@@ -131,9 +132,10 @@ void CBullet::Update(void)
 				// ìñÇΩÇËîªíË
 				if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
 				{
+
 					// ìGÇè¡Ç∑
 					((CEnemy*)pScene)->HitBullet(m_nDamage);
-
+					CBlood::BloodSplash(m_pos, D3DXVECTOR3(SPLACH_BLOOD_SIZE_X, SPLACH_BLOOD_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 0, 0, 255));
 					// íeÇè¡Ç∑
 					Uninit();
 					return;
