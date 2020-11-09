@@ -37,8 +37,8 @@ HRESULT CParticle::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// テクスチャ読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/Texture/smoke13.png", &m_pTexture[TEX_TYPE_1]);
-	D3DXCreateTextureFromFile(pDevice, "data/Texture/particle006.png", &m_pTexture[TEX_TYPE_2]);
+	D3DXCreateTextureFromFile(pDevice, "data/Texture/particle001.png", &m_pTexture[TEX_TYPE_1]);
+	D3DXCreateTextureFromFile(pDevice, "data/Texture/particle002.png", &m_pTexture[TEX_TYPE_2]);
 	return S_OK;
 }
 //----------------------------------------------------------
