@@ -32,6 +32,7 @@
 #include "map.h"
 #include "item.h"
 #include "box.h"
+#include "boxeffect.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -217,6 +218,7 @@ void CManager::LoadAll(void)
 	CBullet::Load();
 	CItem::Load();
 	CBox::Load();
+	CBoxEffect::Load();
 }
 
 //=============================================================================
@@ -232,6 +234,7 @@ void CManager::UnloadAll(void)
 	CUi::Unload();
 	CItem::Unload();
 	CBox::Unload();
+	CBoxEffect::Unload();
 }
 
 //=============================================================================

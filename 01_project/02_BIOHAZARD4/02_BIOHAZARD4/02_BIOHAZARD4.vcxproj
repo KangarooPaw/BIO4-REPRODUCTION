@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="box.cpp" />
+    <ClCompile Include="boxeffect.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="map.cpp" />
@@ -184,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="billboard.h" />
     <ClInclude Include="box.h" />
+    <ClInclude Include="boxeffect.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="life.h" />
     <ClInclude Include="map.h" />

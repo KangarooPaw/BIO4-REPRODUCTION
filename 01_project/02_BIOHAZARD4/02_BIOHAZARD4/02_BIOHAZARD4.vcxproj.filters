@@ -144,6 +144,9 @@
     <ClCompile Include="box.cpp">
       <Filter>ソース ファイル\Scene\3D</Filter>
     </ClCompile>
+    <ClCompile Include="boxeffect.cpp">
+      <Filter>ソース ファイル\Scene\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -243,6 +246,9 @@
       <Filter>ヘッダー ファイル\Scene\3D</Filter>
     </ClInclude>
     <ClInclude Include="box.h">
+      <Filter>ヘッダー ファイル\Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="boxeffect.h">
       <Filter>ヘッダー ファイル\Scene\3D</Filter>
     </ClInclude>
   </ItemGroup>
