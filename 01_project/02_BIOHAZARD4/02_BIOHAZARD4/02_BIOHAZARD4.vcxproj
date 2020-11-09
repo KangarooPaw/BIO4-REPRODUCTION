@@ -149,6 +149,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="billboard.cpp" />
+    <ClCompile Include="box.cpp" />
+    <ClCompile Include="item.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="motion.cpp" />
@@ -181,6 +183,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="billboard.h" />
+    <ClInclude Include="box.h" />
+    <ClInclude Include="item.h" />
     <ClInclude Include="life.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="motion.h" />
