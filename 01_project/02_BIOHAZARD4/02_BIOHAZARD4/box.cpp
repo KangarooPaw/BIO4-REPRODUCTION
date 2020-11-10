@@ -242,7 +242,7 @@ bool CBox::HitBox(void)
 {
 	if (m_bHit == false)
 	{
-		int nRand = rand() % CItem::TYPE_MAX;
+		int nRand = rand() % 3;
 		//アイテム生成
 		CItem::Create(D3DXVECTOR3(m_pos.x, m_pos.y + 5.0f, m_pos.z), D3DXVECTOR3(ITEM_ROT_X, 0.0f, 0.0f), D3DXVECTOR3(10.0f, 10.0f, 10.0f), (CItem::TYPE)nRand);
 		// モデルのバインド

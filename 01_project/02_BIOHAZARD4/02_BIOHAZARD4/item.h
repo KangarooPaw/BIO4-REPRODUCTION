@@ -35,8 +35,15 @@ public:
 		TYPE_HABU,//ハーブ
 		TYPE_SUPURE,//スプレー
 		TYPE_AMMO,//弾薬
+		TYPE_KEY,//カギ
 		TYPE_MAX
 	}TYPE;
+	typedef enum
+	{
+		ITEM_NONE = -1,
+		ITEM_DROP,//ハーブ
+		ITEM_MAX
+	}ITEM_ATTRIBUTE;
 	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, TYPE type);//生成処理
 	static HRESULT Load(void);//モデルの読み込み
 	static void Unload(void);//モデルの破棄
@@ -46,6 +53,7 @@ public:
 	void Update(void);//更新処理
 	void Draw(void);//描画処理
 	void SetItem(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);
+	static void DropItem(D3DXVECTOR3 pos, TYPE type);//ドロップアイテム
 	//受け渡し処理
 	D3DXVECTOR3 GetPos(void) { return m_pos; }//場所
 	D3DXVECTOR3 GetRot(void) { return m_rot; }//角度
@@ -57,8 +65,9 @@ private:
 	D3DXMATRIX m_mtxWorld;	     // 行列計算用
 	static char* m_apFileName[TYPE_MAX]; // ファイルの名前
 	static LPDIRECT3DTEXTURE9 m_pTexture[TYPE_MAX][50];
-
+	ITEM_ATTRIBUTE m_Attribute;//アイテム属性
 	D3DXVECTOR3 m_pos;					// 場所
+	D3DXVECTOR3 m_move;//移動量
 	float m_fRd;//ラジアン
 	D3DXVECTOR3 m_rot;					// 角度
 	D3DXVECTOR3 m_size;					// 大きさ

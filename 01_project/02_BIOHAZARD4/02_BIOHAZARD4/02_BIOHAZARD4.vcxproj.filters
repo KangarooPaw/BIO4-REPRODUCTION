@@ -177,6 +177,9 @@
     <ClCompile Include="skybox.cpp">
       <Filter>ソース ファイル\Scene\3D</Filter>
     </ClCompile>
+    <ClCompile Include="kira.cpp">
+      <Filter>ソース ファイル\Scene\3D\particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -281,9 +284,6 @@
     <ClInclude Include="boxeffect.h">
       <Filter>ヘッダー ファイル\Scene\3D</Filter>
     </ClInclude>
-    <ClInclude Include="blood.h">
-      <Filter>ヘッダー ファイル\Scene\3D</Filter>
-    </ClInclude>
     <ClInclude Include="particle.h">
       <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
     </ClInclude>
@@ -304,6 +304,12 @@
     </ClInclude>
     <ClInclude Include="skybox.h">
       <Filter>ヘッダー ファイル\Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="kira.h">
+      <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="blood.h">
+      <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

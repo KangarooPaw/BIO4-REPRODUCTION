@@ -20,6 +20,7 @@ public:
 		TEX_TYPE_BLOOD,//ŒŒ
 		TEX_TYPE_SHARD,//–Ø•Ð
 		TEX_TYPE_BOXSMOKE,//” ”j‰ó‚Ì‰Œ
+		TEX_TYPE_KIRA,//‚«‚ç‚«‚ç
 		TEX_TYPE_MAX,
 	}TEX_TYPE;
 	CParticle(int nPriority = 5);

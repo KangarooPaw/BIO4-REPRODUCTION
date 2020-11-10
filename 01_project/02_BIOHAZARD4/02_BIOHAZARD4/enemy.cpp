@@ -15,6 +15,7 @@
 #include "player.h"
 #include "game.h"
 #include "bullet.h"
+#include "item.h"
 
 //----------------------------------------
 //Ã“Iƒƒ“ƒo•Ï”
@@ -368,6 +369,7 @@ void CEnemy::HitBullet(int nDamage)
 
 	if (m_nEnemyLife <= 0)
 	{
+		CItem::DropItem(m_pos, CItem::TYPE_KEY);
 		Uninit();
 	}
 }

@@ -12,9 +12,12 @@
 #include "player.h"
 #include "item.h"
 #include "model.h"
+#include "kira.h"
 
 #define ROT_ADDSPEED 0.01f //向き加算
 #define UPDOWN_SPEED 0.05f //上下運動スピード
+#define ITEM_UP_VALUE 2.5f //上に上がる力
+#define ITEM_GRAVITY 0.05f //重力
 
 //----------------------------------------
 //静的メンバ変数
@@ -23,9 +26,11 @@ LPD3DXMESH CItem::m_pMesh[TYPE_MAX] = {};
 LPD3DXBUFFER CItem::m_pBuffMat[TYPE_MAX] = {};
 DWORD CItem::m_nNumMat[TYPE_MAX] = {};
 //D3DXMATRIX CItem::m_mtxWorld = {};	 // 行列計算用
-char* CItem::m_apFileName[TYPE_MAX] = { { "data/MODEL/ITEM/habu.x" },
+char* CItem::m_apFileName[TYPE_MAX] = { 
+{ "data/MODEL/ITEM/habu.x" },
 { "data/MODEL/ITEM/supure.x" },
-{ "data/MODEL/ITEM/ammo_box.x" } };// マップ
+{ "data/MODEL/ITEM/ammo_box.x" },
+{ "data/MODEL/ITEM/key.x" } };// アイテムモデル
 LPDIRECT3DTEXTURE9 CItem::m_pTexture[TYPE_MAX][50] = {};
 
 //----------------------------------------
@@ -34,11 +39,13 @@ LPDIRECT3DTEXTURE9 CItem::m_pTexture[TYPE_MAX][50] = {};
 CItem::CItem(int nPriority) :CScene(nPriority)
 {
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(ITEM_ROT_X, 0.0f, ITEM_ROT_X);
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_type = TYPE_NONE;
 	m_pModel = NULL;
 	m_fRd = 0.0f;
+	m_Attribute = ITEM_NONE;
 	m_mtxWorld = {};
 }
 
@@ -185,19 +192,39 @@ void CItem::Uninit(void)
 //----------------------------------------
 void CItem::Update(void)
 {
-	/*CScene3d::Update();*/
 
 	m_pModel->Update();
+
 	//回転
 	m_rot.y += ROT_ADDSPEED;
 
-	//上下運動
-	m_fRd += 0.1f;
-	if (m_fRd >= 360)
+	if (m_Attribute == ITEM_DROP)
 	{
-		m_fRd = 0;
+		if (m_pos.y > (m_size.y * 1.5f))
+		{
+			m_move.y += -ITEM_GRAVITY;
+			
+		}
+		else if(m_pos.y < (m_size.y * 1.5f))
+		{
+			m_pos.y = (m_size.y * 1.5f);
+		}
+
 	}
-	m_pos.y += (UPDOWN_SPEED * sin(m_fRd));
+	else
+	{
+		//上下運動
+		m_fRd += 0.1f;
+		if (m_fRd > 360)
+		{
+			m_fRd = 0;
+			CKira::EffectKira(m_pos, D3DXVECTOR3(KIRA_SIZE_X, KIRA_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 0, 0, 255));
+		}
+		m_move.y = float(UPDOWN_SPEED * sin(m_fRd));
+	}
+
+	//位置更新
+	m_pos += m_move;
 	
 	//情報更新
 	SetItem(m_pos, m_rot, m_size);
@@ -282,4 +309,13 @@ void CItem::SetItem(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 	m_pos = pos; m_rot = rot; m_size = size;
 	m_pModel->SetModel(m_pos, m_rot, m_size);
 	SetObjType(OBJTYPE_ITEM);
+}
+
+void CItem::DropItem(D3DXVECTOR3 pos, TYPE type)
+{
+	//アイテム生成
+	CItem * pItem = CItem::Create(pos, D3DXVECTOR3(ITEM_ROT_X, 0.0f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 5.0f), TYPE_KEY);
+	pItem->m_Attribute = ITEM_DROP;
+	pItem->m_move = D3DXVECTOR3(0.0f, ITEM_UP_VALUE, 0.0f);
+	
 }
