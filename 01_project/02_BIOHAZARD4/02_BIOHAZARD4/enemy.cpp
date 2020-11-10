@@ -245,13 +245,16 @@ void CEnemy::Update(void)
 	m_pMotion->UpdateMotion();
 	//プレイヤーの場所の取得
 	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
+
 	if (m_bHit == false)
 	{	
 		//モーションセット(走る)
 		m_pMotion->SetMotion(CMotion::MOTION_RUN);
 	}
+
 	if (m_bChase == false)
 	{
+		//ダメージモーション
 		if (m_bHit == true)
 		{
 			m_nDamageCnt++;
@@ -260,9 +263,10 @@ void CEnemy::Update(void)
 				m_bHit = false;
 			}
 		}
+
 		//向いている方向に進む
-		m_pos.x += -sinf(m_rot.y)*0.5f;
-		m_pos.z += -cosf(m_rot.y)*0.5f;
+		m_pos.x += -sinf(m_rot.y)*0.4f;
+		m_pos.z += -cosf(m_rot.y)*0.4f;
 
 		//2秒に1回90度回転
 		m_nCntFrame++;
@@ -270,6 +274,7 @@ void CEnemy::Update(void)
 		{
 			m_rot.y += D3DXToRadian(90);
 		}
+		//近づいたら追いかける
 		if (m_pos.x - pPlayerPos.x >= -50 && m_pos.x - pPlayerPos.x <= 50 &&
 			m_pos.z - pPlayerPos.z >= -50 && m_pos.z - pPlayerPos.z <= 50)
 		{
@@ -278,11 +283,13 @@ void CEnemy::Update(void)
 	}
 	else if(m_bAttack==false)
 	{
+		//方向の計算
 		float angle = (float)atan2(pPlayerPos.x - m_pos.x, pPlayerPos.z - m_pos.z);
 		m_rot.y = angle - D3DXToRadian(180);
 		//向いている方向に進む
-		m_pos.x += -sinf(m_rot.y)*0.5f;
-		m_pos.z += -cosf(m_rot.y)*0.5f;
+		m_pos.x += -sinf(m_rot.y)*0.4f;
+		m_pos.z += -cosf(m_rot.y)*0.4f;
+
 		if (m_pos.x - pPlayerPos.x >= -20 && m_pos.x - pPlayerPos.x <=20 &&
 			m_pos.z - pPlayerPos.z >= -20 && m_pos.z - pPlayerPos.z <=20)
 		{

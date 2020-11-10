@@ -16,6 +16,8 @@
 #include "motion.h"
 #include "model.h"
 #include "reticle.h"
+#include "life.h"
+
 //----------------------------------------
 //静的メンバ変数
 //----------------------------------------
@@ -56,13 +58,16 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_bulletRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	
 	m_bulletRotX = 0;
 	m_bulletRotY = 0;
-	//モーション
+	//ナイフモーション
 	m_nKnifeMotionCnt = 0;
-	m_nDamageMotionCnt = 0;
-	m_nTurnCnt = 0;	
 	m_bKnifeMotion = false;
+	//ダメージモーション
+	m_nDamageMotionCnt = 0;	
 	m_bDamageMotion = false;
+	//ターンモーション
+	m_nTurnCnt = 0;	
 	m_bTurn = false;
+
 	m_bHold = false;
 
 	m_pMotion = NULL;
@@ -565,7 +570,11 @@ void CPlayer::SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 
 void CPlayer::HitDamage(int nDamage)
 {
-	//ダメージモーション
-	m_pMotion->SetMotion(CMotion::MOTION_DAMAGE);
-	m_bDamageMotion = true;
+	if (m_bDamageMotion == false)
+	{	//ダメージモーション
+		m_pMotion->SetMotion(CMotion::MOTION_DAMAGE);
+		m_bDamageMotion = true;
+		//体力減少
+		CLife::LifeDecrement(nDamage);
+	}
 }
