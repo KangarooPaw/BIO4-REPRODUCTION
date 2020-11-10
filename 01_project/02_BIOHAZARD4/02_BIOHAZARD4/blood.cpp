@@ -10,6 +10,7 @@
 #include "scene.h"
 #include "joystick.h"
 #include "billboard.h"
+#include "particle.h"
 #include "blood.h"
 
 #define BLOOD_VALUE 50//木片の量
@@ -23,7 +24,7 @@ LPDIRECT3DTEXTURE9 CBlood::m_pTexture[TYPE_MAX] = {};
 //-----------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------
-CBlood::CBlood(int nPriority) : CBillboard(nPriority)
+CBlood::CBlood(int nPriority) : CParticle(nPriority)
 {
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -70,7 +71,7 @@ HRESULT CBlood::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	//テクスチャ読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/blood.png", &m_pTexture[TYPE_SHARD]);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/blood.png", &m_pTexture[TYPE_BLOOD]);
 
 	return S_OK;
 }
@@ -108,19 +109,7 @@ HRESULT CBlood::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOL
 	m_col = col;
 
 	// 初期化
-	CBillboard::Init();
-
-	// 位置座標設定
-	SetPosition(m_pos);
-
-	// サイズ設定
-	SetSize(size);
-
-	// 向き設定
-	SetRotation(m_rot);
-
-	// カラー設定
-	SetColor(m_col);
+	CParticle::Init(pos, size, rot, col, TEX_TYPE_BLOOD);
 
 	// テクスチャ受け渡し
 	BindTexture(m_pTexture[m_type]);
@@ -133,7 +122,7 @@ HRESULT CBlood::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOL
 void CBlood::Uninit(void)
 {
 	// 終了
-	CBillboard::Uninit();
+	CParticle::Uninit();
 }
 //-----------------------------------------------------------
 // 更新
@@ -141,7 +130,7 @@ void CBlood::Uninit(void)
 void CBlood::Update(void)
 {
 	// 更新
-	CBillboard::Update();
+	CParticle::Update();
 
 	m_move.y += -BLOOD_FALL_SPEED;
 
@@ -171,7 +160,7 @@ void CBlood::Update(void)
 void CBlood::Draw(void)
 {
 	// 描画
-	CBillboard::Draw();
+	CParticle::Draw();
 }
 //-----------------------------------------------------------
 // 血しぶき生成
@@ -187,7 +176,7 @@ void CBlood::BloodSplash(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3D
 		float fRandSpeed = float(rand() % int(BLOOD_SPEED * 10));//十倍にしてランダムにする
 		//元の値の倍率に戻す
 		fRandSpeed = fRandSpeed / 10;
-		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + BLOOD_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SHARD);
+		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + BLOOD_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_BLOOD);
 	}
 	for (int nCount = 0; nCount < BLOOD_VALUE; nCount++)
 	{
@@ -198,6 +187,6 @@ void CBlood::BloodSplash(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3D
 		float fRandSpeed = float(rand() % int(BLOOD_SPEED * 10));//十倍にしてランダムにする
 																 //元の値の倍率に戻す
 		fRandSpeed = (fRandSpeed / 10) / 2;
-		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + BLOOD_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SHARD);
+		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + BLOOD_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_BLOOD);
 	}
 }
