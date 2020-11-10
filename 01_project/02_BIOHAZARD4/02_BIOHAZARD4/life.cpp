@@ -20,6 +20,7 @@
 //--------------------------------------------------
 //静的メンバ変数宣言
 //--------------------------------------------------
+LPDIRECT3DTEXTURE9 CLife::m_pTexture = NULL;
 int CLife::m_nDamageCnt = 0;
 bool CLife::m_bHit = false;
 
@@ -72,6 +73,35 @@ CLife * CLife::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, float Length)
 	return pLife;
 }
 
+//----------------------------------------------------------
+// テクスチャの読み込み
+//----------------------------------------------------------
+HRESULT CLife::Load(void)
+{
+	// レンダラー取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	// テクスチャ読み込み
+	D3DXCreateTextureFromFile(pDevice, "data/Texture/tezyo.png", &m_pTexture);
+	return S_OK;
+}
+
+//----------------------------------------------------------
+// テクスチャの破棄
+//----------------------------------------------------------
+void CLife::Unload(void)
+{
+	// テクスチャの破棄
+	if (m_pTexture != NULL)
+	{
+		// テクスチャRelease
+		m_pTexture->Release();
+
+		// m_pTextureをNULLに
+		m_pTexture = NULL;
+	}
+}
+
 //--------------------------------------------------
 //初期化
 //--------------------------------------------------
@@ -82,6 +112,20 @@ HRESULT CLife::Init(void)
 
 	// 角度
 	float fAngle = 0.01f;
+
+	m_pScene2D = new CScene2D(5);
+	// 初期化
+	m_pScene2D->Init();
+	// サイズ設定
+	m_pScene2D->SetSize(D3DXVECTOR3(440.0f, 440.0f, 0.0f));
+	// カラー設定
+	m_pScene2D->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	// 向きの設定
+	m_pScene2D->SetRotation(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	// 位置設定
+	m_pScene2D->SetPosition(D3DXVECTOR3(m_pos.x, m_pos.y + 128, m_pos.z));
+	// テクスチャ受け渡し
+	m_pScene2D->BindTexture(m_pTexture);
 
 	// 100回繰り返す
 	for (int nCnt = 0; nCnt < MAX_LIFE; nCnt++)
@@ -109,6 +153,7 @@ HRESULT CLife::Init(void)
 	m_Fade = FADE_OUT;
 	//緑に設定
 	m_State = STATE_GREEN;
+
 	return S_OK;
 }
 

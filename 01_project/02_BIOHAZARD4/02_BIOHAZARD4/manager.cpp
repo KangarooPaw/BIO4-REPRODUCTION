@@ -36,6 +36,7 @@
 #include "particle.h"
 #include "blood.h"
 #include "skybox.h"
+#include "life.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -213,6 +214,7 @@ void CManager::Draw(void)
 //=============================================================================
 void CManager::LoadAll(void)
 {
+	CLife::Load();
 	CParticle::Load();
 	CUi::Load();
 	CMap::Load();
@@ -244,6 +246,7 @@ void CManager::UnloadAll(void)
 	CParticle::Unload();
 	CBlood::Unload();
 	CSkyBox::Unload();
+	CLife::Unload();
 }
 
 //=============================================================================

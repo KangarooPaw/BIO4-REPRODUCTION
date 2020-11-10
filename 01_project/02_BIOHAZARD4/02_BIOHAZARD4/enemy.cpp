@@ -375,7 +375,7 @@ void CEnemy::HitBullet(int nDamage)
 		m_pMotion->SetMotion(CMotion::MOTION_DAMAGE);
 		m_bHit = true;
 		m_nEnemyLife -= nDamage;
-
+	}
 	if (m_nEnemyLife <= 0)
 	{
 		CItem::DropItem(m_pos, CItem::TYPE_KEY);
