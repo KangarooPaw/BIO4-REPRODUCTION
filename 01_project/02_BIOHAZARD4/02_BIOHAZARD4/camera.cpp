@@ -110,10 +110,10 @@ void CCamera::JoyStickMove(void)
 	//ターン中なら
 	if (m_bTurn == true)
 	{
-		m_lPhi -= D3DXToRadian(3);
+		m_lPhi -= D3DXToRadian(6);
 		m_nTurnCnt++;
 		//ターンの終了
-		if (m_nTurnCnt == 60)
+		if (m_nTurnCnt == 30)
 		{
 			m_bTurn = false;
 			m_nTurnCnt = 0;
@@ -140,6 +140,7 @@ void CCamera::JoyStickMove(void)
 			m_RotX = 0;
 			m_RotY = 0;
 			m_lTheta = 1.0f;
+
 			//--------------------------
 			//移動
 			//--------------------------		
@@ -158,6 +159,7 @@ void CCamera::JoyStickMove(void)
 			{
 				m_bTurn = true;
 			}
+
 			//注視点
 			m_Distance = CAMERA_GAZE;	//距離
 			posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;
@@ -169,6 +171,7 @@ void CCamera::JoyStickMove(void)
 			posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi)) + posR.x;
 			posV.y = m_Distance*cosf(m_lTheta) + posR.y;
 			posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
+
 			//---------------------------
 			//カメラの角度変更
 			//---------------------------
@@ -263,25 +266,17 @@ void CCamera::JoyStickMove(void)
 				}
 			}
 
-			////10フレームだけ進める
-			//if (m_nCount <= HOLD_FRAME)
-			//{
-			//	//注視点
-			//	posR.x += (float)-sin(pPlayerRot.y);
-			//	posR.z += (float)-cos(pPlayerRot.y);
-			//	//視点	
-			//	posV.x += (float)-sin(pPlayerRot.y);
-			//	posV.z += (float)-cos(pPlayerRot.y);
-			//}
+			//10フレームだけ進める
+			if (m_nCount <= HOLD_FRAME)
+			{
+				//注視点
+				posR.x += (float)-sin(pPlayerRot.y);
+				posR.z += (float)-cos(pPlayerRot.y);
+				//視点	
+				posV.x += (float)-sin(pPlayerRot.y);
+				posV.z += (float)-cos(pPlayerRot.y);
+			}
 			m_nCount++;
-			//if (m_nCount >= HOLD_FRAME)
-			//{				
-			//注視点
-			//m_Distance = CAMERA_GAZE;	//距離
-			//posR.x = m_Distance*sinf(pPlayerRot.y) + pPlayerPos.x;
-			//posR.y = pPlayerPos.y + GAZE_Y;
-			//posR.z = m_Distance*cosf(-pPlayerRot.y) + pPlayerPos.z;
-			//}
 		}
 	}
 }

@@ -15,6 +15,8 @@
 #include "input.h"
 #include "keyboard.h"
 #include "life.h"
+#include "player.h"
+
 //--------------------------------------------------
 //静的メンバ変数宣言
 //--------------------------------------------------
@@ -299,6 +301,11 @@ void CLife::Update(void)
 	{
 		//StateをRedに
 		m_State = STATE_RED;
+	}
+	//カウントが最大体力に達した場合
+	if (m_nCnt >= MAX_LIFE)
+	{
+		CPlayer::DeathFlag();
 	}
 }
 

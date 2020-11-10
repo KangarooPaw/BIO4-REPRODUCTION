@@ -6,6 +6,8 @@
 #include "mode.h"
 #include "scene2d.h"
 
+#define TEXTURE_FADE "data/TEXTURE/fade.png"
+
 class CFade :public CScene2D
 {
 public:

@@ -49,10 +49,13 @@ public:
 	void Uninit(void);//終了処理
 	void Update(void);//更新処理
 	void Draw(void);//描画処理
+	
+	void GamePad(void);//ゲームパッド処理
+	
+	void SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);//各種設定
+	void HitDamage(int nDamage);	//ダメージ処理
+	static void DeathFlag(void);	//死亡フラグ
 
-	//初期設定
-	void SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);
-	void HitDamage(int nDamage);
 	//受け渡し処理
 	D3DXVECTOR3 GetPos(void) { return m_pos; }//場所
 	D3DXVECTOR3 GetRot(void) { return m_rot; }//角度
@@ -78,13 +81,18 @@ private:
 	CMotion *m_pMotion;					// モーションクラスのポインタ
 	CModel *m_pModel[MAX_PLAYER_PARTS]; // モデルクラスのポインタ
 
-	int m_nKnifeMotionCnt;				// ナイフモーションのカウント
-	int m_nDamageMotionCnt;				// ダメージモーションのカウント
-	int m_nTurnCnt;						// ターンのカウント
+	int m_nKnifeMotionCnt;				// ナイフモーションのカウント	
 	bool m_bKnifeMotion;				// ナイフモーションの判定
+
+	int m_nDamageMotionCnt;				// ダメージモーションのカウント
 	bool m_bDamageMotion;				// ダメージモーションの判定
+
+	int m_nTurnCnt;						// ターンのカウント
 	bool m_bTurn;						// ターンの判定
-	bool m_bHold;						// 銃を構えた時の判定
+
+	bool m_bReticle;					// レティクルの生成判定
+
+	static bool m_bDeath;				//死亡フラグ
 };
 
 #endif

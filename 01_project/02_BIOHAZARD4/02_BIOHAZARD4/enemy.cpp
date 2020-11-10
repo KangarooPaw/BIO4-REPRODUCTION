@@ -243,75 +243,79 @@ void CEnemy::Update(void)
 {
 	// モーションの更新処理
 	m_pMotion->UpdateMotion();
-	//プレイヤーの場所の取得
-	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
-
-	if (m_bHit == false)
-	{	
-		//モーションセット(走る)
-		m_pMotion->SetMotion(CMotion::MOTION_RUN);
-	}
-
-	if (m_bChase == false)
+	if (CGame::GetPlayer != NULL)
 	{
+		//プレイヤーの場所の取得
+		D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
+
+		if (m_bHit == false)
+		{
+			//モーションセット(走る)
+			m_pMotion->SetMotion(CMotion::MOTION_RUN);
+		}
 		//ダメージモーション
 		if (m_bHit == true)
 		{
 			m_nDamageCnt++;
-			if (m_nDamageCnt % 60 == 0)
+			if (m_nDamageCnt % 20 == 0)
 			{
 				m_bHit = false;
 			}
 		}
+		//チェイス中でないとき
+		if (m_bChase == false)
+		{
+			//向いている方向に進む
+			m_pos.x += -sinf(m_rot.y)*0.4f;
+			m_pos.z += -cosf(m_rot.y)*0.4f;
 
-		//向いている方向に進む
-		m_pos.x += -sinf(m_rot.y)*0.4f;
-		m_pos.z += -cosf(m_rot.y)*0.4f;
+			//2秒に1回90度回転
+			m_nCntFrame++;
+			if (m_nCntFrame % 120 == 0)
+			{
+				m_rot.y += D3DXToRadian(90);
+			}
+			//近づいたら追いかける
+			if (m_pos.x - pPlayerPos.x >= -50 && m_pos.x - pPlayerPos.x <= 50 &&
+				m_pos.z - pPlayerPos.z >= -50 && m_pos.z - pPlayerPos.z <= 50)
+			{
+				m_bChase = true;
+			}
+		}
+		//チェイス中かつ攻撃中でないとき
+		else if (m_bAttack == false)
+		{
+			//方向の計算
+			float angle = (float)atan2(pPlayerPos.x - m_pos.x, pPlayerPos.z - m_pos.z);
+			m_rot.y = angle - D3DXToRadian(180);
+			//向いている方向に進む
+			m_pos.x += -sinf(m_rot.y)*0.4f;
+			m_pos.z += -cosf(m_rot.y)*0.4f;
 
-		//2秒に1回90度回転
-		m_nCntFrame++;
-		if (m_nCntFrame % 120 == 0)
-		{
-			m_rot.y += D3DXToRadian(90);
+			if (m_pos.x - pPlayerPos.x >= -20 && m_pos.x - pPlayerPos.x <= 20 &&
+				m_pos.z - pPlayerPos.z >= -20 && m_pos.z - pPlayerPos.z <= 20)
+			{
+				//攻撃判定
+				m_bAttack = true;
+			}
 		}
-		//近づいたら追いかける
-		if (m_pos.x - pPlayerPos.x >= -50 && m_pos.x - pPlayerPos.x <= 50 &&
-			m_pos.z - pPlayerPos.z >= -50 && m_pos.z - pPlayerPos.z <= 50)
+		//チェイス中かつ攻撃中の時
+		else
 		{
-			m_bChase = true;
-		}
-	}
-	else if(m_bAttack==false)
-	{
-		//方向の計算
-		float angle = (float)atan2(pPlayerPos.x - m_pos.x, pPlayerPos.z - m_pos.z);
-		m_rot.y = angle - D3DXToRadian(180);
-		//向いている方向に進む
-		m_pos.x += -sinf(m_rot.y)*0.4f;
-		m_pos.z += -cosf(m_rot.y)*0.4f;
-
-		if (m_pos.x - pPlayerPos.x >= -20 && m_pos.x - pPlayerPos.x <=20 &&
-			m_pos.z - pPlayerPos.z >= -20 && m_pos.z - pPlayerPos.z <=20)
-		{
-			//攻撃判定
-			m_bAttack = true;
-		}
-	}
-	else
-	{
-		m_nCntAttack++;
-		//2秒で攻撃
-		if (m_nCntAttack % 120 == false)
-		{
-			//攻撃の判定
-			CBullet::Create(
-				D3DXVECTOR3(m_pos.x , m_pos.y + 20.0f, m_pos.z  ),
-				D3DXVECTOR3(10.0f, 0.0f, 10.0f),
-				D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				5,
-				10,
-				CBullet::BULLETTYPE_ENEMY);
-			m_bAttack = false;
+			//2秒で攻撃
+			m_nCntAttack++;
+			if (m_nCntAttack % 120 == false)
+			{
+				//攻撃の判定
+				CBullet::Create(
+					D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f, m_pos.z),
+					D3DXVECTOR3(10.0f, 0.0f, 10.0f),
+					D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+					5,
+					10,
+					CBullet::BULLETTYPE_ENEMY);
+				m_bAttack = false;
+			}
 		}
 	}
 
@@ -359,16 +363,22 @@ void CEnemy::Draw(void)
 	}
 }
 
+//----------------------------------------
+//ヒット処理
+//----------------------------------------
 void CEnemy::HitBullet(int nDamage)
 {
-	//ダメージモーション
-	m_pMotion->SetMotion(CMotion::MOTION_DAMAGE);
-	m_bHit = true;
-	m_nEnemyLife -= nDamage;
-
-	if (m_nEnemyLife <= 0)
+	if (m_bHit == false)
 	{
-		Uninit();
+		//ダメージモーション
+		m_pMotion->SetMotion(CMotion::MOTION_DAMAGE);
+		m_bHit = true;
+		m_nEnemyLife -= nDamage;
+
+		if (m_nEnemyLife <= 0)
+		{
+			Uninit();
+		}
 	}
 }
 

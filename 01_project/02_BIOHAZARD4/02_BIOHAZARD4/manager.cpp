@@ -318,7 +318,6 @@ void CManager::CreateCamera(void)
 	if (m_pCamera == NULL)
 	{
 		m_pCamera = new CCamera;
-
 		if (m_pCamera != NULL)
 		{
 			m_pCamera->Init();
@@ -334,7 +333,6 @@ void CManager::CreateLight(void)
 	if (m_pLight == NULL)
 	{
 		m_pLight = new CLight;
-
 		if (m_pLight != NULL)
 		{
 			m_pLight->Init();

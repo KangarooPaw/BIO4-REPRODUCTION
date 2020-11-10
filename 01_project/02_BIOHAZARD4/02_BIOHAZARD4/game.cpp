@@ -98,14 +98,7 @@ void CGame::Uninit(void)
 //*****************************************************************************
 void CGame::Update(void)
 {
-	if (CScene::GetUpdateStop() == false)
-	{
-		if (CManager::GetInputKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetInputJoystick()->GetJoystickTrigger(CInputJoystick::BUTTON_B))
-		{ //Enterキー または Bボタンを押したとき
-			//フェードの生成
-			CManager::CreateFade(CManager::MODE_RESULT);
-		}
-	}
+
 }
 
 //*****************************************************************************

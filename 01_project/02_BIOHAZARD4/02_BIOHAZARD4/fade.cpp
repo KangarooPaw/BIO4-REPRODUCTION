@@ -63,7 +63,6 @@ void CFade::SetFade(CManager::MODE mode)
 
 void CFade::FadeIn(void)
 {
-	//D3DXCOLOR color = GetColor();
 	m_color.a += 0.02f;
 	if (m_color.a >= 1.0f)
 	{
@@ -78,7 +77,6 @@ void CFade::FadeIn(void)
 
 void CFade::FadeOut(void)
 {	
-	//D3DXCOLOR color = GetColor();
 	m_color.a -= 0.02f;
 	if (m_color.a <= 0.0f)
 	{

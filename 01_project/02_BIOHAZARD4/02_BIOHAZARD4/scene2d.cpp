@@ -93,10 +93,10 @@ HRESULT CScene2D::Init(void)
 	pVtx[3].rhw = 1.0f;
 	//頂点カラーの設定 ※いつものやつ
 
-	pVtx[0].col = m_color;
-	pVtx[1].col = m_color;
-	pVtx[2].col = m_color;
-	pVtx[3].col = m_color;
+	//pVtx[0].col = m_color;
+	//pVtx[1].col = m_color;
+	//pVtx[2].col = m_color;
+	//pVtx[3].col = m_color;
 
 	//テクスチャ
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);

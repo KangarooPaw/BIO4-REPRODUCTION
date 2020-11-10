@@ -45,6 +45,8 @@ char* CPlayer::m_apFileName[MAX_PLAYER_PARTS] = {
 };
 LPDIRECT3DTEXTURE9 CPlayer::m_pTexture[MAX_PLAYER_PARTS][MAX_MATERIAL] = {};
 
+bool CPlayer::m_bDeath = false;
+
 //----------------------------------------
 //インクリメント
 //----------------------------------------
@@ -68,7 +70,7 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_nTurnCnt = 0;	
 	m_bTurn = false;
 
-	m_bHold = false;
+	m_bReticle = false;
 
 	m_pMotion = NULL;
 	memset(m_pModel, NULL, sizeof(m_pModel));
@@ -228,16 +230,27 @@ HRESULT CPlayer::Init(void)
 //----------------------------------------
 void CPlayer::Uninit(void)
 {
-	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
 	{
-		// モデルクラスの終了処理
-		m_pModel[nCount]->Uninit();
-		m_pModel[nCount] = NULL;
+		if (m_pModel[nCount] != NULL)
+		{
+			// モデルクラスの終了処理
+			m_pModel[nCount]->Uninit();
+			m_pModel[nCount] = NULL;
+		}
 	}
 
-	// モーションクラスの終了処理
-	m_pMotion->Uninit();
-	m_pMotion = NULL;
+	if (m_pMotion != NULL)
+	{
+		// モーションクラスの終了処理
+		m_pMotion->Uninit();
+		m_pMotion = NULL;
+	}
+
+	//フェードの生成
+	CManager::CreateFade(CManager::MODE_RESULT);
+
+	Release();
 }
 
 //----------------------------------------
@@ -250,23 +263,13 @@ void CPlayer::Update(void)
 
 	//キーボードの取得処理
 	CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
-	//コントローラーの取得処理
-	DIJOYSTATE pStick;
-	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
-	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
-
-	if (pJoystickDevice != NULL)
-	{
-		pJoystickDevice->Poll();
-		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
-	}
 
 	//ナイフモーション中なら
 	if (m_bKnifeMotion == true)
 	{
 		m_nKnifeMotionCnt++;
 		//45フレームでリセット
-		if (m_nKnifeMotionCnt == 45)
+		if (m_nKnifeMotionCnt%45==0)
 		{
 			m_bKnifeMotion = false;
 			m_nKnifeMotionCnt = 0;
@@ -286,232 +289,21 @@ void CPlayer::Update(void)
 	//ターン中なら
 	if (m_bTurn == true)
 	{
-		m_rot.y += D3DXToRadian(3);
+		m_rot.y += D3DXToRadian(6);
 		m_nTurnCnt++;
 		//ターンの終了
-		if (m_nTurnCnt == 60)
+		if (m_nTurnCnt == 30)
 		{
 			m_bTurn = false;
 			m_nTurnCnt = 0;
+			//弾の角度設定
+			m_bulletRot = m_rot;
 		}
 	}
 	//ターンしてないなら
 	else if (m_bTurn == false)
 	{
-		//LB/LTを押していないなら
-		if ((pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false && pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false))
-		{
-			//ダメージモーション中でないなら
-			if (m_bDamageMotion == false)
-			{
-				//通常モーション
-				m_pMotion->SetMotion(CMotion::MOTION_IDLE);
-			}
-
-			//--------------------------
-			//移動
-			//--------------------------
-			//左スティックを左に倒す
-			if (pStick.lX <= -500)
-			{
-				m_rot.y -= D3DXToRadian(2);
-			}
-			//左スティックを右に倒す
-			if (pStick.lX >= 500)
-			{
-				m_rot.y += D3DXToRadian(2);
-			}
-			//左スティックを前に倒す
-			if (pStick.lY <= -500)
-			{
-				//ダメージモーション中でないなら
-				if (m_bDamageMotion == false)
-				{
-					//走るモーション
-					m_pMotion->SetMotion(CMotion::MOTION_RUN);
-				}
-				m_pos.x += -sinf(m_rot.y)*1.0f;
-				m_pos.z += -cosf(m_rot.y)*1.0f;
-			}
-			//左スティックを後ろに倒す
-			if (pStick.lY >= 500)
-			{
-				//ダメージモーション中でないなら
-				if (m_bDamageMotion == false)
-				{
-					//戻るモーション
-					m_pMotion->SetMotion(CMotion::MOTION_BACK);
-				}
-				m_pos.x += sinf(m_rot.y)*0.5f;
-				m_pos.z += cosf(m_rot.y)*0.5f;
-				//Aボタンを押して反転
-				if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
-				{
-					m_bTurn = true;
-				}
-			}
-
-			//弾の角度をプレイヤーの角度と同じにする
-			m_bulletRot = m_rot;
-
-			//弾の角度変更数のカウントのリセット
-			m_bulletRotX = 0;
-			m_bulletRotY = 0;
-			m_bHold = false;
-		}
-		//LBを押している場合
-		else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1)&&m_bDamageMotion==false)
-		{
-			if (m_bKnifeMotion == false)
-			{
-				//ナイフを構えるモーション
-				m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
-				m_bKnifeMotion = true;
-			}
-
-			//右スティックを左に倒す
-			if (pStick.lRx <= -500)
-			{
-				m_bulletRot.y -= D3DXToRadian(1);
-				m_bulletRotY--;
-				if (m_bulletRotY <= MIN_BULLET_ROT_Y)
-				{
-					m_bulletRot.y += D3DXToRadian(1);
-					m_bulletRotY = MIN_BULLET_ROT_Y;
-				}
-			}
-			//右スティックを右に倒す
-			if (pStick.lRx >= 500)
-			{
-				m_bulletRot.y += D3DXToRadian(1);
-				m_bulletRotY++;
-				if (m_bulletRotY >= MAX_BULLET_ROT_Y)
-				{
-					m_bulletRot.y -= D3DXToRadian(1);
-					m_bulletRotY = MAX_BULLET_ROT_Y;
-				}
-			}
-			//右スティックを上に倒す
-			if (pStick.lRy <= -500)
-			{
-				m_bulletRot.x += D3DXToRadian(1);
-				m_bulletRotX++;
-				if (m_bulletRotX >= MAX_BULLET_ROT_X)
-				{
-					m_bulletRot.x -= D3DXToRadian(1);
-					m_bulletRotX = MAX_BULLET_ROT_X;
-
-				}
-			}
-			//右スティックを下に倒す
-			if (pStick.lRy >= 500)
-			{
-				m_bulletRot.x -= D3DXToRadian(1);
-				m_bulletRotX--;
-				if (m_bulletRotX <= MIN_BULLET_ROT_X)
-				{
-					m_bulletRot.x += D3DXToRadian(1);
-					m_bulletRotX = MIN_BULLET_ROT_X;
-				}
-			}
-
-			// Xボタンを押したらナイフを振る
-			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
-			{
-				if (m_bKnifeMotion == true)
-				{
-					//ナイフを振るモーション			
-					m_pMotion->SetMotion(CMotion::MOTION_SLASH);
-					//弾の生成
-					CBullet::Create(
-						D3DXVECTOR3(m_pos.x + cosf(m_bulletRot.y) + 25.0f, m_pos.y + 20.0f, m_pos.z + sinf(m_bulletRot.y) - 25.0f),
-						D3DXVECTOR3(5.0f, 0.0f, 5.0f),
-						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-						5,
-						10,
-						CBullet::BULLETTYPE_PLAYER);
-
-					m_bKnifeMotion = true;
-				}
-			}
-		}
-		//LTを押している場合
-		else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2)&&m_bDamageMotion==false)
-		{
-			//銃を構えるモーション
-			m_pMotion->SetMotion(CMotion::MOTION_HOLDGUN);
-
-			if (m_bHold == false)
-			{
-				CReticle::Create(m_pos, D3DXVECTOR3(RETICLE_SIZE_X / 2, RETICLE_SIZE_Y / 2, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-				m_bHold = true;
-			}
-
-			//右スティックを左に倒す
-			if (pStick.lRx <= -500 || pStick.lZ <= -500)
-			{
-				m_bulletRot.y -= D3DXToRadian(1);
-				m_rot.y -= D3DXToRadian(1);
-				m_bulletRotY--;
-				if (m_bulletRotY <= MIN_BULLET_ROT_Y)
-				{
-					m_bulletRot.y += D3DXToRadian(1);
-					m_rot.y += D3DXToRadian(1);
-					m_bulletRotY = MIN_BULLET_ROT_Y;
-				}
-			}
-			//右スティックを右に倒す
-			if (pStick.lRx >= 500 || pStick.lZ >= 500)
-			{
-				m_bulletRot.y += D3DXToRadian(1);
-				m_rot.y += D3DXToRadian(1);
-				m_bulletRotY++;
-				if (m_bulletRotY >= MAX_BULLET_ROT_Y)
-				{
-					m_bulletRot.y -= D3DXToRadian(1);
-					m_rot.y -= D3DXToRadian(1);
-					m_bulletRotY = MAX_BULLET_ROT_Y;
-				}
-			}
-			//右スティックを上に倒す
-			if (pStick.lRy <= -500 || pStick.lRz <= -500)
-			{
-				m_bulletRot.x += D3DXToRadian(1);
-				m_bulletRotX++;
-				if (m_bulletRotX >= MAX_BULLET_ROT_X)
-				{
-					m_bulletRot.x -= D3DXToRadian(1);
-					m_bulletRotX = MAX_BULLET_ROT_X;
-
-				}
-			}
-			//右スティックを下に倒す
-			if (pStick.lRy >= 500 || pStick.lRz >= 500)
-			{
-				m_bulletRot.x -= D3DXToRadian(1);
-				m_bulletRotX--;
-				if (m_bulletRotX <= MIN_BULLET_ROT_X)
-				{
-					m_bulletRot.x += D3DXToRadian(1);
-					m_bulletRotX = MIN_BULLET_ROT_X;
-				}
-			}
-			// Xボタンを押したら弾を発射
-			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
-			{
-				//弾の生成
-				CBullet::Create(
-					D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)),
-					D3DXVECTOR3(5.0f, 0.0f, 5.0f),
-					D3DXVECTOR3(-sinf(m_bulletRot.y)/**5.0f*/, sinf(m_bulletRot.x), -cosf(m_bulletRot.y)/**5.0f*/),
-					100,
-					10,
-					CBullet::BULLETTYPE_PLAYER);
-				//射撃モーション
-				m_pMotion->SetMotion(CMotion::MOTION_SHOT);
-				CEnemy::SetChase(true);
-			}
-		}
+		GamePad();
 	}
 	for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
 	{
@@ -521,6 +313,11 @@ void CPlayer::Update(void)
 
 	// 座標、回転、サイズのセット
 	m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
+
+	if (m_bDeath == true)
+	{
+		Uninit();
+	}
 }
 
 //----------------------------------------
@@ -557,6 +354,255 @@ void CPlayer::Draw(void)
 	}
 }
 
+void CPlayer::GamePad(void)
+{
+	//コントローラーの取得処理
+	DIJOYSTATE pStick;
+	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
+	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
+	if (pJoystickDevice != NULL)
+	{
+		pJoystickDevice->Poll();
+		pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
+	}
+
+	//LB/LTを押していないなら
+	if ((pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false && pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false))
+	{
+		//ダメージモーション中でないなら
+		if (m_bDamageMotion == false)
+		{
+			//通常モーション
+			m_pMotion->SetMotion(CMotion::MOTION_IDLE);
+		}
+
+		//--------------------------
+		//移動
+		//--------------------------
+		//左スティックを左に倒す
+		if (pStick.lX <= -500)
+		{
+			m_rot.y -= D3DXToRadian(2);
+		}
+		//左スティックを右に倒す
+		if (pStick.lX >= 500)
+		{
+			m_rot.y += D3DXToRadian(2);
+		}
+		//左スティックを前に倒す
+		if (pStick.lY <= -500)
+		{
+			//ダメージモーション中でないなら
+			if (m_bDamageMotion == false)
+			{
+				//走るモーション
+				m_pMotion->SetMotion(CMotion::MOTION_RUN);
+			}
+			m_pos.x += -sinf(m_rot.y)*1.0f;
+			m_pos.z += -cosf(m_rot.y)*1.0f;
+		}
+		//左スティックを後ろに倒す
+		if (pStick.lY >= 500)
+		{
+			//ダメージモーション中でないなら
+			if (m_bDamageMotion == false)
+			{
+				//戻るモーション
+				m_pMotion->SetMotion(CMotion::MOTION_BACK);
+			}
+			m_pos.x += sinf(m_rot.y)*0.5f;
+			m_pos.z += cosf(m_rot.y)*0.5f;
+			//Aボタンを押して反転
+			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
+			{
+				m_bTurn = true;
+			}
+		}
+
+		//弾の角度をプレイヤーの角度と同じにする
+		m_bulletRot = m_rot;
+		//弾の角度変更数のカウントのリセット
+		m_bulletRotX = 0;
+		m_bulletRotY = 0;
+		m_bReticle = false;
+	}
+	//LBを押している場合
+	else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) && m_bDamageMotion == false)
+	{
+		if (m_bKnifeMotion == false)
+		{
+			//ナイフを構えるモーション
+			m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
+			m_bKnifeMotion = true;
+		}
+
+		//右スティックを左に倒す
+		if (pStick.lRx <= -500 || pStick.lZ <= -500)
+		{
+			m_bulletRot.y -= D3DXToRadian(1);
+			m_rot.y -= D3DXToRadian(1);
+			m_bulletRotY--;
+			if (m_bulletRotY <= MIN_BULLET_ROT_Y)
+			{
+				m_bulletRot.y += D3DXToRadian(1);
+				m_rot.y += D3DXToRadian(1);
+				m_bulletRotY = MIN_BULLET_ROT_Y;
+			}
+		}
+		//右スティックを右に倒す
+		if (pStick.lRx >= 500 || pStick.lZ >= 500)
+		{
+			m_bulletRot.y += D3DXToRadian(1);
+			m_rot.y += D3DXToRadian(1);
+			m_bulletRotY++;
+			if (m_bulletRotY >= MAX_BULLET_ROT_Y)
+			{
+				m_bulletRot.y -= D3DXToRadian(1);
+				m_rot.y -= D3DXToRadian(1);
+				m_bulletRotY = MAX_BULLET_ROT_Y;
+			}
+		}
+		//右スティックを上に倒す
+		if (pStick.lRy <= -500 || pStick.lRz <= -500)
+		{
+			m_bulletRot.x += D3DXToRadian(1);
+			m_bulletRotX++;
+			if (m_bulletRotX >= MAX_BULLET_ROT_X)
+			{
+				m_bulletRot.x -= D3DXToRadian(1);
+				m_bulletRotX = MAX_BULLET_ROT_X;
+
+			}
+		}
+		//右スティックを下に倒す
+		if (pStick.lRy >= 500 || pStick.lRz >= 500)
+		{
+			m_bulletRot.x -= D3DXToRadian(1);
+			m_bulletRotX--;
+			if (m_bulletRotX <= MIN_BULLET_ROT_X)
+			{
+				m_bulletRot.x += D3DXToRadian(1);
+				m_bulletRotX = MIN_BULLET_ROT_X;
+			}
+		}
+
+		// Xボタンを押したらナイフを振る
+		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
+		{
+			if (m_bKnifeMotion == true)
+			{
+				//ナイフを振るモーション			
+				m_pMotion->SetMotion(CMotion::MOTION_SLASH);
+				m_bKnifeMotion = true;
+
+				//弾の生成
+				CBullet::Create(
+					D3DXVECTOR3(m_pos.x + cosf(m_bulletRot.y) , m_pos.y + 20.0f, m_pos.z + sinf(m_bulletRot.y)),
+					D3DXVECTOR3(10.0f, 0.0f, 10.0f),
+					D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+					5,
+					10,
+					CBullet::BULLETTYPE_PLAYER);
+			}
+		}
+	}
+	//LTを押している場合
+	else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) && m_bDamageMotion == false)
+	{
+		//銃を構えるモーション
+		m_pMotion->SetMotion(CMotion::MOTION_HOLDGUN);
+
+		//レティクルが生成されていなければ
+		if (m_bReticle == false)
+		{
+			//レティクルの生成
+			CReticle::Create(m_pos, D3DXVECTOR3(RETICLE_SIZE_X / 2, RETICLE_SIZE_Y / 2, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+			m_bReticle = true;
+		}
+
+		//右スティックを左に倒す
+		if (pStick.lRx <= -500 || pStick.lZ <= -500)
+		{	
+			//プレイヤーの角度
+			m_rot.y -= D3DXToRadian(1);
+			//弾の角度
+			m_bulletRot.y -= D3DXToRadian(1);
+			m_bulletRotY--;
+			//弾の角度制限
+			if (m_bulletRotY <= MIN_BULLET_ROT_Y)
+			{
+				//進めたものを戻す
+				m_rot.y += D3DXToRadian(1);
+				m_bulletRot.y += D3DXToRadian(1);
+				m_bulletRotY = MIN_BULLET_ROT_Y;
+			}
+		}
+		//右スティックを右に倒す
+		if (pStick.lRx >= 500 || pStick.lZ >= 500)
+		{	
+			//プレイヤーの角度
+			m_rot.y += D3DXToRadian(1);
+			//弾の角度
+			m_bulletRot.y += D3DXToRadian(1);
+			m_bulletRotY++;
+			//弾の角度制限
+			if (m_bulletRotY >= MAX_BULLET_ROT_Y)
+			{
+				//進めたものを戻す
+				m_bulletRot.y -= D3DXToRadian(1);
+				m_rot.y -= D3DXToRadian(1);
+				m_bulletRotY = MAX_BULLET_ROT_Y;
+			}
+		}
+		//右スティックを上に倒す
+		if (pStick.lRy <= -500 || pStick.lRz <= -500)
+		{
+			//弾の角度
+			m_bulletRot.x += D3DXToRadian(1);
+			m_bulletRotX++;
+			//弾の角度制限
+			if (m_bulletRotX >= MAX_BULLET_ROT_X)
+			{
+				//進めたものを戻す
+				m_bulletRot.x -= D3DXToRadian(1);
+				m_bulletRotX = MAX_BULLET_ROT_X;
+
+			}
+		}
+		//右スティックを下に倒す
+		if (pStick.lRy >= 500 || pStick.lRz >= 500)
+		{
+			//弾の角度
+			m_bulletRot.x -= D3DXToRadian(1);
+			m_bulletRotX--;
+			//弾の角度制限
+			if (m_bulletRotX <= MIN_BULLET_ROT_X)
+			{
+				//進めたものを戻す
+				m_bulletRot.x += D3DXToRadian(1);
+				m_bulletRotX = MIN_BULLET_ROT_X;
+			}
+		}
+
+		// Xボタンを押したら弾を発射
+		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
+		{
+			//射撃モーション
+			m_pMotion->SetMotion(CMotion::MOTION_SHOT);
+			CEnemy::SetChase(true);
+
+			//弾の生成
+			CBullet::Create(
+				D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)),
+				D3DXVECTOR3(5.0f, 0.0f, 5.0f),
+				D3DXVECTOR3(-sinf(m_bulletRot.y)*5.0f, sinf(m_bulletRot.x)*5.0f, -cosf(m_bulletRot.y)*5.0f),
+				100,
+				10,
+				CBullet::BULLETTYPE_PLAYER);
+		}
+	}
+}
+
 //----------------------------------------
 //初期設定
 //----------------------------------------
@@ -568,6 +614,9 @@ void CPlayer::SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 	SetObjType(OBJTYPE_PLAYER); //オブジェクトタイプの設定
 }
 
+//----------------------------------------
+//プレイヤーがダメージを受けたら
+//----------------------------------------
 void CPlayer::HitDamage(int nDamage)
 {
 	if (m_bDamageMotion == false)
@@ -577,4 +626,9 @@ void CPlayer::HitDamage(int nDamage)
 		//体力減少
 		CLife::LifeDecrement(nDamage);
 	}
+}
+
+void CPlayer::DeathFlag(void)
+{
+	m_bDeath = true;
 }

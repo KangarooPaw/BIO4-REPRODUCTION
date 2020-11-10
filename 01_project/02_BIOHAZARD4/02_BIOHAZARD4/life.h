@@ -50,7 +50,7 @@ private:
 	STATE m_State;						//State
 	float m_fRadian;					//弧度
 	float m_fLengh;						//半径
-	int m_nCnt;					//カウント
+	int m_nCnt;							//カウント
 	static int m_nDamageCnt;			//ダメージを受けるカウント
 	static bool m_bHit;					//ダメージを受けている判定
 };
