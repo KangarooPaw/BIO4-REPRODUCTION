@@ -73,6 +73,14 @@ HRESULT CGame::Init(void)
 		}
 	}//ボックス
 
+	for (int nCountX = 1; nCountX < 5; nCountX++)
+	{
+		for (int nCountZ = 1; nCountZ < 5; nCountZ++)
+		{
+			CEnemy::Create(D3DXVECTOR3(200.0f + (nCountX * 50.0f), 0.0f, -100.0f + (nCountZ * 50.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z));
+		}
+	}//敵
+
 	return S_OK;
 }
 

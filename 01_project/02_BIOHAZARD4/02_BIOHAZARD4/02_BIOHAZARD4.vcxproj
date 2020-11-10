@@ -152,9 +152,12 @@
     <ClCompile Include="blood.cpp" />
     <ClCompile Include="box.cpp" />
     <ClCompile Include="boxeffect.cpp" />
+    <ClCompile Include="circleparticle.cpp" />
+    <ClCompile Include="explosion.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="map.cpp" />
+    <ClCompile Include="mazleflash.cpp" />
     <ClCompile Include="motion.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -175,6 +178,8 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="reticle.cpp" />
+    <ClCompile Include="smoke.cpp" />
+    <ClCompile Include="spark.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="UI.cpp" />
@@ -189,9 +194,12 @@
     <ClInclude Include="blood.h" />
     <ClInclude Include="box.h" />
     <ClInclude Include="boxeffect.h" />
+    <ClInclude Include="circleparticle.h" />
+    <ClInclude Include="explosion.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="life.h" />
     <ClInclude Include="map.h" />
+    <ClInclude Include="mazleflash.h" />
     <ClInclude Include="motion.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="camera.h" />
@@ -212,6 +220,8 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="reticle.h" />
+    <ClInclude Include="smoke.h" />
+    <ClInclude Include="spark.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="ui.h" />

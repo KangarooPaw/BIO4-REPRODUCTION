@@ -18,6 +18,7 @@ public:
 	void SetRotation(D3DXVECTOR3 rot);
 	void SetSize(D3DXVECTOR3 size);
 	void SetColor(D3DXCOLOR col);
+	D3DXCOLOR GetColor(void) { return m_col; }
 	void SetTexture(float fTexX, float fTexY, float fTexX2, float fTexY2);
 	void SetScale(float fScale);
 	void BindTexture(LPDIRECT3DTEXTURE9 pTexture);
