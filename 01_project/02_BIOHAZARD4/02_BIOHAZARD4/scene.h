@@ -8,6 +8,7 @@ public:
 	typedef enum
 	{
 		OBJTYPE_NONE = 0,
+		OBJTYPE_SKYBOX,
 		OBJTYPE_PLAYER,
 		OBJTYPE_BOX,
 		OBJTYPE_ITEM,

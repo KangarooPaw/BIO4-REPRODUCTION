@@ -26,7 +26,7 @@ public:
 	}TYPE;
 	CBoxEffect(int nPriority = 5);
 	~CBoxEffect();
-	static CBoxEffect *Create(D3DXVECTOR3 pos, D3DXVECTOR3 move,D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col,TYPE type);
+	static CBoxEffect *Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, TYPE type);
 	static HRESULT Load(void);
 	static void Unload(void);
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col);

@@ -153,9 +153,6 @@
     <ClCompile Include="boxeffect.cpp">
       <Filter>ソース ファイル\Scene\3D</Filter>
     </ClCompile>
-    <ClCompile Include="blood.cpp">
-      <Filter>ソース ファイル\Scene\3D</Filter>
-    </ClCompile>
     <ClCompile Include="particle.cpp">
       <Filter>ソース ファイル\Scene\3D\particle</Filter>
     </ClCompile>
@@ -173,6 +170,12 @@
     </ClCompile>
     <ClCompile Include="spark.cpp">
       <Filter>ソース ファイル\Scene\3D\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="blood.cpp">
+      <Filter>ソース ファイル\Scene\3D\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="skybox.cpp">
+      <Filter>ソース ファイル\Scene\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="mazleflash.h">
       <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="skybox.h">
+      <Filter>ヘッダー ファイル\Scene\3D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

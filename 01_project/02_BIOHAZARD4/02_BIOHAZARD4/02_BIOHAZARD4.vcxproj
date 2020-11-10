@@ -178,6 +178,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="reticle.cpp" />
+    <ClCompile Include="skybox.cpp" />
     <ClCompile Include="smoke.cpp" />
     <ClCompile Include="spark.cpp" />
     <ClCompile Include="title.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="reticle.h" />
+    <ClInclude Include="skybox.h" />
     <ClInclude Include="smoke.h" />
     <ClInclude Include="spark.h" />
     <ClInclude Include="title.h" />

@@ -35,6 +35,7 @@
 #include "boxeffect.h"
 #include "particle.h"
 #include "blood.h"
+#include "skybox.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -223,6 +224,7 @@ void CManager::LoadAll(void)
 	CBox::Load();
 	CBoxEffect::Load();
 	CBlood::Load();
+	CSkyBox::Load();
 }
 
 //=============================================================================
@@ -241,6 +243,7 @@ void CManager::UnloadAll(void)
 	CBoxEffect::Unload();
 	CParticle::Unload();
 	CBlood::Unload();
+	CSkyBox::Unload();
 }
 
 //=============================================================================

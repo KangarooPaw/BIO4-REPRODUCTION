@@ -40,6 +40,8 @@ HRESULT CParticle::Load(void)
 	D3DXCreateTextureFromFile(pDevice, "data/Texture/particle001.png", &m_pTexture[TEX_TYPE_1]);
 	D3DXCreateTextureFromFile(pDevice, "data/Texture/particle002.png", &m_pTexture[TEX_TYPE_2]);
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/blood.png", &m_pTexture[TEX_TYPE_BLOOD]);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/wood_shard.png", &m_pTexture[TEX_TYPE_SHARD]);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/smoke03.png", &m_pTexture[TEX_TYPE_BOXSMOKE]);
 	return S_OK;
 }
 //----------------------------------------------------------

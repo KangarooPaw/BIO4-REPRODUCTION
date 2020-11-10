@@ -73,7 +73,7 @@ HRESULT CBoxEffect::Load(void)
 	// レンダラー取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	 //テクスチャ読み込み
+	//テクスチャ読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/wood_shard.png", &m_pTexture[TYPE_SHARD]);
 	//テクスチャ読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/smoke03.png", &m_pTexture[TYPE_SMOKE]);
@@ -190,14 +190,14 @@ void CBoxEffect::Update(void)
 			Uninit();
 			return;
 		}
-		
-			//テクスチャ座標のセット
+
+		//テクスチャ座標のセット
 		SetTexture(
 			m_nPatternAnim * 0.04f,
 			0.0f,
 			m_nPatternAnim * 0.04f + 0.04f,
 			1.0f);
-		
+
 	}
 
 	//ライフ０で消す
@@ -219,12 +219,13 @@ void CBoxEffect::Draw(void)
 
 void CBoxEffect::BreakBox(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
 {
+
+	CBoxEffect::Create(D3DXVECTOR3(pos.x, pos.y + (BOX_SIZE / 2), pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(SMOKE_SIZE, SMOKE_SIZE, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SMOKE);
 	for (int nCount = 0; nCount < SHARD_VALUE; nCount++)
 	{
 		float fRandRot = float(rand() % 360);
 		float fRandRotY = float(rand() % 360);
 		float fRandRotZ = float(rand() % 360);
-		CBoxEffect::Create(D3DXVECTOR3(pos.x,pos.y + (BOX_SIZE / 2),pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*SHARD_SPEED, sinf(D3DXToRadian(fRandRotY))*-(SHARD_SPEED + SHARD_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*SHARD_SPEED), D3DXVECTOR3(EFFECT_SIZE_X,EFFECT_SIZE_Y,0.0f), D3DXVECTOR3(fRandRot, fRandRotY, fRandRotZ), D3DCOLOR_RGBA(255, 255, 255, 255),TYPE_SHARD);
-		CBoxEffect::Create(D3DXVECTOR3(pos.x, pos.y + (BOX_SIZE / 2), pos.z), D3DXVECTOR3(0.0f,0.0f,0.0f ), D3DXVECTOR3(SMOKE_SIZE, SMOKE_SIZE, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SMOKE);
+		CBoxEffect::Create(D3DXVECTOR3(pos.x, pos.y + (BOX_SIZE / 2), pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*SHARD_SPEED, sinf(D3DXToRadian(fRandRotY))*-(SHARD_SPEED + SHARD_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*SHARD_SPEED), D3DXVECTOR3(EFFECT_SIZE_X, EFFECT_SIZE_Y, 0.0f), D3DXVECTOR3(fRandRot, fRandRotY, fRandRotZ), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SHARD);
 	}
 }
