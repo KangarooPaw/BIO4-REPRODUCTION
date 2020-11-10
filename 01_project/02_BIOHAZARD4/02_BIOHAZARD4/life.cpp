@@ -18,6 +18,8 @@
 //--------------------------------------------------
 //静的メンバ変数宣言
 //--------------------------------------------------
+int CLife::m_nDamageCnt = 0;
+bool CLife::m_bHit = false;
 
 //--------------------------------------------------
 //コンストラクタ
@@ -34,12 +36,15 @@ CLife::CLife(int nPriority) : CScene(nPriority)
 	m_fLengh = 0.0f;
 	m_nCnt = 0;
 }
+
 //--------------------------------------------------
 //デストラクタ
 //--------------------------------------------------
 CLife::~CLife()
 {
+
 }
+
 //--------------------------------------------------
 //生成関数
 //--------------------------------------------------
@@ -64,6 +69,7 @@ CLife * CLife::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, float Length)
 	//CPolygonのポインタを返す
 	return pLife;
 }
+
 //--------------------------------------------------
 //初期化
 //--------------------------------------------------
@@ -103,6 +109,7 @@ HRESULT CLife::Init(void)
 	m_State = STATE_GREEN;
 	return S_OK;
 }
+
 //--------------------------------------------------
 //終了
 //--------------------------------------------------
@@ -111,6 +118,7 @@ void CLife::Uninit(void)
 	//破棄
 	Release();
 }
+
 //--------------------------------------------------
 //更新
 //--------------------------------------------------
@@ -233,43 +241,47 @@ void CLife::Update(void)
 			}
 		}
 	}
-	//キーボードの左
-	if (pInputKeyboard->GetKeyPress(DIK_LEFT))
+
+	//カウントを0以上の場合
+	if (m_nCnt > 0 && m_nCnt < 100)
 	{
-		//カウントを0以上の場合
-		if (m_nCnt > 0 && m_nCnt < 100)
-		{
-			if (m_State == STATE_GREEN)
-			{
-				//カラー設定
-				m_apScene2D[m_nCnt]->SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
-			}
-			if (m_State == STATE_YELLOW)
-			{
-				//カラー設定
-				m_apScene2D[m_nCnt]->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
-			}
-			if (m_State == STATE_RED)
-			{
-				//カラー設定
-				m_apScene2D[m_nCnt]->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
-			}
-			//デクリメント
-			m_nCnt--;
-		}
-	}
-	//キーボードの右
-	if (pInputKeyboard->GetKeyPress(DIK_RIGHT))
-	{
-		//100より低い場合
-		if (m_nCnt < MAX_LIFE)
+		if (m_State == STATE_GREEN)
 		{
 			//カラー設定
-			m_apScene2D[m_nCnt]->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-			//インクリメント
-			m_nCnt++;
+			m_apScene2D[m_nCnt]->SetColor(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+		}
+		if (m_State == STATE_YELLOW)
+		{
+			//カラー設定
+			m_apScene2D[m_nCnt]->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
+		}
+		if (m_State == STATE_RED)
+		{
+			//カラー設定
+			m_apScene2D[m_nCnt]->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 		}
 	}
+
+	//100より低い場合
+	if (m_nCnt < MAX_LIFE)
+	{
+		//カラー設定
+		m_apScene2D[m_nCnt]->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+	}
+
+	//ダメージを受けているなら
+	if (m_bHit == true)
+	{
+		//体力減少
+		m_nCnt++;
+		m_nDamageCnt--;
+		//ダメージ分減らしたら
+		if (m_nDamageCnt == 0)
+		{
+			m_bHit = false;
+		}
+	}
+
 	//カウントが50より低い場合
 	if (m_nCnt < 50)
 	{
@@ -289,9 +301,20 @@ void CLife::Update(void)
 		m_State = STATE_RED;
 	}
 }
+
 //--------------------------------------------------
 //描画
 //--------------------------------------------------
 void CLife::Draw(void)
 {
+
+}
+
+//--------------------------------------------------
+//体力の減少処理
+//--------------------------------------------------
+void CLife::LifeDecrement(int nDamage)
+{
+	m_nDamageCnt = nDamage;
+	m_bHit = true;
 }
