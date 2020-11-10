@@ -140,6 +140,7 @@ void CBullet::Update(void)
 						// ìGÇè¡Ç∑
 						((CEnemy*)pScene)->HitBullet(m_nDamage);
 
+						CBlood::BloodSplash(m_pos, D3DXVECTOR3(SPLACH_BLOOD_SIZE_X, SPLACH_BLOOD_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255));
 						// íeÇè¡Ç∑
 						Uninit();
 						return;

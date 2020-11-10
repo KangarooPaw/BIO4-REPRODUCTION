@@ -187,7 +187,7 @@ void CBlood::BloodSplash(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3D
 		float fRandSpeed = float(rand() % int(BLOOD_SPEED * 10));//è\î{Ç…ÇµÇƒÉâÉìÉ_ÉÄÇ…Ç∑ÇÈ
 		//å≥ÇÃílÇÃî{ó¶Ç…ñﬂÇ∑
 		fRandSpeed = fRandSpeed / 10;
-		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRot))*-(fRandSpeed + BLOOD_UP_VALUE), sinf(D3DXToRadian(fRandRot))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SHARD);
+		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + BLOOD_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SHARD);
 	}
 	for (int nCount = 0; nCount < BLOOD_VALUE; nCount++)
 	{
@@ -198,6 +198,6 @@ void CBlood::BloodSplash(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3D
 		float fRandSpeed = float(rand() % int(BLOOD_SPEED * 10));//è\î{Ç…ÇµÇƒÉâÉìÉ_ÉÄÇ…Ç∑ÇÈ
 																 //å≥ÇÃílÇÃî{ó¶Ç…ñﬂÇ∑
 		fRandSpeed = (fRandSpeed / 10) / 2;
-		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRot))*-(fRandSpeed + BLOOD_UP_VALUE), sinf(D3DXToRadian(fRandRot))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SHARD);
+		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + BLOOD_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_SHARD);
 	}
 }
