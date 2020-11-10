@@ -39,6 +39,10 @@ HRESULT CParticle::Load(void)
 	// テクスチャ読み込み
 	D3DXCreateTextureFromFile(pDevice, "data/Texture/particle001.png", &m_pTexture[TEX_TYPE_1]);
 	D3DXCreateTextureFromFile(pDevice, "data/Texture/particle002.png", &m_pTexture[TEX_TYPE_2]);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/blood.png", &m_pTexture[TEX_TYPE_BLOOD]);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/wood_shard.png", &m_pTexture[TEX_TYPE_SHARD]);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/smoke03.png", &m_pTexture[TEX_TYPE_BOXSMOKE]);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/kira.png", &m_pTexture[TEX_TYPE_KIRA]);
 	return S_OK;
 }
 //----------------------------------------------------------
@@ -46,7 +50,7 @@ HRESULT CParticle::Load(void)
 //----------------------------------------------------------
 void CParticle::Unload(void)
 {
-	// 3回繰り返す
+	// テクスチャ種類分繰り返す
 	for (int nCnt = 0; nCnt < TEX_TYPE_MAX; nCnt++)
 	{
 		// テクスチャの破棄

@@ -11,20 +11,20 @@
 #include "joystick.h"
 #include "billboard.h"
 #include "particle.h"
-#include "blood.h"
+#include "kira.h"
 
-#define BLOOD_VALUE 50//木片の量
-#define BLOOD_SPEED 2.5f//木片の飛び散る速さ
-#define BLOOD_UP_VALUE 5.5f//木片の上に上がる力
-#define BLOOD_FALL_SPEED 0.5f //落下スピード
+#define KIRA_VALUE 50//木片の量
+#define KIRA_SPEED 2.5f//木片の飛び散る速さ
+#define KIRA_UP_VALUE 5.5f//木片の上に上がる力
+#define KIRA_FALL_SPEED 0.5f //落下スピード
 //-----------------------------------------------------------
 //静的メンバ変数宣言
 //-----------------------------------------------------------
-LPDIRECT3DTEXTURE9 CBlood::m_pTexture[TYPE_MAX] = {};
+LPDIRECT3DTEXTURE9 CKira::m_pTexture[TYPE_MAX] = {};
 //-----------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------
-CBlood::CBlood(int nPriority) : CParticle(nPriority)
+CKira::CKira(int nPriority) : CParticle(nPriority)
 {
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -34,24 +34,24 @@ CBlood::CBlood(int nPriority) : CParticle(nPriority)
 	m_type = TYPE_NONE;
 	m_nPatternAnim = 0;
 	m_nCounterAnim = 0;
-	m_nLife = BLOOD_LIFE;
+	m_nLife = KIRA_LIFE;
 }
 //-----------------------------------------------------------
 // デストラクタ
 //-----------------------------------------------------------
-CBlood::~CBlood()
+CKira::~CKira()
 {
 }
 //-----------------------------------------------------------
 // 生成
 //-----------------------------------------------------------
-CBlood * CBlood::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, TYPE type)
+CKira * CKira::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, TYPE type)
 {
 	// CReticleポインタ
-	CBlood *pBoxEffect;
+	CKira *pBoxEffect;
 
 	// メモリ確保
-	pBoxEffect = new CBlood(5);
+	pBoxEffect = new CKira(5);
 	//タイプ
 	pBoxEffect->m_type = type;
 	// 初期化
@@ -65,7 +65,7 @@ CBlood * CBlood::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 size, D3D
 //-----------------------------------------------------------
 // テクスチャ読み込み
 //-----------------------------------------------------------
-HRESULT CBlood::Load(void)
+HRESULT CKira::Load(void)
 {
 	// レンダラー取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -78,7 +78,7 @@ HRESULT CBlood::Load(void)
 //-----------------------------------------------------------
 // テクスチャ破棄
 //-----------------------------------------------------------
-void CBlood::Unload(void)
+void CKira::Unload(void)
 {
 	for (int nCount = 0; nCount < TYPE_MAX; nCount++)
 	{
@@ -96,7 +96,7 @@ void CBlood::Unload(void)
 //-----------------------------------------------------------
 // 初期化
 //-----------------------------------------------------------
-HRESULT CBlood::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
+HRESULT CKira::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
 {
 	// 代入
 	// 位置座標
@@ -111,15 +111,22 @@ HRESULT CBlood::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOL
 	// 初期化
 	CParticle::Init(pos, size, rot, col, TEX_TYPE_BLOOD);
 
-	// テクスチャ受け渡し
-	BindTexture(m_pTexture[m_type]);
+	//テクスチャ座標のセット
+	SetTexture(
+		m_nPatternAnim * 0.25f,
+		0.0f,
+		m_nPatternAnim * 0.25f + 0.25f,
+		1.0f);
+
+	//// テクスチャ受け渡し
+	//BindTexture(m_pTexture[m_type]);
 
 	return S_OK;
 }
 //-----------------------------------------------------------
 // 終了
 //-----------------------------------------------------------
-void CBlood::Uninit(void)
+void CKira::Uninit(void)
 {
 	// 終了
 	CParticle::Uninit();
@@ -127,13 +134,33 @@ void CBlood::Uninit(void)
 //-----------------------------------------------------------
 // 更新
 //-----------------------------------------------------------
-void CBlood::Update(void)
+void CKira::Update(void)
 {
 	// 更新
 	CParticle::Update();
 
-	m_move.y += -BLOOD_FALL_SPEED;
+	m_move.y += -KIRA_FALL_SPEED;
 
+	//テクスチャアニメーション更新
+		m_nCounterAnim++;
+		if (m_nCounterAnim > 3)
+		{
+			m_nCounterAnim = 0;
+			m_nPatternAnim++;
+		}
+
+		if (m_nPatternAnim >= 8)
+		{
+			Uninit();
+			return;
+		}
+
+		//テクスチャ座標のセット
+		SetTexture(
+			m_nPatternAnim * 0.25f,
+			0.0f,
+			m_nPatternAnim * 0.25f + 0.25f,
+			1.0f);
 
 	//位置更新
 	m_pos += m_move;
@@ -157,7 +184,7 @@ void CBlood::Update(void)
 //-----------------------------------------------------------
 // 描画
 //-----------------------------------------------------------
-void CBlood::Draw(void)
+void CKira::Draw(void)
 {
 	// 描画
 	CParticle::Draw();
@@ -165,28 +192,28 @@ void CBlood::Draw(void)
 //-----------------------------------------------------------
 // 血しぶき生成
 //-----------------------------------------------------------
-void CBlood::BloodSplash(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
+void CKira::EffectKira(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
 {
-	for (int nCount = 0; nCount < BLOOD_VALUE; nCount++)
+	for (int nCount = 0; nCount < KIRA_VALUE; nCount++)
 	{
 		float fRandRot = float(rand() % 360 + -360);
 		float fRandRotY = float(rand() % 360);
 		float fRandRotZ = float(rand() % 360);
-		float fRandSize = float(rand() % SPLACH_BLOOD_SIZE_X);
-		float fRandSpeed = float(rand() % int(BLOOD_SPEED * 10));//十倍にしてランダムにする
-		//元の値の倍率に戻す
+		float fRandSize = float(rand() % KIRA_SIZE_X);
+		float fRandSpeed = float(rand() % int(KIRA_SPEED * 10));//十倍にしてランダムにする
+																 //元の値の倍率に戻す
 		fRandSpeed = fRandSpeed / 10;
-		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + BLOOD_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_BLOOD);
+		CKira::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + KIRA_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_BLOOD);
 	}
-	for (int nCount = 0; nCount < BLOOD_VALUE; nCount++)
+	for (int nCount = 0; nCount < KIRA_VALUE; nCount++)
 	{
 		float fRandRot = float(rand() % 360 + -360);
 		float fRandRotY = float(rand() % 360);
 		float fRandRotZ = float(rand() % 360);
-		float fRandSize = float(rand() % SPLACH_BLOOD_SIZE_X);
-		float fRandSpeed = float(rand() % int(BLOOD_SPEED * 10));//十倍にしてランダムにする
+		float fRandSize = float(rand() % KIRA_SIZE_X);
+		float fRandSpeed = float(rand() % int(KIRA_SPEED * 10));//十倍にしてランダムにする
 																 //元の値の倍率に戻す
 		fRandSpeed = (fRandSpeed / 10) / 2;
-		CBlood::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + BLOOD_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_BLOOD);
+		CKira::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + KIRA_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_BLOOD);
 	}
 }

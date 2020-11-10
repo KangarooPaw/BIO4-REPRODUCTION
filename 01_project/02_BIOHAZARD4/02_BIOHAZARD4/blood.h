@@ -12,15 +12,17 @@
 #define SPLACH_BLOOD_SIZE_Y 5
 #define BLOOD_LIFE 50
 
-#include "billboard.h"
 
-class CBlood : public CBillboard
+#include "billboard.h"
+#include "particle.h"
+
+class CBlood : public CParticle
 {
 public:
 	typedef enum
 	{
 		TYPE_NONE = -1,
-		TYPE_SHARD,
+		TYPE_BLOOD,
 		TYPE_MAX,
 	}TYPE;
 	CBlood(int nPriority = 5);

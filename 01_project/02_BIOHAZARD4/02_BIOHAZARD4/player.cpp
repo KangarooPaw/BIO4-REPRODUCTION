@@ -582,6 +582,32 @@ void CPlayer::GamePad(void)
 				m_bulletRot.x += D3DXToRadian(1);
 				m_bulletRotX = MIN_BULLET_ROT_X;
 			}
+			//右スティックを下に倒す
+			if (pStick.lRy >= 500 || pStick.lRz >= 500)
+			{
+				m_bulletRot.x -= D3DXToRadian(1);
+				m_bulletRotX--;
+				if (m_bulletRotX <= MIN_BULLET_ROT_X)
+				{
+					m_bulletRot.x += D3DXToRadian(1);
+					m_bulletRotX = MIN_BULLET_ROT_X;
+				}
+			}
+			// Xボタンを押したら弾を発射
+			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
+			{
+				//弾の生成
+				CBullet::Create(
+					D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)),
+					D3DXVECTOR3(5.0f, 0.0f, 5.0f),
+					D3DXVECTOR3(-sinf(m_bulletRot.y)*5.0f, sinf(m_bulletRot.x), -cosf(m_bulletRot.y)*5.0f),
+					100,
+					10,
+					CBullet::BULLETTYPE_PLAYER);
+				//射撃モーション
+				m_pMotion->SetMotion(CMotion::MOTION_SHOT);
+				CEnemy::SetChase(true);
+			}
 		}
 
 		// Xボタンを押したら弾を発射
