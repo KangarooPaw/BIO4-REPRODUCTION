@@ -75,7 +75,7 @@ HRESULT CGame::Init(void)
 		}
 	}//ボックス
 
-	for (int nCountX = 1; nCountX < 2; nCountX++)
+	for (int nCountX = 1; nCountX < 10; nCountX++)
 	{
 		for (int nCountZ = 1; nCountZ < 5; nCountZ++)
 		{

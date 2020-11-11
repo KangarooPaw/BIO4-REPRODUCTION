@@ -74,6 +74,7 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 
 	m_pMotion = NULL;
 	memset(m_pModel, NULL, sizeof(m_pModel));
+	m_bDeath = false;
 }
 
 //----------------------------------------
