@@ -13,10 +13,12 @@
 #include "particle.h"
 #include "kira.h"
 
-#define KIRA_VALUE 50//木片の量
+#define KIRA_VALUE 5//木片の量
 #define KIRA_SPEED 2.5f//木片の飛び散る速さ
 #define KIRA_UP_VALUE 5.5f//木片の上に上がる力
 #define KIRA_FALL_SPEED 0.5f //落下スピード
+#define KIRA_RAND_RANGE 10 //ランダム配置の広がり具合
+#define KIRA_ANIM_COUNT 5 //このフレーム毎で更新
 //-----------------------------------------------------------
 //静的メンバ変数宣言
 //-----------------------------------------------------------
@@ -109,7 +111,7 @@ HRESULT CKira::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLO
 	m_col = col;
 
 	// 初期化
-	CParticle::Init(pos, size, rot, col, TEX_TYPE_BLOOD);
+	CParticle::Init(pos, size, rot, col, TEX_TYPE_KIRA);
 
 	//テクスチャ座標のセット
 	SetTexture(
@@ -139,11 +141,11 @@ void CKira::Update(void)
 	// 更新
 	CParticle::Update();
 
-	m_move.y += -KIRA_FALL_SPEED;
+	/*m_move.y += -KIRA_FALL_SPEED;*/
 
 	//テクスチャアニメーション更新
 		m_nCounterAnim++;
-		if (m_nCounterAnim > 3)
+		if (m_nCounterAnim > KIRA_ANIM_COUNT)
 		{
 			m_nCounterAnim = 0;
 			m_nPatternAnim++;
@@ -186,34 +188,42 @@ void CKira::Update(void)
 //-----------------------------------------------------------
 void CKira::Draw(void)
 {
+	// レンダラー取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	// 加算合成の設定
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 	// 描画
 	CParticle::Draw();
+	// 元に戻す
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
 //-----------------------------------------------------------
 // 血しぶき生成
 //-----------------------------------------------------------
 void CKira::EffectKira(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col)
 {
+
+	int nRandSeed = 0;//ランダムシード値
+	nRandSeed = rand() % 255;
+	srand((unsigned int)time(NULL)*nRandSeed);
+
 	for (int nCount = 0; nCount < KIRA_VALUE; nCount++)
 	{
-		float fRandRot = float(rand() % 360 + -360);
-		float fRandRotY = float(rand() % 360);
-		float fRandRotZ = float(rand() % 360);
+		float fRandPosX = float(rand() % KIRA_RAND_RANGE);
+		float fRandPosY = float(rand() % KIRA_RAND_RANGE);
+		float fRandPosZ = float(rand() % KIRA_RAND_RANGE);
 		float fRandSize = float(rand() % KIRA_SIZE_X);
-		float fRandSpeed = float(rand() % int(KIRA_SPEED * 10));//十倍にしてランダムにする
-																 //元の値の倍率に戻す
-		fRandSpeed = fRandSpeed / 10;
-		CKira::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + KIRA_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_BLOOD);
+	
+		CKira::Create(D3DXVECTOR3(pos.x + fRandPosX, pos.y + fRandPosY, pos.z + fRandPosZ), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_NONE);
 	}
 	for (int nCount = 0; nCount < KIRA_VALUE; nCount++)
 	{
-		float fRandRot = float(rand() % 360 + -360);
-		float fRandRotY = float(rand() % 360);
-		float fRandRotZ = float(rand() % 360);
+		float fRandPosX = float(rand() % KIRA_RAND_RANGE + -KIRA_RAND_RANGE);
+		float fRandPosY = float(rand() % KIRA_RAND_RANGE + -KIRA_RAND_RANGE);
+		float fRandPosZ = float(rand() % KIRA_RAND_RANGE + -KIRA_RAND_RANGE);
 		float fRandSize = float(rand() % KIRA_SIZE_X);
-		float fRandSpeed = float(rand() % int(KIRA_SPEED * 10));//十倍にしてランダムにする
-																 //元の値の倍率に戻す
-		fRandSpeed = (fRandSpeed / 10) / 2;
-		CKira::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(cosf(D3DXToRadian(fRandRot))*fRandSpeed, sinf(D3DXToRadian(fRandRotY))*-(fRandSpeed + KIRA_UP_VALUE), cosf(D3DXToRadian(fRandRotZ))*fRandSpeed), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_BLOOD);
+
+		CKira::Create(D3DXVECTOR3(pos.x + fRandPosX, pos.y + fRandPosY, pos.z + fRandPosZ), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(fRandSize, fRandSize, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255), TYPE_NONE);
 	}
 }

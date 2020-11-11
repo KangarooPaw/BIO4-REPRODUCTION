@@ -13,14 +13,11 @@
 #include "particle.h"
 #include "blood.h"
 
-#define BLOOD_VALUE 50//木片の量
-#define BLOOD_SPEED 2.5f//木片の飛び散る速さ
-#define BLOOD_UP_VALUE 5.5f//木片の上に上がる力
+#define BLOOD_VALUE 50//血の量
+#define BLOOD_SPEED 2.5f//血の飛び散る速さ
+#define BLOOD_UP_VALUE 5.5f//血の上に上がる力
 #define BLOOD_FALL_SPEED 0.5f //落下スピード
-//-----------------------------------------------------------
-//静的メンバ変数宣言
-//-----------------------------------------------------------
-LPDIRECT3DTEXTURE9 CBlood::m_pTexture[TYPE_MAX] = {};
+
 //-----------------------------------------------------------
 // コンストラクタ
 //-----------------------------------------------------------
@@ -62,37 +59,7 @@ CBlood * CBlood::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 size, D3D
 	// ポインタを返す
 	return pBoxEffect;
 }
-//-----------------------------------------------------------
-// テクスチャ読み込み
-//-----------------------------------------------------------
-HRESULT CBlood::Load(void)
-{
-	// レンダラー取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	//テクスチャ読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/blood.png", &m_pTexture[TYPE_BLOOD]);
-
-	return S_OK;
-}
-//-----------------------------------------------------------
-// テクスチャ破棄
-//-----------------------------------------------------------
-void CBlood::Unload(void)
-{
-	for (int nCount = 0; nCount < TYPE_MAX; nCount++)
-	{
-		// テクスチャの破棄
-		if (m_pTexture[nCount] != NULL)
-		{
-			// テクスチャRelease
-			m_pTexture[nCount]->Release();
-
-			// m_pTextureをNULLに
-			m_pTexture[nCount] = NULL;
-		}
-	}
-}
 //-----------------------------------------------------------
 // 初期化
 //-----------------------------------------------------------
@@ -110,9 +77,6 @@ HRESULT CBlood::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOL
 
 	// 初期化
 	CParticle::Init(pos, size, rot, col, TEX_TYPE_BLOOD);
-
-	// テクスチャ受け渡し
-	BindTexture(m_pTexture[m_type]);
 
 	return S_OK;
 }

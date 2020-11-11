@@ -36,8 +36,6 @@ public:
 	void Draw(void);
 	static void BloodSplash(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col);
 private:
-
-	static LPDIRECT3DTEXTURE9 m_pTexture[TYPE_MAX];			// texture
 	D3DXVECTOR3 m_pos;								// à íuç¿ïW
 	D3DXVECTOR3 m_move;                             //à⁄ìÆó 
 	D3DXVECTOR3 m_rot;								// å¸Ç´

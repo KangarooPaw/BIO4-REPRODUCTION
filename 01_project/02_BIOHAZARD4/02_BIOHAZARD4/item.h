@@ -18,8 +18,9 @@
 //=============================================================================
 class CModel;
 
-
 #define ITEM_ROT_X 0.5f //傾き
+
+#define ITEM_SIZE 2.0f
 //=============================================================================
 // プレイヤークラス
 //=============================================================================
@@ -41,7 +42,7 @@ public:
 	typedef enum
 	{
 		ITEM_NONE = -1,
-		ITEM_DROP,
+		ITEM_DROP,//ドロップ
 		ITEM_MAX
 	}ITEM_ATTRIBUTE;
 	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, TYPE type);//生成処理
@@ -73,6 +74,7 @@ private:
 	D3DXVECTOR3 m_rot;					// 角度
 	D3DXVECTOR3 m_size;					// 大きさ
 	int         m_type;                 //種類
+	int         m_nCountTimer;         //カウント
 	CModel *m_pModel; // モデルクラスのポインタ
 };
 

@@ -8,8 +8,8 @@
 //----------------------------------------------------
 // É}ÉNÉçíËã`
 //----------------------------------------------------
-#define KIRA_SIZE_X 5
-#define KIRA_SIZE_Y 5
+#define KIRA_SIZE_X 10
+#define KIRA_SIZE_Y 10
 #define KIRA_LIFE 50
 
 

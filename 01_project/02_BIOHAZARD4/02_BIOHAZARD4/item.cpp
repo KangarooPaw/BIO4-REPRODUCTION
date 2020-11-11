@@ -19,6 +19,7 @@
 #define UPDOWN_SPEED 0.05f //上下運動スピード
 #define ITEM_UP_VALUE 2.5f //上に上がる力
 #define ITEM_GRAVITY 0.05f //重力
+#define ITEM_KIRAKIRA_INTERVAL 50 //きらきら間隔
 
 //----------------------------------------
 //静的メンバ変数
@@ -31,7 +32,7 @@ char* CItem::m_apFileName[TYPE_MAX] = {
 { "data/MODEL/ITEM/habu.x" },
 { "data/MODEL/ITEM/supure.x" },
 { "data/MODEL/ITEM/ammo_box.x" },
-{ "data/MODEL/ITEM/key.x" } };// アイテムモデル
+{ "data/MODEL/ITEM/key.x" } , };// アイテムモデル
 LPDIRECT3DTEXTURE9 CItem::m_pTexture[TYPE_MAX][50] = {};
 
 //----------------------------------------
@@ -48,6 +49,7 @@ CItem::CItem(int nPriority) :CScene(nPriority)
 	m_fRd = 0.0f;
 	m_Attribute = ITEM_NONE;
 	m_mtxWorld = {};
+	m_nCountTimer = 0;
 }
 
 //----------------------------------------
@@ -177,13 +179,12 @@ HRESULT CItem::Init(void)
 //----------------------------------------
 void CItem::Uninit(void)
 {
-	if (m_pModel != NULL)
-	{
-		// モーションクラスの終了処理
-		m_pModel->Uninit();
-		m_pModel = NULL;
-	}
-
+		if (m_pModel != NULL)
+		{
+			// モデルクラスの終了処理
+			m_pModel->Uninit();
+			m_pModel = NULL;
+		}
 	Release();
 }
 //----------------------------------------
@@ -192,6 +193,15 @@ void CItem::Uninit(void)
 void CItem::Update(void)
 {
 	m_pModel->Update();
+
+	if (m_type == TYPE_KEY)
+	{
+		m_nCountTimer++;
+		if (m_nCountTimer % ITEM_KIRAKIRA_INTERVAL == 0)
+		{
+			CKira::EffectKira(m_pos, D3DXVECTOR3(KIRA_SIZE_X, KIRA_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255));
+		}
+	}
 
 	//回転
 	m_rot.y += ROT_ADDSPEED;
@@ -216,7 +226,6 @@ void CItem::Update(void)
 		if (m_fRd > 360)
 		{
 			m_fRd = 0;
-			CKira::EffectKira(m_pos, D3DXVECTOR3(KIRA_SIZE_X, KIRA_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 0, 0, 255));
 		}
 		m_move.y = float(UPDOWN_SPEED * sin(m_fRd));
 	}
@@ -228,42 +237,8 @@ void CItem::Update(void)
 	SetItem(m_pos, m_rot, m_size);
 
 
-	////コントローラーの取得処理
-	//DIJOYSTATE pStick;
-	//CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
-	//LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
-	//if (pJoystickDevice != NULL)
-	//{
-	//	pJoystickDevice->Poll();
-	//	pJoystickDevice->GetDeviceState(sizeof(DIJOYSTATE), &pStick);
-	//}
-	////当たり判定処理
-	//CScene *pScene = NULL;
-	//do
-	//{
-	//	pScene = GetScene(OBJTYPE_PLAYER);
-	//	if (pScene != NULL)
-	//	{
-	//		OBJTYPE objType = pScene->GetObjType();
-	//		if (objType == OBJTYPE_PLAYER)
-	//		{
-	//			// 座標とサイズの受け取り
-	//			D3DXVECTOR3 Getpos = ((CPlayer*)pScene)->GetPos();
-	//			D3DXVECTOR3 Getsize = ((CPlayer*)pScene)->GetSize();
 
-	//			// 当たり判定
-	//			if (CollisionItem(m_pos, m_size, Getpos, Getsize) == true)
-	//			{
-	//				//アイテムを消す
-	//				if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
-	//				{
-	//					Uninit();
-	//					return;
-	//				}
-	//			}
-	//		}
-	//	}
-	//} while (pScene != NULL);
+
 }
 
 //----------------------------------------
@@ -289,28 +264,7 @@ void CItem::Draw(void)
 	// モデルクラスの描画処理
 	m_pModel->Draw();
 }
-////当たり判定
-//bool CItem::CollisionItem(D3DXVECTOR3 pos1, D3DXVECTOR3 size1, D3DXVECTOR3 pos2, D3DXVECTOR3 size2)
-//{
-//	bool bHit = false;  //当たったかどうか
-//
-//	D3DXVECTOR3 box1Max = D3DXVECTOR3(size1.x / 2, size1.y, size1.z / 2) + pos1;          //ぶつかる側の最大値
-//	D3DXVECTOR3 box1Min = D3DXVECTOR3(-size1.x / 2, -size1.y, -size1.z / 2) + pos1;       //ぶつかる側の最小値
-//	D3DXVECTOR3 box2Max = D3DXVECTOR3(size2.x / 2, size2.y / 2, size2.z / 2) + pos2;      //ぶつかられる側の最大値
-//	D3DXVECTOR3 box2Min = D3DXVECTOR3(-size2.x / 2, -size2.y / 2, -size2.z / 2) + pos2;   //ぶつかられる側の最小値
-//
-//	if (box1Max.y > box2Min.y&&
-//		box1Min.y < box2Max.y&&
-//		box1Max.x > box2Min.x&&
-//		box1Min.x < box2Max.x&&
-//		box1Max.z > box2Min.z&&
-//		box1Min.z < box2Max.z)
-//	{
-//		bHit = true;
-//	}
-//
-//	return bHit;    //当たったかどうかを返す
-//}
+
 
 void CItem::SetItem(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
