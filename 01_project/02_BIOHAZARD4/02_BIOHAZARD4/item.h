@@ -42,7 +42,7 @@ public:
 	typedef enum
 	{
 		ITEM_NONE = -1,
-		ITEM_DROP,//ハーブ
+		ITEM_DROP,//ドロップ
 		ITEM_MAX
 	}ITEM_ATTRIBUTE;
 	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, TYPE type);//生成処理

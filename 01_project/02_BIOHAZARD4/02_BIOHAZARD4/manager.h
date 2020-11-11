@@ -14,6 +14,7 @@ class CPlayer;
 class CModel;
 class CDebugProc;
 class CMode;
+class CSound;
 
 //マネージャークラス
 class CManager
@@ -64,6 +65,7 @@ private:
 	static CCamera *m_pCamera;				//カメラ
 	static CLight *m_pLight;				//ライト
 	static CFade *m_pFade;					//フェード
+	static CSound *m_pSound;                //サウンド
 	static CDebugProc*m_pDebugProc;			//デバッグ
 	static CMode *m_pMode;					//モードのポインタ
 	static MODE m_mode;						//現在のモード

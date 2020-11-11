@@ -31,7 +31,7 @@ char* CItem::m_apFileName[TYPE_MAX] = {
 { "data/MODEL/ITEM/habu.x" },
 { "data/MODEL/ITEM/supure.x" },
 { "data/MODEL/ITEM/ammo_box.x" },
-{ "data/MODEL/ITEM/key.x" } };// アイテムモデル
+{ "data/MODEL/ITEM/key.x" } , };// アイテムモデル
 LPDIRECT3DTEXTURE9 CItem::m_pTexture[TYPE_MAX][50] = {};
 
 //----------------------------------------

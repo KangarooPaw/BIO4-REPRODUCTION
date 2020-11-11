@@ -37,6 +37,7 @@
 #include "blood.h"
 #include "skybox.h"
 #include "life.h"
+#include "sound.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -46,6 +47,7 @@ CInputKeyboard *CManager::m_pInputKeyboard = NULL;
 CInputJoystick *CManager::m_pInputJoystick = NULL;
 CCamera *CManager::m_pCamera = NULL;
 CLight *CManager::m_pLight = NULL;
+CSound *CManager::m_pSound = NULL;
 CFade *CManager::m_pFade = NULL;
 CDebugProc *CManager::m_pDebugProc = NULL;
 CMode *CManager::m_pMode = NULL;
@@ -85,6 +87,17 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindouw)
 	//デバッグ
 	m_pDebugProc = new CDebugProc;
 	m_pDebugProc->Init();
+
+	//サウンド
+	if (m_pSound == NULL)
+	{
+		m_pSound = new CSound;
+		// 初期化処理
+		if (FAILED(m_pSound->Init(hWnd)))
+		{
+			return -1;
+		}
+	}
 	//テクスチャの読み込み
 	LoadAll();
 
@@ -137,6 +150,15 @@ void CManager::Uninit(void)
 		delete m_pInputKeyboard;
 		m_pInputKeyboard = NULL;
 	}
+	//サウンド終了
+	m_pSound->CSound::StopSound();
+	m_pSound->Uninit();
+	if (m_pSound != NULL)
+	{
+		delete m_pSound;
+		m_pSound = NULL;
+	}
+
 	if (m_pMode != NULL)
 	{
 		//その時のモードの終了処理
