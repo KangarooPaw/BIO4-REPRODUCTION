@@ -152,9 +152,13 @@ HRESULT CMap::Init(void)
 //----------------------------------------
 void CMap::Uninit(void)
 {
-		// モデルクラスの終了処理
-		m_pModel->Uninit();
-		m_pModel = NULL;
+		if (m_pModel != NULL)
+		{
+			// モデルクラスの終了処理
+			m_pModel->Uninit();
+			m_pModel = NULL;
+		}
+		Release();
 }
 
 //----------------------------------------

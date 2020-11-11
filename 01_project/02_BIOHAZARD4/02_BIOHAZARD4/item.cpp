@@ -184,9 +184,13 @@ HRESULT CItem::Init(void)
 //----------------------------------------
 void CItem::Uninit(void)
 {
-	// モデルクラスの終了処理
-	m_pModel->Uninit();
-	m_pModel = NULL;
+		if (m_pModel != NULL)
+		{
+			// モデルクラスの終了処理
+			m_pModel->Uninit();
+			m_pModel = NULL;
+		}
+	Release();
 }
 
 //----------------------------------------
@@ -196,7 +200,6 @@ void CItem::Update(void)
 {
 
 	m_pModel->Update();
-
 
 	if (m_type == TYPE_KEY)
 	{
@@ -258,15 +261,13 @@ void CItem::Update(void)
 				// 当たり判定
 				if (CollisionItem(m_pos, m_size, Getpos, Getsize) == true)
 				{
-					//// アイテムを消す
-				/*	Uninit();
-					return;*/
+					// アイテムを消す
+					Uninit();
+					return;
 				}
 			}
 		}
 	} while (pScene != NULL);
-
-
 }
 
 //----------------------------------------

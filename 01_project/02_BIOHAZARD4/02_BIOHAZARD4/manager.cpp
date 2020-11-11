@@ -225,7 +225,6 @@ void CManager::LoadAll(void)
 	CItem::Load();
 	CBox::Load();
 	CBoxEffect::Load();
-	CBlood::Load();
 	CSkyBox::Load();
 }
 
@@ -244,7 +243,6 @@ void CManager::UnloadAll(void)
 	CBox::Unload();
 	CBoxEffect::Unload();
 	CParticle::Unload();
-	CBlood::Unload();
 	CSkyBox::Unload();
 	CLife::Unload();
 }
