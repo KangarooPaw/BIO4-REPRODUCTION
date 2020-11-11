@@ -107,11 +107,11 @@ void CBillboard::Update(void)
 	pVtx[2].pos = D3DXVECTOR3((-m_size.x / 2), (-m_size.y / 2), (m_size.z / 2)) * m_fScale;
 	pVtx[3].pos = D3DXVECTOR3((+m_size.x / 2), (-m_size.y / 2), (m_size.z / 2)) * m_fScale;
 
-	//法線の設定
-	pVtx[0].nor = D3DXVECTOR3( 0 ,0, -1);
-	pVtx[1].nor = D3DXVECTOR3( 0 ,0, -1);
-	pVtx[2].nor = D3DXVECTOR3( 0 ,0, -1);
-	pVtx[3].nor = D3DXVECTOR3( 0 ,0, -1);
+	//法線の設定 //どこから見ても暗くならないようにしてます
+	pVtx[0].nor = D3DXVECTOR3( 1 ,1, -1);
+	pVtx[1].nor = D3DXVECTOR3( 1 ,1, -1);
+	pVtx[2].nor = D3DXVECTOR3( 1 ,1, -1);
+	pVtx[3].nor = D3DXVECTOR3( 1 ,1, -1);
 
 	//カラーの設定
 	pVtx[0].col = m_col;

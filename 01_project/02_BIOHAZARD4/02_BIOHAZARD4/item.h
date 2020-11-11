@@ -72,6 +72,7 @@ private:
 	D3DXVECTOR3 m_rot;					// 角度
 	D3DXVECTOR3 m_size;					// 大きさ
 	int         m_type;                 //種類
+	int         m_nCountTimer;         //カウント
 	CModel *m_pModel; // モデルクラスのポインタ
 };
 

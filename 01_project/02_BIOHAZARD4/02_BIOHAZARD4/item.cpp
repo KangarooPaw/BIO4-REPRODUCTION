@@ -18,6 +18,7 @@
 #define UPDOWN_SPEED 0.05f //上下運動スピード
 #define ITEM_UP_VALUE 2.5f //上に上がる力
 #define ITEM_GRAVITY 0.05f //重力
+#define ITEM_KIRAKIRA_INTERVAL 50 //きらきら間隔
 
 //----------------------------------------
 //静的メンバ変数
@@ -47,6 +48,7 @@ CItem::CItem(int nPriority) :CScene(nPriority)
 	m_fRd = 0.0f;
 	m_Attribute = ITEM_NONE;
 	m_mtxWorld = {};
+	m_nCountTimer = 0;
 }
 
 //----------------------------------------
@@ -195,6 +197,16 @@ void CItem::Update(void)
 
 	m_pModel->Update();
 
+
+	if (m_type == TYPE_KEY)
+	{
+		m_nCountTimer++;
+		if (m_nCountTimer % ITEM_KIRAKIRA_INTERVAL == 0)
+		{
+			CKira::EffectKira(m_pos, D3DXVECTOR3(KIRA_SIZE_X, KIRA_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255));
+		}
+	}
+
 	//回転
 	m_rot.y += ROT_ADDSPEED;
 
@@ -218,7 +230,6 @@ void CItem::Update(void)
 		if (m_fRd > 360)
 		{
 			m_fRd = 0;
-			CKira::EffectKira(m_pos, D3DXVECTOR3(KIRA_SIZE_X, KIRA_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 0, 0, 255));
 		}
 		m_move.y = float(UPDOWN_SPEED * sin(m_fRd));
 	}
