@@ -23,7 +23,7 @@
 LPDIRECT3DTEXTURE9 CLife::m_pTexture = NULL;
 int CLife::m_nDamageCnt = 0;
 bool CLife::m_bHit = false;
-
+bool CLife::m_bHerb = false;
 //--------------------------------------------------
 //コンストラクタ
 //--------------------------------------------------
@@ -171,10 +171,6 @@ void CLife::Uninit(void)
 //--------------------------------------------------
 void CLife::Update(void)
 {
-	//位置座標
-	D3DXVECTOR3 pos;
-	//キーボード取得
-	CInputKeyboard * pInputKeyboard = CManager::GetInputKeyboard();
 	//100回繰り返す
 	for (int nCnt = 0; nCnt < MAX_LIFE; nCnt++)
 	{
@@ -329,6 +325,22 @@ void CLife::Update(void)
 		}
 	}
 
+	if (m_bHerb == true)
+	{
+		if (m_nCnt == 0)
+		{
+			//体力増加
+			m_nCnt--;
+		}
+		m_nDamageCnt--;
+		//ダメージ分回復するか全回復したら
+		if (m_nDamageCnt == 0)
+		{
+			m_bHerb = false;
+			m_nDamageCnt = 0;
+		}
+
+	}
 	//カウントが50より低い場合
 	if (m_nCnt < 50)
 	{
@@ -369,4 +381,13 @@ void CLife::LifeDecrement(int nDamage)
 {
 	m_nDamageCnt = nDamage;
 	m_bHit = true;
+}
+
+//--------------------------------------------------
+//体力の増加処理
+//--------------------------------------------------
+void CLife::LifeIncrement(int nDamage)
+{
+	m_nDamageCnt = nDamage;
+	m_bHerb = true;
 }

@@ -32,8 +32,8 @@ public:
 	typedef enum
 	{
 		TYPE_NONE = -1,
-		TYPE_HABU,//ハーブ
-		TYPE_SUPURE,//スプレー
+		TYPE_HERB,//ハーブ
+		TYPE_SPRAY,//スプレー
 		TYPE_AMMO,//弾薬
 		TYPE_KEY,//カギ
 		TYPE_MAX
@@ -41,7 +41,7 @@ public:
 	typedef enum
 	{
 		ITEM_NONE = -1,
-		ITEM_DROP,//ハーブ
+		ITEM_DROP,
 		ITEM_MAX
 	}ITEM_ATTRIBUTE;
 	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, TYPE type);//生成処理
@@ -57,8 +57,9 @@ public:
 	//受け渡し処理
 	D3DXVECTOR3 GetPos(void) { return m_pos; }//場所
 	D3DXVECTOR3 GetRot(void) { return m_rot; }//角度
+	D3DXVECTOR3 GetSize(void) { return m_size; }//サイズ
+	int GetType(void) { return m_type; }
 private:
-	bool CItem::CollisionItem(D3DXVECTOR3 pos1, D3DXVECTOR3 size1, D3DXVECTOR3 pos2, D3DXVECTOR3 size2);
 	static LPD3DXMESH m_pMesh[TYPE_MAX];	  // メッシュ情報のポインタ
 	static LPD3DXBUFFER m_pBuffMat[TYPE_MAX]; // マテリアル情報のポインタ
 	static DWORD m_nNumMat[TYPE_MAX];	 // マテリアル情報の数

@@ -33,16 +33,20 @@ public:
 		STATE_YELLOW,
 		STATE_RED,
 	}STATE;
-	CLife(int nPriority = 5);
+	CLife(int nPriority = 7);
 	~CLife();
+
 	static CLife * Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, float Length);
 	static HRESULT Load(void);
 	static void Unload(void);
+
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
 	static void LifeDecrement(int nDamage);
+	static void LifeIncrement(int nDamage);
 private:
 	static LPDIRECT3DTEXTURE9 m_pTexture;	// テクスチャ情報
 	CScene2D *m_apScene2D[MAX_POLYGON];		//Scene2d情報
@@ -57,5 +61,6 @@ private:
 	int m_nCnt;								//カウント
 	static int m_nDamageCnt;				//ダメージを受けるカウント
 	static bool m_bHit;						//ダメージを受けている判定
+	static bool m_bHerb;					//ハーブ使用判定
 };
 #endif
