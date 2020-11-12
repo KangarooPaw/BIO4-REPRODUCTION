@@ -19,6 +19,7 @@ CBillboard::CBillboard(int nPriority) :  CScene(nPriority)
 	m_fTexX2 = 1.0f;
 	m_fTexY = 0.0f;
 	m_fTexY2 = 1.0f;
+	m_nAlpha = 0;
 }
 //---------------------------------------------
 //　デストラクタ
@@ -141,7 +142,7 @@ void CBillboard::Draw(void)
 
 	//アルファテスト
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	pDevice->SetRenderState(D3DRS_ALPHAREF, m_nAlpha);
 	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	//セットテクスチャ
@@ -233,4 +234,11 @@ void CBillboard::BindTexture(LPDIRECT3DTEXTURE9 pTexture)
 {
 	//代入
 	m_pTexture = pTexture;
+}
+//---------------------------------------------
+// アルファテストの数値設定
+//---------------------------------------------
+void CBillboard::SetAlpha(int nAlpha)
+{
+	m_nAlpha = nAlpha;
 }

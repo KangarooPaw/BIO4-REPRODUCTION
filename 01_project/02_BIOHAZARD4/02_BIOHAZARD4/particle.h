@@ -17,6 +17,7 @@ public:
 		TEX_TYPE_NONE = 0,
 		TEX_TYPE_1,
 		TEX_TYPE_2,
+		TEX_TYPE_3,
 		TEX_TYPE_BLOOD,//ŒŒ
 		TEX_TYPE_SHARD,//–Ø•Ð
 		TEX_TYPE_BOXSMOKE,//” ”j‰ó‚Ì‰Œ
