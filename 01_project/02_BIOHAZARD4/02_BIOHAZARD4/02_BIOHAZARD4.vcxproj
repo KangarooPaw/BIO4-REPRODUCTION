@@ -157,6 +157,8 @@
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="heal.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="key.cpp" />
+    <ClCompile Include="key_ui.cpp" />
     <ClCompile Include="kira.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="map.cpp" />
@@ -205,6 +207,8 @@
     <ClInclude Include="explosion.h" />
     <ClInclude Include="heal.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="key.h" />
+    <ClInclude Include="key_ui.h" />
     <ClInclude Include="kira.h" />
     <ClInclude Include="life.h" />
     <ClInclude Include="map.h" />

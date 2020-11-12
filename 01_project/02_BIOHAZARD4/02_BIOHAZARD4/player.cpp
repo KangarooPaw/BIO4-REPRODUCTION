@@ -21,6 +21,7 @@
 #include "item.h"
 #include "heal.h"
 #include "bullet_ui.h"
+#include "key.h"
 
 #define ADD_BULLET 10 //’e–ò” ‚Ì‹ÊŽæ“¾”
 //----------------------------------------
@@ -68,6 +69,8 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	//Žc’e‰Šú‰»
 	m_nMagazineBullet = MAX_MAGAZINE_BULLET;
 	m_nHaveBullet = 10;
+	//Œ®‰Šú‰»
+	m_nKey = 0;
 	//ƒiƒCƒtƒ‚[ƒVƒ‡ƒ“
 	m_nKnifeMotionCnt = 0;
 	m_bKnifeMotion = false;
@@ -284,19 +287,28 @@ void CPlayer::Update(void)
 	CBulletUi *pBulletUi = CGame::GetBulletUi();
 	//ŠŽ’e”UIŽæ“¾
 	CBulletUi *pHaveBulletUi = CGame::GetBulletHaveUi();
+	//keyŽæ“¾
+	CKey *pHaveKey = CGame::GetKey();
 
 	if (pBulletUi != NULL)
 	{
 		if (m_nMagazineBullet >= 0)
 		{
-			pBulletUi->SetPoints(m_nMagazineBullet);
+			pBulletUi->SetbulletUi(m_nMagazineBullet);
 		}
 	}
 	if (pHaveBulletUi != NULL)
 	{
 		if (m_nMagazineBullet >= 0)
 		{
-			pHaveBulletUi->SetPoints(m_nHaveBullet);
+			pHaveBulletUi->SetbulletUi(m_nHaveBullet);
+		}
+	}
+	if (pHaveKey != NULL)
+	{
+		if (m_nKey >= 0)
+		{
+			pHaveKey->SetKeyUi(m_nKey);
 		}
 	}
 
@@ -736,6 +748,10 @@ void CPlayer::PickUpItem(void)
 						m_nHaveBullet += ADD_BULLET;
 						break;
 					case CItem::TYPE_KEY:
+						if (m_nKey <= MAX_KEY)
+						{
+							m_nKey++;
+						}
 						break;
 					default:
 						break;

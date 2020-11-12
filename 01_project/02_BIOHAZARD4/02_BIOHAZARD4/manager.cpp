@@ -39,6 +39,7 @@
 #include "life.h"
 #include "sound.h"
 #include "number.h"
+#include "key_ui.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -250,6 +251,7 @@ void CManager::LoadAll(void)
 	CBoxEffect::Load();
 	CSkyBox::Load();
 	CNumber::Load();
+	CKeyUi::Load();
 }
 
 //=============================================================================
@@ -270,6 +272,7 @@ void CManager::UnloadAll(void)
 	CSkyBox::Unload();
 	CLife::Unload();
 	CNumber::Unload();
+	CKeyUi::Unload();
 }
 
 //=============================================================================

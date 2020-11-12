@@ -87,6 +87,7 @@ private:
 
 	int m_nMagazineBullet;				//マガジンの装弾数
 	int m_nHaveBullet;					//所持弾数
+	int m_nKey;//鍵所持数
 
 	int m_nKnifeMotionCnt;				// ナイフモーションのカウント	
 	bool m_bKnifeMotion;				// ナイフモーションの判定

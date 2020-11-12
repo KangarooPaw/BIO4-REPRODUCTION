@@ -17,6 +17,7 @@
 //*****************************************************************************
 class CPlayer;
 class CBulletUi;
+class CKey;
 //*****************************************************************************
 //クラス定義
 //*****************************************************************************
@@ -33,10 +34,12 @@ public:
 	static CPlayer *GetPlayer(void);
 	static CBulletUi *GetBulletUi(void);
 	static CBulletUi *GetBulletHaveUi(void);
+	static CKey *GetKey(void);
 private:
 	static CPlayer *m_pPlayer;	//プレイヤー
 	static CBulletUi *m_pBulletUi;//弾の残弾数表示
 	static CBulletUi *m_pBulletHaveUi;//持っている弾数表示
+	static CKey *m_pKey;//持っているカギ表示
 	int m_nCount;
 };
 
