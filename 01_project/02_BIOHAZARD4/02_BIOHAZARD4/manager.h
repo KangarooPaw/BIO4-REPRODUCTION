@@ -28,6 +28,7 @@ public:
 		MODE_GAME,		//ゲーム
 		MODE_TUTORIAL,	//チュートリアル
 		MODE_RESULT,	//リザルト
+		MODE_GAMEOVER, //ゲームオーバー
 		MODE_MAX
 	}MODE;
 

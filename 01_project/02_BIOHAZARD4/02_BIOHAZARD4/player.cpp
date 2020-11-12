@@ -267,7 +267,7 @@ void CPlayer::Uninit(void)
 	}
 
 	//フェードの生成
-	CManager::CreateFade(CManager::MODE_RESULT);
+	CManager::CreateFade(CManager::MODE_GAMEOVER);
 	//リリース
 	Release();
 }

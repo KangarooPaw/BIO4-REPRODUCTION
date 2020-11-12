@@ -40,6 +40,7 @@
 #include "sound.h"
 #include "number.h"
 #include "key_ui.h"
+#include "gameover.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -252,6 +253,7 @@ void CManager::LoadAll(void)
 	CSkyBox::Load();
 	CNumber::Load();
 	CKeyUi::Load();
+	CGameover::Load();
 }
 
 //=============================================================================
@@ -273,6 +275,7 @@ void CManager::UnloadAll(void)
 	CLife::Unload();
 	CNumber::Unload();
 	CKeyUi::Unload();
+	CGameover::Unload();
 }
 
 //=============================================================================
@@ -335,6 +338,15 @@ void CManager::SetMode(MODE mode)
 			m_pMode = new CResult;
 
 			//クリア画面の初期化処理
+			m_pMode->Init();
+
+			break;
+		case MODE_GAMEOVER:
+
+			//ゲームオーバー画面の生成
+			m_pMode = new CGameover;
+
+			//ゲームオーバー画面の初期化処理
 			m_pMode->Init();
 
 			break;
