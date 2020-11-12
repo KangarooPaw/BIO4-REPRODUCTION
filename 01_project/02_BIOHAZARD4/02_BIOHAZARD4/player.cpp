@@ -661,7 +661,7 @@ void CPlayer::GamePad(void)
 		//ƒŠƒ[ƒh
 		if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
 		{
-			for(m_nMagazineBullet;m_nMagazineBullet <= MAX_MAGAZINE_BULLET;m_nMagazineBullet++)
+			for(m_nMagazineBullet;m_nMagazineBullet < MAX_MAGAZINE_BULLET;m_nMagazineBullet++)
 			{
 				m_nHaveBullet--;
 				if (m_nHaveBullet <= 0)

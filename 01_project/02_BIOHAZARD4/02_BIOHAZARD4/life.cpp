@@ -327,7 +327,7 @@ void CLife::Update(void)
 
 	if (m_bHerb == true)
 	{
-		if (m_nCnt == 0)
+		if (m_nCnt != 0)
 		{
 			//‘Ì—Í‘‰Á
 			m_nCnt--;
