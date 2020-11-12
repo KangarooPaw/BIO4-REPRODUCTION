@@ -189,6 +189,9 @@
     <ClCompile Include="number.cpp">
       <Filter>ソース ファイル\Scene\2D</Filter>
     </ClCompile>
+    <ClCompile Include="heal.cpp">
+      <Filter>ソース ファイル\Scene\3D\particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -328,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="number.h">
       <Filter>ヘッダー ファイル\Scene\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="heal.h">
+      <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

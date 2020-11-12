@@ -18,6 +18,7 @@
 #include "reticle.h"
 #include "life.h"
 #include "item.h"
+#include "heal.h"
 
 #define ADD_BULLET 10 //íeñÚî†ÇÃã éÊìæêî
 //----------------------------------------
@@ -701,9 +702,11 @@ void CPlayer::PickUpItem(void)
 					switch (ItemType)
 					{
 					case CItem::TYPE_HERB:
+						CHeal::HealCreate(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
 						CLife::LifeIncrement(20);
 						break;
 					case CItem::TYPE_SPRAY:
+						CHeal::HealCreate(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
 						CLife::LifeIncrement(100);
 						break;
 					case CItem::TYPE_AMMO:

@@ -155,6 +155,7 @@
     <ClCompile Include="bullet_ui.cpp" />
     <ClCompile Include="circleparticle.cpp" />
     <ClCompile Include="explosion.cpp" />
+    <ClCompile Include="heal.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="kira.cpp" />
     <ClCompile Include="life.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="bullet_ui.h" />
     <ClInclude Include="circleparticle.h" />
     <ClInclude Include="explosion.h" />
+    <ClInclude Include="heal.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="kira.h" />
     <ClInclude Include="life.h" />

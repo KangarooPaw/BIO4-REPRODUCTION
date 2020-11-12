@@ -22,7 +22,7 @@ public:
 	void SetTexture(float fTexX, float fTexY, float fTexX2, float fTexY2);
 	void SetScale(float fScale);
 	void BindTexture(LPDIRECT3DTEXTURE9 pTexture);
-
+	void SetAlpha(int nAlpha);
 private:
 	LPDIRECT3DTEXTURE9		m_pTexture;		// テクスチャへのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		// 頂点バッファへのポインタ
@@ -36,5 +36,6 @@ private:
 	float                              m_fTexY2;      //テクスチャY座標
 	D3DXMATRIX m_mtxWorld;					// マトリックス
 	float m_fScale;							// 拡大
+	int m_nAlpha;							// 透過値
 };
 #endif
