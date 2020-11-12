@@ -306,7 +306,7 @@ void CLife::Update(void)
 	}
 
 	//100ÇÊÇËí·Ç¢èÍçá
-	if (m_nCnt < MAX_LIFE)
+	if (m_nCnt < MAX_LIFE && m_nCnt >= 0)
 	{
 		//ÉJÉâÅ[ê›íË
 		m_apScene2D[m_nCnt]->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));

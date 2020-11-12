@@ -236,9 +236,6 @@ void CItem::Update(void)
 	//î•ñXV
 	SetItem(m_pos, m_rot, m_size);
 
-
-
-
 }
 
 //----------------------------------------

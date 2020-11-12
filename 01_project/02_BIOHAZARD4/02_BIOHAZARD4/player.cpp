@@ -19,6 +19,7 @@
 #include "life.h"
 #include "item.h"
 
+#define ADD_BULLET 10 //’e–ò” ‚Ì‹Êæ“¾”
 //----------------------------------------
 //Ã“Iƒƒ“ƒo•Ï”
 //----------------------------------------
@@ -706,7 +707,7 @@ void CPlayer::PickUpItem(void)
 						CLife::LifeIncrement(100);
 						break;
 					case CItem::TYPE_AMMO:
-						m_nHaveBullet += 10;
+						m_nHaveBullet += ADD_BULLET;
 						break;
 					case CItem::TYPE_KEY:
 						break;

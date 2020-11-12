@@ -37,7 +37,6 @@ CSkyBox::CSkyBox(int nPriority) :CScene(nPriority)
 //----------------------------------------
 CSkyBox::~CSkyBox()
 {
-
 }
 
 //----------------------------------------
