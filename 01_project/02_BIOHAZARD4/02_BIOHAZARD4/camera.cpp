@@ -107,6 +107,8 @@ void CCamera::JoyStickMove(void)
 	D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
 	//プレイヤーの角度の取得
 	D3DXVECTOR3 pPlayerRot = CGame::GetPlayer()->GetRot();
+	//プレイヤーの死亡フラグの取得
+	bool pPlayerDeath = CGame::GetPlayer()->GetDeath();
 	//ターン中なら
 	if (m_bTurn == true)
 	{
@@ -130,7 +132,7 @@ void CCamera::JoyStickMove(void)
 		posV.y = m_Distance*cosf(m_lTheta) + posR.y;
 		posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 	}
-	else
+	else if (pPlayerDeath == false)
 	{
 		if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false &&
 			pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
@@ -204,15 +206,15 @@ void CCamera::JoyStickMove(void)
 			pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
 		{
 			//右スティックを左に倒す
-			if (pStick.lRx <= -500|| pStick.lZ <= -500)
-			{			
+			if (pStick.lRx <= -500 || pStick.lZ <= -500)
+			{
 				posR.x += cosf(pPlayerRot.y)*RETICLE_MOVE;
 				posR.z -= sinf(pPlayerRot.y)*RETICLE_MOVE;
-				
+
 				m_lPhi += D3DXToRadian(1);
 				m_RotX++;
 				if (m_RotX >= MAX_ROT_Y)
-				{					
+				{
 					posR.x -= cosf(pPlayerRot.y)*RETICLE_MOVE;
 					posR.z += sinf(pPlayerRot.y)*RETICLE_MOVE;
 
@@ -221,7 +223,7 @@ void CCamera::JoyStickMove(void)
 				}
 			}
 			//右スティックを右に倒す
-			if (pStick.lRx >= 500 || pStick.lZ >= 500 )
+			if (pStick.lRx >= 500 || pStick.lZ >= 500)
 			{
 				posR.x -= cosf(pPlayerRot.y)*RETICLE_MOVE;
 				posR.z += sinf(pPlayerRot.y)*RETICLE_MOVE;
@@ -238,9 +240,9 @@ void CCamera::JoyStickMove(void)
 				}
 			}
 			//右スティックを上に倒す
-			if (pStick.lRy <= -500|| pStick.lRz <= -500)
+			if (pStick.lRy <= -500 || pStick.lRz <= -500)
 			{
-				
+
 				m_lTheta += D3DXToRadian(1);
 				posR.y += cosf(m_lTheta);
 				m_RotY++;
@@ -254,7 +256,7 @@ void CCamera::JoyStickMove(void)
 			//右スティックを下に倒す
 			if (pStick.lRy >= 500 || pStick.lRz >= 500)
 			{
-				
+
 				m_lTheta -= D3DXToRadian(1);
 				posR.y -= cosf(m_lTheta);
 				m_RotY--;

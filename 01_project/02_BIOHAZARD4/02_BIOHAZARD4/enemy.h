@@ -49,6 +49,7 @@ public:
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
 	D3DXVECTOR3 GetSize(void) { return m_size; }
+	LPD3DXMESH GetMesh(void) { return m_pMesh[MAX_ENEMY_PARTS]; }
 private:
 	static LPD3DXMESH m_pMesh[MAX_ENEMY_PARTS];		 // メッシュ情報のポインタ
 	static LPD3DXBUFFER m_pBuffMat[MAX_ENEMY_PARTS]; // マテリアル情報のポインタ
