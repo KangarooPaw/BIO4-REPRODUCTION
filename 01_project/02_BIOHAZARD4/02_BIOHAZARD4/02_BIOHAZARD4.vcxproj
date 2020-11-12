@@ -152,6 +152,7 @@
     <ClCompile Include="blood.cpp" />
     <ClCompile Include="box.cpp" />
     <ClCompile Include="boxeffect.cpp" />
+    <ClCompile Include="bullet_ui.cpp" />
     <ClCompile Include="circleparticle.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="item.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="model_hierarchy.cpp" />
+    <ClCompile Include="number.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="result.cpp" />
@@ -197,6 +199,7 @@
     <ClInclude Include="blood.h" />
     <ClInclude Include="box.h" />
     <ClInclude Include="boxeffect.h" />
+    <ClInclude Include="bullet_ui.h" />
     <ClInclude Include="circleparticle.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="item.h" />
@@ -220,6 +223,7 @@
     <ClInclude Include="mode.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="model_hierarchy.h" />
+    <ClInclude Include="number.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="result.h" />
