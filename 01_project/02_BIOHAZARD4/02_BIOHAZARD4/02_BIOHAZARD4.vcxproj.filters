@@ -198,6 +198,9 @@
     <ClCompile Include="key.cpp">
       <Filter>ソース ファイル\Scene\2D</Filter>
     </ClCompile>
+    <ClCompile Include="gameover.cpp">
+      <Filter>ソース ファイル\mode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="key.h">
       <Filter>ヘッダー ファイル\Scene\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="gameover.h">
+      <Filter>ヘッダー ファイル\mode</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
