@@ -38,6 +38,7 @@
 #include "skybox.h"
 #include "life.h"
 #include "sound.h"
+#include "number.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -248,6 +249,7 @@ void CManager::LoadAll(void)
 	CBox::Load();
 	CBoxEffect::Load();
 	CSkyBox::Load();
+	CNumber::Load();
 }
 
 //=============================================================================
@@ -267,6 +269,7 @@ void CManager::UnloadAll(void)
 	CParticle::Unload();
 	CSkyBox::Unload();
 	CLife::Unload();
+	CNumber::Unload();
 }
 
 //=============================================================================

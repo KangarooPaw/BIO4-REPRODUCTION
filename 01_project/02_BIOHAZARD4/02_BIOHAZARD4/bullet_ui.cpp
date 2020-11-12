@@ -71,15 +71,9 @@ void CBulletUi::Uninit(void)
 //=============================================================================
 void CBulletUi::Update(void)
 {
-	m_nTimeCount++;
-
 	for (int nCntNum = 0; nCntNum < m_digits; nCntNum++)
 	{
 		m_apNumber[nCntNum]->Update();
-	}
-	if (m_nTimeCount >= DISPLAY_TIME)
-	{
-		Uninit();
 	}
 }
 //=============================================================================

@@ -10,6 +10,7 @@
 #include "renderer.h"
 #include "joystick.h"
 #include "keyboard.h"
+#include "game.h"
 #include "player.h"
 #include "enemy.h"
 #include "bullet.h"
@@ -18,6 +19,7 @@
 #include "reticle.h"
 #include "life.h"
 #include "item.h"
+#include "bullet_ui.h"
 
 #define ADD_BULLET 10 //弾薬箱の玉取得数
 //----------------------------------------
@@ -276,6 +278,18 @@ void CPlayer::Update(void)
 
 	//キーボードの取得処理
 	CInputKeyboard *pInputKeyboard = CManager::GetInputKeyboard();
+
+	//残弾数UI取得
+	CBulletUi *pBulletUi = CGame::GetBulletUi();
+
+	if (pBulletUi != NULL)
+	{
+		if (m_nMagazineBullet >= 0)
+		{
+			pBulletUi->SetPoints(m_nMagazineBullet);
+		}
+	}
+
 	if (m_bDeath == false)
 	{
 		//ナイフモーション中なら
