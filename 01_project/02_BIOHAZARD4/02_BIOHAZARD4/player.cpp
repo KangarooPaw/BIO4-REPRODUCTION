@@ -281,12 +281,21 @@ void CPlayer::Update(void)
 
 	//Žc’e”UIŽæ“¾
 	CBulletUi *pBulletUi = CGame::GetBulletUi();
+	//ŠŽ’e”UIŽæ“¾
+	CBulletUi *pHaveBulletUi = CGame::GetBulletHaveUi();
 
 	if (pBulletUi != NULL)
 	{
 		if (m_nMagazineBullet >= 0)
 		{
 			pBulletUi->SetPoints(m_nMagazineBullet);
+		}
+	}
+	if (pHaveBulletUi != NULL)
+	{
+		if (m_nMagazineBullet >= 0)
+		{
+			pHaveBulletUi->SetPoints(m_nHaveBullet);
 		}
 	}
 
