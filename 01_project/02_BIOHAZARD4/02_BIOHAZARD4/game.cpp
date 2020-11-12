@@ -28,11 +28,14 @@
 #include "item.h"
 #include "box.h"
 #include "skybox.h"
+#include "bullet_ui.h"
 
 //*****************************************************************************
 //静的メンバ変数
 //*****************************************************************************
 CPlayer *CGame::m_pPlayer = NULL;
+CBulletUi *CGame::m_pBulletUi = NULL;
+CBulletUi *CGame::m_pBulletHaveUi = NULL;
 
 //*****************************************************************************
 //コンストラクタ
@@ -61,6 +64,8 @@ HRESULT CGame::Init(void)
 	CManager::CreateLight();
 
 	//ポリゴン生成
+	m_pBulletHaveUi = CBulletUi::Create(D3DXVECTOR3(1150.0f, 550.0f, 0.0f), 30.0f, 50.0f, 10);
+	m_pBulletUi = CBulletUi::Create(D3DXVECTOR3(1100.0f, 500.0f, 0.0f), 50.0f, 70.0f, 10);
 	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 100.0f, 20.0f));
 	//CSkyBox::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 2000.0f));
 	CMap::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 200.0f));	
@@ -118,4 +123,14 @@ void CGame::Draw(void)
 CPlayer *CGame::GetPlayer(void)
 {
 	return m_pPlayer;
+}
+
+CBulletUi * CGame::GetBulletUi(void)
+{
+	return m_pBulletUi;
+}
+
+CBulletUi * CGame::GetBulletHaveUi(void)
+{
+	return  m_pBulletHaveUi;
 }

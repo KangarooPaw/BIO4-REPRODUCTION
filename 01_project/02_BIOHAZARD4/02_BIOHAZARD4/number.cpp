@@ -23,7 +23,7 @@ CNumber::CNumber()
 	m_pVtxBuff = NULL;
 	m_nPatternAnim = 0;
 	m_type = TYPE_NONE;
-	m_nAlpha = 0;
+	m_nAlpha = 255;
 }
 //=============================================================================
 // デストラクタ
