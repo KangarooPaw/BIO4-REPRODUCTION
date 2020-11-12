@@ -192,6 +192,12 @@
     <ClCompile Include="heal.cpp">
       <Filter>ソース ファイル\Scene\3D\particle</Filter>
     </ClCompile>
+    <ClCompile Include="key_ui.cpp">
+      <Filter>ソース ファイル\Scene\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="key.cpp">
+      <Filter>ソース ファイル\Scene\2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -334,6 +340,12 @@
     </ClInclude>
     <ClInclude Include="heal.h">
       <Filter>ヘッダー ファイル\Scene\3D\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="key_ui.h">
+      <Filter>ヘッダー ファイル\Scene\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="key.h">
+      <Filter>ヘッダー ファイル\Scene\2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

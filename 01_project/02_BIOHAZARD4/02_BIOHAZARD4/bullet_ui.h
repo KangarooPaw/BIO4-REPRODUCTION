@@ -1,7 +1,7 @@
 //=============================================================================
 //
-// ポイント表示処理 [points.h]
-// Author : 
+// 弾数表示処理 [bullet_ui.h]
+// Author : 林川紗梨夏
 //
 //=============================================================================
 #ifndef _BULLET_UI_H_
@@ -24,7 +24,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	static CBulletUi * Create(D3DXVECTOR3 pos, float fSizeWidth, float fSizeHeight, int points);
-	void SetPoints(float nPoints);
+	void SetbulletUi(float nPoints);
 	void AddPoints(float nValue);
 
 private:

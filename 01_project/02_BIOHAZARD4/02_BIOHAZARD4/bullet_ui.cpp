@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// ポイント表示処理 [points.cpp]
+// 弾数表示処理 [bullet_ui.ｃｐｐ]
 // Author : 林川紗梨夏
 //
 //=============================================================================
@@ -48,7 +48,7 @@ HRESULT CBulletUi::Init(void)
 	{
 		m_apNumber[nCntNum] = CNumber::Create(D3DXVECTOR3(m_pos.x - (m_fFloatX * nCntNum), m_pos.y, 0.0f), m_fFloatX, m_fFloatY, CNumber::TYPE_POINTS);
 	}
-	SetPoints(m_nPoints);
+	SetbulletUi(m_nPoints);
 
 	return S_OK;
 }
@@ -106,9 +106,9 @@ CBulletUi * CBulletUi::Create(D3DXVECTOR3 pos, float fSizeWidth, float fSizeHeig
 	return pPoints;
 }
 //=============================================================================
-// グレイズ数表示
+// 弾数表示
 //=============================================================================
-void CBulletUi::SetPoints(float nPoints)
+void CBulletUi::SetbulletUi(float nPoints)
 {
 	m_nPoints = nPoints;
 	int integer = 0;//計算用変数
@@ -122,10 +122,10 @@ void CBulletUi::SetPoints(float nPoints)
 	}
 }
 //=============================================================================
-// グレイズ加算処理
+// 弾数加算処理
 //=============================================================================
 void CBulletUi::AddPoints(float nValue)
 {
 	m_nPoints += nValue;
-	SetPoints(m_nPoints);
+	SetbulletUi(m_nPoints);
 }
