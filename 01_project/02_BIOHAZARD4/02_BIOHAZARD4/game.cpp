@@ -62,10 +62,10 @@ HRESULT CGame::Init(void)
 
 	//ÉâÉCÉg
 	CManager::CreateLight();
-
+	
 	//É|ÉäÉSÉìê∂ê¨
-	m_pBulletHaveUi = CBulletUi::Create(D3DXVECTOR3(1150.0f, 550.0f, 0.0f), 30.0f, 50.0f, 10);
-	m_pBulletUi = CBulletUi::Create(D3DXVECTOR3(1100.0f, 500.0f, 0.0f), 50.0f, 70.0f, 10);
+	m_pBulletHaveUi = CBulletUi::Create(D3DXVECTOR3(1150.0f, 595.0f, 0.0f), 30.0f, 50.0f, 10);
+	m_pBulletUi = CBulletUi::Create(D3DXVECTOR3(1100.0f, 545.0f, 0.0f), 50.0f, 70.0f, 10);
 	m_pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 100.0f, 20.0f));
 	//CSkyBox::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 1000.0f, 2000.0f));
 	CMap::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 200.0f));	
