@@ -169,6 +169,8 @@ void CSkyBox::Update(void)
 //----------------------------------------
 void CSkyBox::Draw(void)
 {
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
 	D3DXMATRIX mtxRot, mtxTrans;
 	//ワールドマトリクスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
@@ -184,8 +186,14 @@ void CSkyBox::Draw(void)
 	// ワールドマトリックスの設定
 	//m_pModel[nCount]->SetWorldMatrix(m_mtxWorld[nCount]);
 
+	//アルファテスト無効化
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 	// モデルクラスの描画処理
 	m_pModel->Draw();
+
+	//アルファテスト無効化
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 
 //----------------------------------------

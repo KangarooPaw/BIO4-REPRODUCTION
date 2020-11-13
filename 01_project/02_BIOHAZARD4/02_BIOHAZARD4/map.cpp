@@ -18,7 +18,7 @@ LPD3DXMESH CMap::m_pMesh =NULL;
 LPD3DXBUFFER CMap::m_pBuffMat = NULL;
 DWORD CMap::m_nNumMat = NULL;
 D3DXMATRIX CMap::m_mtxWorld = {};	 // 行列計算用
-char* CMap::m_apFileName = {"data/MODEL/MAP/map_test.x"};// マップ
+char* CMap::m_apFileName = {"data/MODEL/MAP/eee.x"};// マップ
 LPDIRECT3DTEXTURE9 CMap::m_pTexture[MAX_MATERIAL] = {};
 
 //----------------------------------------
@@ -47,9 +47,8 @@ CMap * CMap::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
 	CMap *pMap;
 	pMap = new CMap;
-
-		pMap->Init();
-		pMap->SetMap(pos, rot, size);
+	pMap->Init();
+	pMap->SetMap(pos, rot, size);
 	return pMap;
 }
 
@@ -175,23 +174,46 @@ void CMap::Update(void)
 //----------------------------------------
 void CMap::Draw(void)
 {
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
 	D3DXMATRIX mtxRot, mtxTrans;
-		//ワールドマトリクスの初期化
-		D3DXMatrixIdentity(&m_mtxWorld);
+	//ワールドマトリクスの初期化
+	D3DXMatrixIdentity(&m_mtxWorld);
 
-		//向きを反映
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+	//向きを反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
-		//位置を反映
-		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+	//位置を反映
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
-		// ワールドマトリックスの設定
-		//m_pModel[nCount]->SetWorldMatrix(m_mtxWorld[nCount]);
+	// ワールドマトリックスの設定
+	//m_pModel[nCount]->SetWorldMatrix(m_mtxWorld[nCount]);
 
-		// モデルクラスの描画処理
-		m_pModel->Draw();
+	// モデルクラスの描画処理
+	m_pModel->Draw();
+
+	D3DXMATERIAL*pMat;
+
+	if (m_pBuffMat != NULL)
+	{
+		//マテリアルデータへのポインタを取得する
+		pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
+	}
+
+	// 自己発光
+	for (int nCntMat = 0; nCntMat < (int)m_nNumMat; nCntMat++)
+	{
+		//マテリアルの設定
+		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+		pDevice->SetTexture(0, m_pTexture[nCntMat]);
+
+		pMat[nCntMat].MatD3D.Emissive = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f);
+	}
+
+	//アルファテスト無効化
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 
 //----------------------------------------
