@@ -36,7 +36,8 @@ CTutorial::~CTutorial()
 //*****************************************************************************
 HRESULT CTutorial::Init(void)
 {
-
+	//チュートリアルのUIの生成
+	CUi::Create(D3DXVECTOR3(SCREEN_CENTER_X, SCREEN_CENTER_Y, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f), CUi::TYPE_TUTORIAL);
 	 
 	return S_OK;
 }
