@@ -14,7 +14,7 @@
 #include "model.h"
 #include "kira.h"
 #include "joystick.h"
-
+#include "circleparticle.h"
 #define ROT_ADDSPEED 0.01f //Œü‚«‰ÁŽZ
 #define UPDOWN_SPEED 0.05f //ã‰º‰^“®ƒXƒs[ƒh
 #define ITEM_UP_VALUE 2.5f //ã‚Éã‚ª‚é—Í
@@ -70,6 +70,10 @@ CItem * CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, TYPE t
 	pItem->m_type = type;
 	pItem->Init();
 	pItem->SetItem(pos, rot, size);
+	if (pItem->m_type != TYPE_KEY)
+	{
+		//CCircleParticle::CircleCreate(pos, D3DXVECTOR3(PARTICLE_CIRCLE_SIZE_X, PARTICLE_CIRCLE_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), MAX_CIRCLE, 7.5f);
+	}
 
 	return pItem;
 }

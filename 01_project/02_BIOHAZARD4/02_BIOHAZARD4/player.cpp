@@ -23,6 +23,7 @@
 #include "heal.h"
 #include "bullet_ui.h"
 #include "key.h"
+#include "gate.h"
 #include "map.h"
 #include "collision.h"
 
@@ -55,6 +56,7 @@ char* CPlayer::m_apFileName[MAX_PLAYER_PARTS] = {
 LPDIRECT3DTEXTURE9 CPlayer::m_pTexture[MAX_PLAYER_PARTS][MAX_MATERIAL] = {};
 
 bool CPlayer::m_bDeath = false;
+bool CPlayer::m_bHasKeyAll = false;
 
 //----------------------------------------
 //インクリメント
@@ -89,6 +91,8 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_bDeathMotion = false;	
 	//死亡フラグ
 	m_bDeath = false;
+	// 全てのカギを持っているか
+	m_bHasKeyAll = false;
 	//ターンモーション
 	m_nTurnCnt = 0;	
 	m_bTurn = false;
@@ -287,162 +291,170 @@ void CPlayer::Uninit(void)
 //----------------------------------------
 void CPlayer::Update(void)
 {
-	// モーションの更新処理
-	m_pMotion->UpdateMotion();
-
-	//残弾数UI取得
-	CBulletUi *pBulletUi = CGame::GetBulletUi();
-	//所持弾数UI取得
-	CBulletUi *pHaveBulletUi = CGame::GetBulletHaveUi();
-	//key取得
-	CKey *pHaveKey = CGame::GetKey();
-
-	if (pBulletUi != NULL)
+	// 門が開くかを取得
+	bool bOpenGate = CGame::GetGate()->GetOpen();
+	// bOpenGateがfalseの場合
+	if (bOpenGate == false)
 	{
-		if (m_nMagazineBullet >= 0)
+		// モーションの更新処理
+		m_pMotion->UpdateMotion();
+
+		//残弾数UI取得
+		CBulletUi *pBulletUi = CGame::GetBulletUi();
+		//所持弾数UI取得
+		CBulletUi *pHaveBulletUi = CGame::GetBulletHaveUi();
+		//key取得
+		CKey *pHaveKey = CGame::GetKey();
+
+		if (pBulletUi != NULL)
 		{
 			pBulletUi->SetbulletUi((float)m_nMagazineBullet);
 		}
-	}
-	if (pHaveBulletUi != NULL)
-	{
-		if (m_nMagazineBullet >= 0)
+		if (pHaveBulletUi != NULL)
 		{
 			pHaveBulletUi->SetbulletUi((float)m_nHaveBullet);
 		}
-	}
-	if (pHaveKey != NULL)
-	{
-		if (m_nKey >= 0)
+		if (pHaveKey != NULL)
 		{
-			pHaveKey->SetKeyUi(m_nKey);
-		}
-	}
-
-	if (m_bDeath == false)
-	{
-		//ナイフモーション中なら
-		if (m_bKnifeMotion == true)
-		{
-			m_nKnifeMotionCnt++;
-			//45フレームでリセット
-			if (m_nKnifeMotionCnt % 45 == 0)
+			if (m_nKey >= 0)
 			{
-				m_bKnifeMotion = false;
-				m_nKnifeMotionCnt = 0;
-			}
-		}
-		//ダメージモーション中なら
-		if (m_bDamageMotion == true)
-		{
-			m_nDamageMotionCnt++;
-			//60フレームでリセット
-			if (m_nDamageMotionCnt % 60 == 0)
-			{
-				m_bDamageMotion = false;
-				m_nDamageMotionCnt = 0;
-			}
-		}
-		//ターン中なら
-		if (m_bTurn == true)
-		{
-			m_rot.y += D3DXToRadian(6);
-			m_nTurnCnt++;
-			//ターンの終了
-			if (m_nTurnCnt == 30)
-			{
-				m_bTurn = false;
-				m_nTurnCnt = 0;
-				//弾の角度設定
-				m_bulletRot = m_rot;
-			}
-		}
-		//ターンしてないなら
-		else if (m_bTurn == false)
-		{
-			//Keyboard();
-			GamePad();
-		}
-		for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
-		{
-			// モデルのパーツごとの座標と回転を受け取る
-			m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
-		}
-
-		// 座標、回転、サイズのセット
-		m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
-	}
-	else if (m_bDeath == true)
-	{
-		if (m_bDeathMotion == false)
-		{
-			m_pMotion->SetMotion(CMotion::MOTION_DEATH);
-			m_bDeathMotion = true;
-		}
-		//死亡モーション中なら
-		if (m_bDeathMotion == true)
-		{
-			m_nDeathMotionCnt++;
-			//120フレームでリセット
-			if (m_nDeathMotionCnt % 120 == 0)
-			{
-				m_bDeathMotion = false;
-				m_nDeathMotionCnt = 0;
-				Uninit();
-			}
-		}
-	}
-
-	// 動かないものに対してのレイ
-	CScene *pScene = NULL;
-	do
-	{
-		pScene = GetScene(OBJTYPE_NONE);
-		if (pScene != NULL)
-		{
-			OBJTYPE objType = pScene->GetObjType();
-			if (objType == OBJTYPE_NONE)
-			{
-				BOOL bHit = false;
-				float fDistancePlayer = 0.0f;
-				D3DXVECTOR3 vecStart, vecDirection;
-				float fRadius = 360.0f / 8.0f;
-
-				for (int nCount = 0; nCount < 8; nCount++)
+				pHaveKey->SetKeyUi(m_nKey);
+				// 鍵を3個持っている場合
+				if (m_nKey == MAX_KEY)
 				{
-					// 始める座標
-					vecStart = m_pos + D3DXVECTOR3(0.0f, 20.0f, 0.0f);
+					// m_bHasKeyAllをtrueに
+					m_bHasKeyAll = true;
+				}
+			}
+		}
 
-					// レイを出す角度
-					vecDirection = D3DXVECTOR3(0.0f, fRadius * nCount, 0.0f);
+		if (m_bDeath == false)
+		{
+			//ナイフモーション中なら
+			if (m_bKnifeMotion == true)
+			{
+				m_nKnifeMotionCnt++;
+				//45フレームでリセット
+				if (m_nKnifeMotionCnt % 45 == 0)
+				{
+					m_bKnifeMotion = false;
+					m_nKnifeMotionCnt = 0;
+				}
+			}
+			//ダメージモーション中なら
+			if (m_bDamageMotion == true)
+			{
+				m_nDamageMotionCnt++;
+				//60フレームでリセット
+				if (m_nDamageMotionCnt % 60 == 0)
+				{
+					m_bDamageMotion = false;
+					m_nDamageMotionCnt = 0;
+				}
+			}
+			//ターン中なら
+			if (m_bTurn == true)
+			{
+				m_rot.y += D3DXToRadian(6);
+				m_nTurnCnt++;
+				//ターンの終了
+				if (m_nTurnCnt == 30)
+				{
+					m_bTurn = false;
+					m_nTurnCnt = 0;
+					//弾の角度設定
+					m_bulletRot = m_rot;
+				}
+			}
 
-					D3DXIntersect(((CMap*)pScene)->GetMapMesh(), &vecStart, &D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)),
-						&bHit, NULL, NULL, NULL, &fDistancePlayer, NULL, NULL);
+			//ターンしてないなら
+			else if (m_bTurn == false)
+			{
+				//Keyboard();
+				GamePad();
+			}
+			for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+			{
+				// モデルのパーツごとの座標と回転を受け取る
+				m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
+			}
 
-					if (bHit == true)
+			// 座標、回転、サイズのセット
+			m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
+		}
+		if (m_bDeath == true)
+		{
+			if (m_bDeathMotion == false)
+			{
+				m_pMotion->SetMotion(CMotion::MOTION_DEATH);
+				m_bDeathMotion = true;
+				return;
+			}
+			//死亡モーション中なら
+			if (m_bDeathMotion == true)
+			{
+				m_nDeathMotionCnt++;
+				//120フレームでリセット
+				if (m_nDeathMotionCnt % 120 == 0)
+				{
+					m_bDeathMotion = false;
+					m_nDeathMotionCnt = 0;
+					Uninit();
+				}
+			}
+		}
+
+		// 動かないものに対してのレイ
+		CScene *pScene = NULL;
+		do
+		{
+			pScene = GetScene(OBJTYPE_NONE);
+			if (pScene != NULL)
+			{
+				OBJTYPE objType = pScene->GetObjType();
+				if (objType == OBJTYPE_NONE||objType==OBJTYPE_BOX)
+				{
+					BOOL bHit = false;
+					float fDistancePlayer = 0.0f;
+					D3DXVECTOR3 vecStart, vecDirection;
+					float fRadius = 360.0f / 8.0f;
+
+					for (int nCount = 0; nCount < 8; nCount++)
 					{
-						// 範囲より小さかったら
-						if (fDistancePlayer < 20.0f)
+						// 始める座標
+						vecStart = m_pos + D3DXVECTOR3(0.0f, 20.0f, 0.0f);
+
+						// レイを出す角度
+						vecDirection = D3DXVECTOR3(0.0f, fRadius * nCount, 0.0f);
+
+						D3DXIntersect(((CMap*)pScene)->GetMapMesh(), &vecStart, &D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)),
+							&bHit, NULL, NULL, NULL, &fDistancePlayer, NULL, NULL);
+
+						if (bHit == true)
 						{
-							// 戻す
-							m_pos -= (D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)));
-
-							for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+							// 範囲より小さかったら
+							if (fDistancePlayer < 15.0f)
 							{
-								// モデルのパーツごとの座標と回転を受け取る
-								m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
+								// 戻す
+								m_pos -= (D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)));
+
+								for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+								{
+									// モデルのパーツごとの座標と回転を受け取る
+									m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
+								}
+
+								// 座標、回転、サイズのセット
+								m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
+
+								return;
 							}
-
-							// 座標、回転、サイズのセット
-							m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
-
-							return;
 						}
 					}
 				}
 			}
-		}
-	} while (pScene != NULL);
+		} while (pScene != NULL);
+	}
 }
 
 //----------------------------------------
@@ -732,7 +744,7 @@ void CPlayer::Keyboard(void)
 			for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; m_nMagazineBullet++)
 			{
 				m_nHaveBullet--;
-				if (m_nHaveBullet <= 0)
+				if (m_nHaveBullet < 0)
 				{
 					m_nHaveBullet = 0;
 					return;
@@ -1016,7 +1028,7 @@ void CPlayer::GamePad(void)
 					//弾の生成
 					CBullet::Create(
 						D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f, m_pos.z),
-						D3DXVECTOR3(15.0f, 0.0f, 15.0f),
+						D3DXVECTOR3(20.0f, 0.0f, 20.0f),
 						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 						5,
 						10,
@@ -1110,7 +1122,7 @@ void CPlayer::GamePad(void)
 					//弾の生成
 					CBullet::Create(
 						D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)),
-						D3DXVECTOR3(5.0f, 0.0f, 5.0f),
+						D3DXVECTOR3(2.0f, 0.0f, 2.0f),
 						D3DXVECTOR3(-sinf(m_bulletRot.y)*5.0f, sinf(m_bulletRot.x), -cosf(m_bulletRot.y)*5.0f),
 						100,
 						10,
@@ -1125,13 +1137,14 @@ void CPlayer::GamePad(void)
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
 			{
 				for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; m_nMagazineBullet++)
-				{
-					m_nHaveBullet--;
-					if (m_nHaveBullet <= 0)
+				{	
+					if (m_nHaveBullet < 0)
 					{
 						m_nHaveBullet = 0;
 						return;
 					}
+					m_nHaveBullet--;
+
 				}
 			}
 		}

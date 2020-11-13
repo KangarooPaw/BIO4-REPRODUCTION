@@ -16,6 +16,8 @@
 #include "game.h"
 #include "bullet.h"
 #include "item.h"
+#include "map.h"
+#include "gate.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -244,6 +246,10 @@ void CEnemy::Uninit(void)
 //----------------------------------------
 void CEnemy::Update(void)
 {
+	// 門が開くかを取得
+	bool bOpenGate = CGame::GetGate()->GetOpen();
+	//bOpenGateがfalseの場合
+	if (bOpenGate == false)
 	// 敵の状態
 	switch (m_EnemyState)
 	{
@@ -317,7 +323,7 @@ void CEnemy::Update(void)
 					//攻撃の判定
 					CBullet::Create(
 						D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f, m_pos.z),
-						D3DXVECTOR3(10.0f, 0.0f, 10.0f),
+						D3DXVECTOR3(20.0f, 0.0f, 20.0f),
 						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 						5,
 						10,
@@ -386,18 +392,21 @@ void CEnemy::Draw(void)
 //----------------------------------------
 void CEnemy::HitBullet(int nDamage)
 {
-	if (m_bHit == false)
+	if (m_EnemyState == ENEMYSTATE_NOMAL)
 	{
-		//ダメージモーション
-		m_pMotion->SetMotion(CMotion::MOTION_DAMAGE);
-		m_bHit = true;
-		m_nEnemyLife -= nDamage;
-	}
-	if (m_nEnemyLife <= 0)
-	{
-		Create(m_pos, m_rot, m_size, ENEMYSTATE_ITEM);
-		CItem::DropItem(m_pos, CItem::TYPE_KEY);
-		Uninit();
+		if (m_bHit == false)
+		{
+			//ダメージモーション
+			m_pMotion->SetMotion(CMotion::MOTION_DAMAGE);
+			m_bHit = true;
+			m_nEnemyLife -= nDamage;
+		}
+		if (m_nEnemyLife <= 0)
+		{
+			Create(m_pos, m_rot, m_size, ENEMYSTATE_ITEM);
+			CItem::DropItem(m_pos, CItem::TYPE_KEY);
+			Uninit();
+		}
 	}
 }
 

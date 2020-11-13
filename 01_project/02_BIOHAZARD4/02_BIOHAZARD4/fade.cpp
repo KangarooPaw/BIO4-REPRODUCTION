@@ -26,7 +26,6 @@ HRESULT CFade::Init(void)
 {
 	SetPosition(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f));
 	CScene2D::Init();
-
 	return S_OK;
 }
 

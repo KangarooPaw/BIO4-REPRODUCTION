@@ -6,10 +6,11 @@
 #ifndef _CIRCLEPARTICLE_H_
 #define _CIRCLEPARTICLE_H_
 
-#define PARTICLE_CIRCLE_SIZE_X 7			// 円パーティクルサイズX
-#define PARTICLE_CIRCLE_SIZE_Y 200			// 円パーティクルサイズY
+#define PARTICLE_CIRCLE_SIZE_X 3			// 円パーティクルサイズX
+#define PARTICLE_CIRCLE_SIZE_Y 50			// 円パーティクルサイズY
 #define PARTICLE_CIRCLE_COL_MAX 0.5f		// a値最大値
 #define PARTICLE_CIRCLE_COL_MIN 0.1f		// a値最小値
+#define MAX_CIRCLE 20						// 円の最大
 
 #include"particle.h"
 
@@ -27,14 +28,16 @@ public:
 		COLOR_MIN,
 	}COLOR_TYPE;
 
-	CCircleParticle();
+	CCircleParticle(int nPriority = 5);
 	~CCircleParticle();
 	static CCircleParticle *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, CParticle::TEX_TYPE TexType, float fRadian, float fLength);
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, CParticle::TEX_TYPE TexType, float fRadian, float fLength);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	static void CircleCreate(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, int nMax, float fLength);
 private:
+	D3DXVECTOR3 m_pos;		// 位置座標
 	COLOR_TYPE m_ColorType;	// カラータイプ
 	float m_fRadian;		// 弧度
 	float m_fLength;		// 半径
