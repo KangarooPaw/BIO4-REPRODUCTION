@@ -23,6 +23,7 @@
 #include "heal.h"
 #include "bullet_ui.h"
 #include "key.h"
+#include "gate.h"
 #include "map.h"
 #include "collision.h"
 
@@ -55,6 +56,7 @@ char* CPlayer::m_apFileName[MAX_PLAYER_PARTS] = {
 LPDIRECT3DTEXTURE9 CPlayer::m_pTexture[MAX_PLAYER_PARTS][MAX_MATERIAL] = {};
 
 bool CPlayer::m_bDeath = false;
+bool CPlayer::m_bHasKeyAll = false;
 
 //----------------------------------------
 //インクリメント
@@ -89,6 +91,8 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_bDeathMotion = false;	
 	//死亡フラグ
 	m_bDeath = false;
+	// 全てのカギを持っているか
+	m_bHasKeyAll = false;
 	//ターンモーション
 	m_nTurnCnt = 0;	
 	m_bTurn = false;
@@ -287,74 +291,80 @@ void CPlayer::Uninit(void)
 //----------------------------------------
 void CPlayer::Update(void)
 {
-	// モーションの更新処理
-	m_pMotion->UpdateMotion();
-
-	//残弾数UI取得
-	CBulletUi *pBulletUi = CGame::GetBulletUi();
-	//所持弾数UI取得
-	CBulletUi *pHaveBulletUi = CGame::GetBulletHaveUi();
-	//key取得
-	CKey *pHaveKey = CGame::GetKey();
-
-	if (pBulletUi != NULL)
+	// 門が開くかを取得
+	bool bOpenGate = CGame::GetGate()->GetOpen();
+	// bOpenGateがfalseの場合
+	if (bOpenGate == false)
 	{
-		if (m_nMagazineBullet >= 0)
+		// モーションの更新処理
+		m_pMotion->UpdateMotion();
+
+		//残弾数UI取得
+		CBulletUi *pBulletUi = CGame::GetBulletUi();
+		//所持弾数UI取得
+		CBulletUi *pHaveBulletUi = CGame::GetBulletHaveUi();
+		//key取得
+		CKey *pHaveKey = CGame::GetKey();
+
+		if (pBulletUi != NULL)
 		{
 			pBulletUi->SetbulletUi((float)m_nMagazineBullet);
 		}
-	}
-	if (pHaveBulletUi != NULL)
-	{
-		if (m_nMagazineBullet >= 0)
+		if (pHaveBulletUi != NULL)
 		{
 			pHaveBulletUi->SetbulletUi((float)m_nHaveBullet);
 		}
-	}
-	if (pHaveKey != NULL)
-	{
-		if (m_nKey >= 0)
+		if (pHaveKey != NULL)
 		{
-			pHaveKey->SetKeyUi(m_nKey);
+			if (m_nKey >= 0)
+			{
+				pHaveKey->SetKeyUi(m_nKey);
+				// 鍵を3個持っている場合
+				if (m_nKey == MAX_KEY)
+				{
+					// m_bHasKeyAllをtrueに
+					m_bHasKeyAll = true;
+				}
+			}
 		}
-	}
 
-	if (m_bDeath == false)
-	{
-		//ナイフモーション中なら
-		if (m_bKnifeMotion == true)
+		if (m_bDeath == false)
 		{
-			m_nKnifeMotionCnt++;
-			//45フレームでリセット
-			if (m_nKnifeMotionCnt % 45 == 0)
+			//ナイフモーション中なら
+			if (m_bKnifeMotion == true)
 			{
-				m_bKnifeMotion = false;
-				m_nKnifeMotionCnt = 0;
+				m_nKnifeMotionCnt++;
+				//45フレームでリセット
+				if (m_nKnifeMotionCnt % 45 == 0)
+				{
+					m_bKnifeMotion = false;
+					m_nKnifeMotionCnt = 0;
+				}
 			}
-		}
-		//ダメージモーション中なら
-		if (m_bDamageMotion == true)
-		{
-			m_nDamageMotionCnt++;
-			//60フレームでリセット
-			if (m_nDamageMotionCnt % 60 == 0)
+			//ダメージモーション中なら
+			if (m_bDamageMotion == true)
 			{
-				m_bDamageMotion = false;
-				m_nDamageMotionCnt = 0;
+				m_nDamageMotionCnt++;
+				//60フレームでリセット
+				if (m_nDamageMotionCnt % 60 == 0)
+				{
+					m_bDamageMotion = false;
+					m_nDamageMotionCnt = 0;
+				}
 			}
-		}
-		//ターン中なら
-		if (m_bTurn == true)
-		{
-			m_rot.y += D3DXToRadian(6);
-			m_nTurnCnt++;
-			//ターンの終了
-			if (m_nTurnCnt == 30)
+			//ターン中なら
+			if (m_bTurn == true)
 			{
-				m_bTurn = false;
-				m_nTurnCnt = 0;
-				//弾の角度設定
-				m_bulletRot = m_rot;
+				m_rot.y += D3DXToRadian(6);
+				m_nTurnCnt++;
+				//ターンの終了
+				if (m_nTurnCnt == 30)
+				{
+					m_bTurn = false;
+					m_nTurnCnt = 0;
+					//弾の角度設定
+					m_bulletRot = m_rot;
+				}
 			}
 		}
 		//ターンしてないなら
@@ -369,27 +379,28 @@ void CPlayer::Update(void)
 			m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
 		}
 
-		// 座標、回転、サイズのセット
-		m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
-	}
-	else if (m_bDeath == true)
-	{
-		if (m_bDeathMotion == false)
-		{
-			m_pMotion->SetMotion(CMotion::MOTION_DEATH);
-			m_bDeathMotion = true;
+			// 座標、回転、サイズのセット
+			m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
 		}
-		//死亡モーション中なら
-		if (m_bDeathMotion == true)
+		else if (m_bDeath == true)
 		{
-			m_nDeathMotionCnt++;
-			//120フレームでリセット
-			if (m_nDeathMotionCnt % 120 == 0)
+			if (m_bDeathMotion == false)
 			{
-				m_bDeathMotion = false;
-				m_nDeathMotionCnt = 0;
-				Uninit();
+				m_pMotion->SetMotion(CMotion::MOTION_DEATH);
+				m_bDeathMotion = true;
 				return;
+			}
+			//死亡モーション中なら
+			if (m_bDeathMotion == true)
+			{
+				m_nDeathMotionCnt++;
+				//120フレームでリセット
+				if (m_nDeathMotionCnt % 120 == 0)
+				{
+					m_bDeathMotion = false;
+					m_nDeathMotionCnt = 0;
+					Uninit();
+				}
 			}
 		}
 	}

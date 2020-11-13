@@ -17,6 +17,7 @@
 #include "bullet.h"
 #include "item.h"
 #include "map.h"
+#include "gate.h"
 
 //----------------------------------------
 //Ã“Iƒƒ“ƒo•Ï”
@@ -245,6 +246,10 @@ void CEnemy::Uninit(void)
 //----------------------------------------
 void CEnemy::Update(void)
 {
+	// –å‚ªŠJ‚­‚©‚ğæ“¾
+	bool bOpenGate = CGame::GetGate()->GetOpen();
+	//bOpenGate‚ªfalse‚Ìê‡
+	if (bOpenGate == false)
 	// “G‚Ìó‘Ô
 	switch (m_EnemyState)
 	{
