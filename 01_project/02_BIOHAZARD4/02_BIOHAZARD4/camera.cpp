@@ -82,7 +82,8 @@ void CCamera::Update(void)
 		// bGateOpenをfalseに
 		if (bGateOpen == false)
 		{
-			JoyStickMove();
+			//Keyboard();
+			GamePad();
 		}
 		// bGateOpenがtrueの場合
 		if (bGateOpen == true)
@@ -94,8 +95,7 @@ void CCamera::Update(void)
 			posR.y = GatePos.y + 50;
 			posR.z = GatePos.z;
 		}
-		Keyboard();
-		GamePad();		//--------------------------------------
+		//--------------------------------------
 		//カメラ描画
 		//--------------------------------------
 		D3DXMatrixIdentity(&mtxView);
@@ -355,6 +355,7 @@ void CCamera::GamePad(void)
 			//移動
 			//--------------------------		
 			//左スティックを左に倒す
+
 			if (pStick.lX <= -500)
 			{
 				m_lPhi += D3DXToRadian(2);
