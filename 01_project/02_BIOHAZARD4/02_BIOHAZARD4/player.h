@@ -53,6 +53,7 @@ public:
 	void Update(void);//更新処理
 	void Draw(void);//描画処理
 	
+	void Keyboard(void);//キーボードの処理
 	void GamePad(void);//ゲームパッド処理
 	
 	void SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);//各種設定
@@ -104,8 +105,6 @@ private:
 
 	bool m_bReticle;					// レティクルの生成判定
 
-
-	
 	CMotion *m_pMotion;					// モーションクラスのポインタ
 	CModel *m_pModel[MAX_PLAYER_PARTS]; // モデルクラスのポインタ
 
