@@ -313,6 +313,18 @@ void CPlayer::Update(void)
 		CBulletUi *pHaveBulletUi = CGame::GetBulletHaveUi();
 		//key取得
 		CKey *pHaveKey = CGame::GetKey();
+		// 鍵全部持っている場合
+		if (m_bHasKeyAll == true)
+		{
+			if (m_pos.z >= 1080)
+			{
+				if (CScene::GetUpdateStop() == false)
+				{
+					//フェードの生成
+					CManager::CreateFade(CManager::MODE_RESULT);
+				}
+			}
+		}
 		//マガジン内弾数
 		if (pBulletUi != NULL)
 		{
