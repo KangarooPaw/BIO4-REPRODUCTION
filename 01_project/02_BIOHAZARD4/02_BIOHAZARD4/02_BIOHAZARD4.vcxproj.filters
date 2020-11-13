@@ -195,9 +195,6 @@
     <ClCompile Include="mouse.cpp">
       <Filter>ソース ファイル\Input</Filter>
     </ClCompile>
-    <ClCompile Include="key.cpp">
-      <Filter>ソース ファイル\Scene\3D</Filter>
-    </ClCompile>
     <ClCompile Include="key_ui.cpp">
       <Filter>ソース ファイル\Scene\2D</Filter>
     </ClCompile>
@@ -209,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="collision.cpp">
       <Filter>ソース ファイル\Scene\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="key.cpp">
+      <Filter>ソース ファイル\Scene\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
