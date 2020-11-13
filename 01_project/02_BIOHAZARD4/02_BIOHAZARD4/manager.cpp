@@ -41,7 +41,7 @@
 #include "number.h"
 #include "key_ui.h"
 #include "gameover.h"
-
+#include "gate.h"
 //=============================================================================
 //スタティック変数初期化
 //=============================================================================
@@ -254,6 +254,7 @@ void CManager::LoadAll(void)
 	CNumber::Load();
 	CKeyUi::Load();
 	CGameover::Load();
+	CGate::Load();
 }
 
 //=============================================================================
@@ -261,6 +262,7 @@ void CManager::LoadAll(void)
 //=============================================================================
 void CManager::UnloadAll(void)
 {	
+	CGate::Unload();
 	CBullet::Unload();
 	CEnemy::Unload();
 	CPlayer::Unload();

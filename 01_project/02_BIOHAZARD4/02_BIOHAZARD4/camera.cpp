@@ -12,7 +12,7 @@
 #include "joystick.h"
 #include "player.h"
 #include "game.h"
-
+#include "gate.h"
 //--------------------------------------
 //インクリメント
 //--------------------------------------
@@ -73,10 +73,27 @@ void CCamera::Update(void)
 	CInputKeyboard *pKeyborad = CManager::GetInputKeyboard();
 		//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
+	// 門を開くかの判定を取得
+	bool bGateOpen = CGame::GetGate()->GetOpen();
+	// 門の位置取得
+	D3DXVECTOR3 GatePos = CGame::GetGate()->GetPos();
 	if (CGame::GetPlayer() != NULL)
 	{
-		JoyStickMove();
+		// bGateOpenをfalseに
+		if (bGateOpen == false)
+		{
+			JoyStickMove();
+		}
+		// bGateOpenがtrueの場合
+		if (bGateOpen == true)
+		{
+			// 位置を門の前に
+			posV = D3DXVECTOR3(GatePos.x, GatePos.y + 50, GatePos.z - 100);
+			// 注視点
+			posR.x = GatePos.x;
+			posR.y = GatePos.y + 50;
+			posR.z = GatePos.z;
+		}
 		//--------------------------------------
 		//カメラ描画
 		//--------------------------------------

@@ -16,6 +16,7 @@
 #include "game.h"
 #include "bullet.h"
 #include "item.h"
+#include "gate.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -242,92 +243,98 @@ void CEnemy::Uninit(void)
 //----------------------------------------
 void CEnemy::Update(void)
 {
-	// モーションの更新処理
-	m_pMotion->UpdateMotion();
-	if (CGame::GetPlayer != NULL)
+	// 門が開くかを取得
+	bool bOpenGate = CGame::GetGate()->GetOpen();
+	//bOpenGateがfalseの場合
+	if (bOpenGate == false)
 	{
-		//プレイヤーの場所の取得
-		D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
+		// モーションの更新処理
+		m_pMotion->UpdateMotion();
+		if (CGame::GetPlayer != NULL)
+		{
+			//プレイヤーの場所の取得
+			D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
 
-		if (m_bHit == false)
-		{
-			//モーションセット(走る)
-			m_pMotion->SetMotion(CMotion::MOTION_RUN);
-		}
-		//ダメージモーション
-		if (m_bHit == true)
-		{
-			m_nDamageCnt++;
-			if (m_nDamageCnt % 20 == 0)
+			if (m_bHit == false)
 			{
-				m_bHit = false;
+				//モーションセット(走る)
+				m_pMotion->SetMotion(CMotion::MOTION_RUN);
 			}
-		}
-		//チェイス中でないとき
-		if (m_bChase == false)
-		{
-			//向いている方向に進む
-			m_pos.x += -sinf(m_rot.y)*0.4f;
-			m_pos.z += -cosf(m_rot.y)*0.4f;
+			//ダメージモーション
+			if (m_bHit == true)
+			{
+				m_nDamageCnt++;
+				if (m_nDamageCnt % 20 == 0)
+				{
+					m_bHit = false;
+				}
+			}
+			//チェイス中でないとき
+			if (m_bChase == false)
+			{
+				//向いている方向に進む
+				m_pos.x += -sinf(m_rot.y)*0.4f;
+				m_pos.z += -cosf(m_rot.y)*0.4f;
 
-			//2秒に1回90度回転
-			m_nCntFrame++;
-			if (m_nCntFrame % 120 == 0)
-			{
-				m_rot.y += D3DXToRadian(90);
+				//2秒に1回90度回転
+				m_nCntFrame++;
+				if (m_nCntFrame % 120 == 0)
+				{
+					m_rot.y += D3DXToRadian(90);
+				}
+				//近づいたら追いかける
+				if (m_pos.x - pPlayerPos.x >= -50 && m_pos.x - pPlayerPos.x <= 50 &&
+					m_pos.z - pPlayerPos.z >= -50 && m_pos.z - pPlayerPos.z <= 50)
+				{
+					m_bChase = true;
+				}
 			}
-			//近づいたら追いかける
-			if (m_pos.x - pPlayerPos.x >= -50 && m_pos.x - pPlayerPos.x <= 50 &&
-				m_pos.z - pPlayerPos.z >= -50 && m_pos.z - pPlayerPos.z <= 50)
+			//チェイス中かつ攻撃中でないとき
+			else if (m_bAttack == false)
 			{
-				m_bChase = true;
-			}
-		}
-		//チェイス中かつ攻撃中でないとき
-		else if (m_bAttack == false)
-		{
-			//方向の計算
-			float angle = (float)atan2(pPlayerPos.x - m_pos.x, pPlayerPos.z - m_pos.z);
-			m_rot.y = angle - D3DXToRadian(180);
-			//向いている方向に進む
-			m_pos.x += -sinf(m_rot.y)*0.4f;
-			m_pos.z += -cosf(m_rot.y)*0.4f;
+				//方向の計算
+				float angle = (float)atan2(pPlayerPos.x - m_pos.x, pPlayerPos.z - m_pos.z);
+				m_rot.y = angle - D3DXToRadian(180);
+				//向いている方向に進む
+				m_pos.x += -sinf(m_rot.y)*0.4f;
+				m_pos.z += -cosf(m_rot.y)*0.4f;
 
-			if (m_pos.x - pPlayerPos.x >= -20 && m_pos.x - pPlayerPos.x <= 20 &&
-				m_pos.z - pPlayerPos.z >= -20 && m_pos.z - pPlayerPos.z <= 20)
+				if (m_pos.x - pPlayerPos.x >= -20 && m_pos.x - pPlayerPos.x <= 20 &&
+					m_pos.z - pPlayerPos.z >= -20 && m_pos.z - pPlayerPos.z <= 20)
+				{
+					//攻撃判定
+					m_bAttack = true;
+				}
+			}
+			//チェイス中かつ攻撃中の時
+			else
 			{
-				//攻撃判定
-				m_bAttack = true;
+				//2秒で攻撃
+				m_nCntAttack++;
+				if (m_nCntAttack % 120 == false)
+				{
+					//攻撃の判定
+					CBullet::Create(
+						D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f, m_pos.z),
+						D3DXVECTOR3(10.0f, 0.0f, 10.0f),
+						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+						5,
+						10,
+						CBullet::BULLETTYPE_ENEMY);
+					m_bAttack = false;
+				}
 			}
 		}
-		//チェイス中かつ攻撃中の時
-		else
+
+		for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
 		{
-			//2秒で攻撃
-			m_nCntAttack++;
-			if (m_nCntAttack % 120 == false)
-			{
-				//攻撃の判定
-				CBullet::Create(
-					D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f, m_pos.z),
-					D3DXVECTOR3(10.0f, 0.0f, 10.0f),
-					D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-					5,
-					10,
-					CBullet::BULLETTYPE_ENEMY);
-				m_bAttack = false;
-			}
+			// モデルのパーツごとのモーションの座標と回転を受け取る
+			m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
 		}
+
+		// 座標、回転、サイズのセット(親のモデルだけ動かすため)
+		m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
 	}
-
-	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
-	{
-		// モデルのパーツごとのモーションの座標と回転を受け取る
-		m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
-	}
-
-	// 座標、回転、サイズのセット(親のモデルだけ動かすため)
-	m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
 }
 
 //----------------------------------------
