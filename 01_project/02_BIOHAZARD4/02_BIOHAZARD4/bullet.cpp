@@ -133,17 +133,21 @@ void CBullet::Update(void)
 					// ç¿ïWÇ∆ÉTÉCÉYÇÃéÛÇØéÊÇË
 					m_Getpos = ((CEnemy*)pScene)->GetPos();
 					m_Getsize = ((CEnemy*)pScene)->GetSize();
-
-					// ìñÇΩÇËîªíË
-					if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
+					int nEnemyState = ((CEnemy*)pScene)->GetEnemyState();
+					
+					if (nEnemyState == CEnemy::ENEMYSTATE_NOMAL)
 					{
-						// ìGÇè¡Ç∑
-						((CEnemy*)pScene)->HitBullet(m_nDamage);
+						// ìñÇΩÇËîªíË
+						if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
+						{
+							// ìGÇè¡Ç∑
+							((CEnemy*)pScene)->HitBullet(m_nDamage);
 
-						CBlood::BloodSplash(m_pos, D3DXVECTOR3(SPLACH_BLOOD_SIZE_X, SPLACH_BLOOD_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255));
-						// íeÇè¡Ç∑
-						Uninit();
-						return;
+							CBlood::BloodSplash(m_pos, D3DXVECTOR3(SPLACH_BLOOD_SIZE_X, SPLACH_BLOOD_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255));
+							// íeÇè¡Ç∑
+							Uninit();
+							return;
+						}
 					}
 				}
 			}
