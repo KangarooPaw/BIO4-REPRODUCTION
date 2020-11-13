@@ -412,7 +412,7 @@ void CPlayer::Update(void)
 			if (pScene != NULL)
 			{
 				OBJTYPE objType = pScene->GetObjType();
-				if (objType == OBJTYPE_NONE)
+				if (objType == OBJTYPE_NONE||objType==OBJTYPE_BOX)
 				{
 					BOOL bHit = false;
 					float fDistancePlayer = 0.0f;
@@ -1031,7 +1031,7 @@ void CPlayer::GamePad(void)
 					//’e‚Ì¶¬
 					CBullet::Create(
 						D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f, m_pos.z),
-						D3DXVECTOR3(15.0f, 0.0f, 15.0f),
+						D3DXVECTOR3(20.0f, 0.0f, 20.0f),
 						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 						5,
 						10,
@@ -1125,7 +1125,7 @@ void CPlayer::GamePad(void)
 					//’e‚Ì¶¬
 					CBullet::Create(
 						D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)),
-						D3DXVECTOR3(5.0f, 0.0f, 5.0f),
+						D3DXVECTOR3(2.0f, 0.0f, 2.0f),
 						D3DXVECTOR3(-sinf(m_bulletRot.y)*5.0f, sinf(m_bulletRot.x), -cosf(m_bulletRot.y)*5.0f),
 						100,
 						10,
@@ -1140,13 +1140,14 @@ void CPlayer::GamePad(void)
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
 			{
 				for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; m_nMagazineBullet++)
-				{
-					m_nHaveBullet--;
+				{	
 					if (m_nHaveBullet <= 0)
 					{
 						m_nHaveBullet = 0;
 						return;
 					}
+					m_nHaveBullet--;
+
 				}
 			}
 		}

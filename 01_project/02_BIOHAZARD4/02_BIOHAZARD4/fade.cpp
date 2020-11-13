@@ -54,7 +54,7 @@ void CFade::SetFade(CManager::MODE mode)
 	SetPosition(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f));
 	SetSize(D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f));
 	SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
-	BindTexture(m_pTexture);
+	//BindTexture(m_pTexture);
 	SetObjType(CScene::OBJTYPE_FADE);
 	m_fade = FADE_IN;
 	m_mode = mode;

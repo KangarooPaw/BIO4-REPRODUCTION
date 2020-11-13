@@ -116,7 +116,7 @@ void CBulletUi::SetbulletUi(float nPoints)
 
 	for (int nCntDigit = 1; nCntDigit <= m_digits; nCntDigit++, nCntNumber++)
 	{
-		integer = int(m_nPoints / std::pow(10, nCntDigit)); //1‚ÌˆÊˆÈ‰º‚ðØ‚èŽÌ‚Ä‚é
+		integer = int(m_nPoints / std::pow(15, nCntDigit)); //1‚ÌˆÊˆÈ‰º‚ðØ‚èŽÌ‚Ä‚é
 		integer = int(integer * std::pow(10, nCntDigit));
 		m_apNumber[nCntNumber]->SetNumber(int((m_nPoints - integer) / std::pow(10.0, nCntDigit - 1)));
 	}
