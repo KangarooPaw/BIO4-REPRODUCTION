@@ -414,6 +414,33 @@ void CMotion::UpdateMotion(void)
 		// 変更後の回転の値や位置の値を加算
 		m_modelParent[nCntMotion].m_pos += m_NumPos[nCntMotion];
 		m_modelParent[nCntMotion].m_rot += m_NumRot[nCntMotion];
+
+		if (m_modelParent[nCntMotion].m_rot.x > D3DX_PI)
+		{
+			m_modelParent[nCntMotion].m_rot.x *= -1.0f;
+		}
+		if (m_modelParent[nCntMotion].m_rot.x < -D3DX_PI)
+		{
+			m_modelParent[nCntMotion].m_rot.x *= -1.0f;
+		}
+
+		if (m_modelParent[nCntMotion].m_rot.y > D3DX_PI)
+		{
+			m_modelParent[nCntMotion].m_rot.y *= -1.0f;
+		}
+		if (m_modelParent[nCntMotion].m_rot.y < -D3DX_PI)
+		{
+			m_modelParent[nCntMotion].m_rot.y *= -1.0f;
+		}
+
+		if (m_modelParent[nCntMotion].m_rot.x > D3DX_PI)
+		{
+			m_modelParent[nCntMotion].m_rot.x *= -1.0f;
+		}
+		if (m_modelParent[nCntMotion].m_rot.x < -D3DX_PI)
+		{
+			m_modelParent[nCntMotion].m_rot.x *= -1.0f;
+		}
 	}
 
 	// 現在のモーションの記録

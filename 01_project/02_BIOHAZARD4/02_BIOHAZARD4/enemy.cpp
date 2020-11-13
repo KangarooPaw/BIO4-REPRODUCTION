@@ -57,6 +57,7 @@ CEnemy::CEnemy(int nPriority) :CScene(nPriority)
 	m_nCntAttack = 0;
 	m_bHit = false;
 	m_bAttack = false;
+	m_EnemyState = ENEMYSTATE_NOMAL;
 }
 
 //----------------------------------------
@@ -70,11 +71,12 @@ CEnemy::~CEnemy()
 //----------------------------------------
 //生成処理
 //----------------------------------------
-CEnemy * CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
+CEnemy * CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, ENEMYSTATE EnemyState)
+
 {
     CEnemy *pEnemy;
     pEnemy = new CEnemy;
-    pEnemy->SetEnemy(pos, rot, size);
+    pEnemy->SetEnemy(pos, rot, size, EnemyState);
     pEnemy->Init();
     return pEnemy;
 }
@@ -242,92 +244,107 @@ void CEnemy::Uninit(void)
 //----------------------------------------
 void CEnemy::Update(void)
 {
-	// モーションの更新処理
-	m_pMotion->UpdateMotion();
-	if (CGame::GetPlayer != NULL)
+	// 敵の状態
+	switch (m_EnemyState)
 	{
-		//プレイヤーの場所の取得
-		D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
+	case ENEMYSTATE_NOMAL:
 
-		if (m_bHit == false)
+		// モーションの更新処理
+		m_pMotion->UpdateMotion();
+		if (CGame::GetPlayer != NULL)
 		{
-			//モーションセット(走る)
-			m_pMotion->SetMotion(CMotion::MOTION_RUN);
-		}
-		//ダメージモーション
-		if (m_bHit == true)
-		{
-			m_nDamageCnt++;
-			if (m_nDamageCnt % 20 == 0)
-			{
-				m_bHit = false;
-			}
-		}
-		//チェイス中でないとき
-		if (m_bChase == false)
-		{
-			//向いている方向に進む
-			m_pos.x += -sinf(m_rot.y)*0.4f;
-			m_pos.z += -cosf(m_rot.y)*0.4f;
+			//プレイヤーの場所の取得
+			D3DXVECTOR3 pPlayerPos = CGame::GetPlayer()->GetPos();
 
-			//2秒に1回90度回転
-			m_nCntFrame++;
-			if (m_nCntFrame % 120 == 0)
+			if (m_bHit == false)
 			{
-				m_rot.y += D3DXToRadian(90);
+				//モーションセット(走る)
+				m_pMotion->SetMotion(CMotion::MOTION_RUN);
 			}
-			//近づいたら追いかける
-			if (m_pos.x - pPlayerPos.x >= -50 && m_pos.x - pPlayerPos.x <= 50 &&
-				m_pos.z - pPlayerPos.z >= -50 && m_pos.z - pPlayerPos.z <= 50)
+			//ダメージモーション
+			if (m_bHit == true)
 			{
-				m_bChase = true;
+				m_nDamageCnt++;
+				if (m_nDamageCnt % 20 == 0)
+				{
+					m_bHit = false;
+				}
 			}
-		}
-		//チェイス中かつ攻撃中でないとき
-		else if (m_bAttack == false)
-		{
-			//方向の計算
-			float angle = (float)atan2(pPlayerPos.x - m_pos.x, pPlayerPos.z - m_pos.z);
-			m_rot.y = angle - D3DXToRadian(180);
-			//向いている方向に進む
-			m_pos.x += -sinf(m_rot.y)*0.4f;
-			m_pos.z += -cosf(m_rot.y)*0.4f;
+			//チェイス中でないとき
+			if (m_bChase == false)
+			{
+				//向いている方向に進む
+				m_pos.x += -sinf(m_rot.y)*0.4f;
+				m_pos.z += -cosf(m_rot.y)*0.4f;
 
-			if (m_pos.x - pPlayerPos.x >= -20 && m_pos.x - pPlayerPos.x <= 20 &&
-				m_pos.z - pPlayerPos.z >= -20 && m_pos.z - pPlayerPos.z <= 20)
+				//2秒に1回90度回転
+				m_nCntFrame++;
+				if (m_nCntFrame % 120 == 0)
+				{
+					m_rot.y += D3DXToRadian(90);
+				}
+				//近づいたら追いかける
+				if (m_pos.x - pPlayerPos.x >= -50 && m_pos.x - pPlayerPos.x <= 50 &&
+					m_pos.z - pPlayerPos.z >= -50 && m_pos.z - pPlayerPos.z <= 50)
+				{
+					m_bChase = true;
+				}
+			}
+			//チェイス中かつ攻撃中でないとき
+			else if (m_bAttack == false)
 			{
-				//攻撃判定
-				m_bAttack = true;
+				//方向の計算
+				float angle = (float)atan2(pPlayerPos.x - m_pos.x, pPlayerPos.z - m_pos.z);
+				m_rot.y = angle - D3DXToRadian(180);
+				//向いている方向に進む
+				m_pos.x += -sinf(m_rot.y)*0.4f;
+				m_pos.z += -cosf(m_rot.y)*0.4f;
+
+				if (m_pos.x - pPlayerPos.x >= -20 && m_pos.x - pPlayerPos.x <= 20 &&
+					m_pos.z - pPlayerPos.z >= -20 && m_pos.z - pPlayerPos.z <= 20)
+				{
+					//攻撃判定
+					m_bAttack = true;
+				}
+			}
+			//チェイス中かつ攻撃中の時
+			else
+			{
+				//2秒で攻撃
+				m_nCntAttack++;
+				if (m_nCntAttack % 120 == false)
+				{
+					//攻撃の判定
+					CBullet::Create(
+						D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f, m_pos.z),
+						D3DXVECTOR3(10.0f, 0.0f, 10.0f),
+						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+						5,
+						10,
+						CBullet::BULLETTYPE_ENEMY);
+					m_bAttack = false;
+				}
 			}
 		}
-		//チェイス中かつ攻撃中の時
-		else
+
+		for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
 		{
-			//2秒で攻撃
-			m_nCntAttack++;
-			if (m_nCntAttack % 120 == false)
-			{
-				//攻撃の判定
-				CBullet::Create(
-					D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f, m_pos.z),
-					D3DXVECTOR3(10.0f, 0.0f, 10.0f),
-					D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-					5,
-					10,
-					CBullet::BULLETTYPE_ENEMY);
-				m_bAttack = false;
-			}
+			// モデルのパーツごとのモーションの座標と回転を受け取る
+			m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
 		}
+
+		// 座標、回転、サイズのセット(親のモデルだけ動かすため)
+		m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
+		break;
+
+	case ENEMYSTATE_ITEM:
+		// 座標、回転、サイズのセット(親のモデルだけ動かすため)
+		m_pModel[0]->SetModel(m_pos, m_rot + D3DXVECTOR3(D3DX_PI / 2, 0.0f, 0.0f), m_size);
+		break;
+
+	default:
+		break;
 	}
-
-	for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
-	{
-		// モデルのパーツごとのモーションの座標と回転を受け取る
-		m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
-	}
-
-	// 座標、回転、サイズのセット(親のモデルだけ動かすため)
-	m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
 }
 
 //----------------------------------------
@@ -378,6 +395,7 @@ void CEnemy::HitBullet(int nDamage)
 	}
 	if (m_nEnemyLife <= 0)
 	{
+		Create(m_pos, m_rot, m_size, ENEMYSTATE_ITEM);
 		CItem::DropItem(m_pos, CItem::TYPE_KEY);
 		Uninit();
 	}
@@ -394,10 +412,27 @@ void CEnemy::SetChase(bool bChase)
 //----------------------------------------
 //各種設定
 //----------------------------------------
-void CEnemy::SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
+void CEnemy::SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, ENEMYSTATE EnemyState)
 {
 	m_pos = pos;
 	m_rot = rot; 
 	m_size = size;
+	m_EnemyState = EnemyState;
 	SetObjType(OBJTYPE_ENEMY);
+}
+
+//=============================================================================
+// 座標のセット
+//=============================================================================
+void CEnemy::SetPos(D3DXVECTOR3 pos)
+{
+	m_pos = pos;
+}
+
+//=============================================================================
+// 回転のセット
+//=============================================================================
+void CEnemy::SetRot(D3DXVECTOR3 rot)
+{
+	m_rot = rot;
 }

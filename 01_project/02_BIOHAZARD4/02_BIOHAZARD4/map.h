@@ -46,6 +46,7 @@ public:
 	//受け渡し処理
 	D3DXVECTOR3 GetPos(void) { return m_pos; }//場所
 	D3DXVECTOR3 GetRot(void) { return m_rot; }//角度
+	LPD3DXMESH GetMapMesh(void) { return m_pMesh; }
 private:
 	static LPD3DXMESH m_pMesh;	  // メッシュ情報のポインタ
 	static LPD3DXBUFFER m_pBuffMat; // マテリアル情報のポインタ

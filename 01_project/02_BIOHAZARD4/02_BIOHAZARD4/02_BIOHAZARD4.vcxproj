@@ -154,6 +154,7 @@
     <ClCompile Include="boxeffect.cpp" />
     <ClCompile Include="bullet_ui.cpp" />
     <ClCompile Include="circleparticle.cpp" />
+    <ClCompile Include="collision.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="gameover.cpp" />
     <ClCompile Include="heal.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="boxeffect.h" />
     <ClInclude Include="bullet_ui.h" />
     <ClInclude Include="circleparticle.h" />
+    <ClInclude Include="collision.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="gameover.h" />
     <ClInclude Include="heal.h" />

@@ -69,6 +69,9 @@ public:
 		MOTION_DYINGNEUTRAL, // 瀕死状態の待機モーション
 		MOTION_DYINGRUNNING, // 瀕死状態の歩きモーション
 		MOTION_DEATH,		 // 死ぬモーション
+		MOTION_HOLDENEMY,	 // 敵をつかむモーション
+		MOTION_SPIN,		 // 敵を回すモーション
+		MOTION_SPINEND,		 // 回すのを止めるモーション
 		MOTION_MAX
 	}MOTIONSTATE;
 

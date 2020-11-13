@@ -22,6 +22,8 @@
 #include "heal.h"
 #include "bullet_ui.h"
 #include "key.h"
+#include "map.h"
+#include "collision.h"
 
 #define ADD_BULLET 10 //弾薬箱の玉取得数
 //----------------------------------------
@@ -62,6 +64,10 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	//位置
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	//角度
 	m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	//サイズ
+	// 受け取るやつ
+	m_Getpos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);  //位置
+	m_Getrot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);  //角度
+	m_Getsize = D3DXVECTOR3(0.0f, 0.0f, 0.0f); //サイズ
 	//弾
 	m_bulletRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	
 	m_bulletRotX = 0;
@@ -92,6 +98,9 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	//モデルポインタ
 	memset(m_pModel, NULL, sizeof(m_pModel));
 	m_bDeath = false;
+	// 敵を回す判定
+	m_bspin = false;
+	m_pEnemy = NULL;
 }
 
 //----------------------------------------
@@ -384,6 +393,57 @@ void CPlayer::Update(void)
 			}
 		}
 	}
+
+	// 動かないものに対してのレイ
+	CScene *pScene = NULL;
+	do
+	{
+		pScene = GetScene(OBJTYPE_NONE);
+		if (pScene != NULL)
+		{
+			OBJTYPE objType = pScene->GetObjType();
+			if (objType == OBJTYPE_NONE)
+			{
+				BOOL bHit = false;
+				float fDistancePlayer = 0.0f;
+				D3DXVECTOR3 vecStart, vecDirection;
+				float fRadius = 360.0f / 8.0f;
+
+				for (int nCount = 0; nCount < 8; nCount++)
+				{
+					// 始める座標
+					vecStart = m_pos + D3DXVECTOR3(0.0f, 20.0f, 0.0f);
+
+					// レイを出す角度
+					vecDirection = D3DXVECTOR3(0.0f, fRadius * nCount, 0.0f);
+
+					D3DXIntersect(((CMap*)pScene)->GetMapMesh(), &vecStart, &D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)),
+						&bHit, NULL, NULL, NULL, &fDistancePlayer, NULL, NULL);
+
+					if (bHit == true)
+					{
+						// 範囲より小さかったら
+						if (fDistancePlayer < 20.0f)
+						{
+							// 戻す
+							m_pos -= (D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)));
+
+							for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+							{
+								// モデルのパーツごとの座標と回転を受け取る
+								m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
+							}
+
+							// 座標、回転、サイズのセット
+							m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
+
+							return;
+						}
+					}
+				}
+			}
+		}
+	} while (pScene != NULL);
 }
 
 //----------------------------------------
@@ -683,6 +743,131 @@ void CPlayer::GamePad(void)
 				}
 			}
 		}
+	}
+
+	// 敵を回す処理
+	spin();
+}
+
+//=============================================================================
+// 敵を回す処理
+//=============================================================================
+void CPlayer::spin(void)
+{
+	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
+
+	// 回すフラグが立ってないとき
+	if (m_bspin == false)
+	{
+		CScene *pScene = NULL;
+		do
+		{
+			pScene = GetScene(OBJTYPE_ENEMY);
+			if (pScene != NULL)
+			{
+				OBJTYPE objType = pScene->GetObjType();
+				if (objType == OBJTYPE_ENEMY)
+				{
+					// 座標とサイズの受け取り
+					m_Getpos = ((CEnemy*)pScene)->GetPos();
+					m_Getsize = ((CEnemy*)pScene)->GetSize();
+
+					// 当たり判定
+					if (CCollision::SphereCollision(m_pos, m_size.x, m_Getpos, m_Getsize.x) == true)
+					{
+						// 円の中の敵がアイテム状態の時
+						if (((CEnemy*)pScene)->GetEnemyState() == CEnemy::ENEMYSTATE_ITEM)
+						{
+							if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
+							{
+								// 回すやつの情報が欲しい
+								m_pEnemy = (CEnemy*)pScene;
+
+								// 回すフラグを立たせる
+								m_bspin = true;
+								return;
+							}
+						}
+					}
+				}
+			}
+		} while (pScene != NULL);
+	}
+	// 回すフラグが立った
+	else if (m_bspin == true)
+	{
+		// 自機と敵の距離
+		float fDistance = 26.0f;
+
+		// モーションと自分の角度
+		D3DXVECTOR3 rot = m_pMotion->GetRot(0) + m_rot;
+
+		// 角度から値を計算する
+		float cos1 = cosf(rot.y) * fDistance; // xが+
+		float sin1 = sinf(rot.y) * fDistance; // yが+
+
+		// 敵の座標と回転に指定の値を入れる(posのyに体の座標を入れる)
+		m_pEnemy->SetPos(D3DXVECTOR3(m_pos.x - sin1, m_pModel[0]->GetMtxWorld()._42, m_pos.z - cos1));
+		m_pEnemy->SetRot(D3DXVECTOR3(m_rot.x, rot.y, m_rot.z));
+
+		// 座標、回転、サイズのセット
+		m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, rot, m_size);
+
+		m_pMotion->SetMotion(CMotion::MOTION_SPIN);
+
+		// 動くものに対してのレイ
+		CScene *pScene = NULL;
+		do
+		{
+			pScene = GetScene(OBJTYPE_ENEMY);
+			if (pScene != NULL && CEnemy::ENEMYSTATE_ITEM != ((CEnemy*)pScene)->GetEnemyState())
+			{
+				OBJTYPE objType = pScene->GetObjType();
+				if (objType == OBJTYPE_ENEMY)
+				{
+					BOOL bHit = false;
+					float fDistancePlayer = 0.0f;
+
+					D3DXMATRIX matWorld, matRotasion;
+					D3DXVECTOR3 vecStart, vecEnd, vecDirection;
+
+					for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
+					{
+						// レイを出す座標と当てるやつの座標を入れる
+						vecStart = m_pos;
+						vecEnd = ((CEnemy*)pScene)->GetPos();
+
+						D3DXMatrixRotationY(&matRotasion, rot.y);
+						D3DXVec3TransformCoord(&vecEnd, &vecEnd, &matRotasion);
+						vecEnd += vecStart;
+
+
+						D3DXMatrixTranslation(&matWorld, ((CEnemy*)pScene)->GetPos().x, ((CEnemy*)pScene)->GetPos().y, ((CEnemy*)pScene)->GetPos().z);
+						D3DXMatrixInverse(&matWorld, NULL, &matWorld);
+						D3DXVec3TransformCoord(&vecStart, &vecStart, &matWorld);
+						D3DXVec3TransformCoord(&vecEnd, &vecEnd, &matWorld);
+
+						//vecDirection = vecEnd - vecStart;
+
+						D3DXVec3Subtract(&vecDirection, &vecEnd, &vecStart);
+						D3DXVec3Normalize(&vecDirection, &vecDirection);
+
+						D3DXIntersect(((CEnemy*)pScene)->GetEnemyMesh(0), &vecStart,
+							&vecDirection, &bHit, NULL, NULL, NULL, &fDistancePlayer, NULL, NULL);
+
+						if (bHit == true)
+						{
+							if (fDistancePlayer < (fDistance * 2))
+							{
+								// 敵を消す
+								((CEnemy*)pScene)->HitBullet(0);
+								return;
+							}
+						}
+					}
+				}
+			}
+		} while (pScene != NULL);
 	}
 }
 

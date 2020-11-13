@@ -33,6 +33,7 @@
 class CMotion;
 class CModel;
 class CReticle;
+class CEnemy;
 
 //=============================================================================
 // プレイヤークラス
@@ -54,7 +55,8 @@ public:
 	void Draw(void);//描画処理
 	
 	void GamePad(void);//ゲームパッド処理
-	
+	void spin(void); // 敵を回す処理
+
 	void SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);//各種設定
 	void HitDamage(int nDamage);	//ダメージ処理
 	void PickUpItem(void);			//アイテム取得処理
@@ -80,6 +82,9 @@ private:
 	D3DXVECTOR3 m_pos;					// 場所
 	D3DXVECTOR3 m_rot;					// 角度
 	D3DXVECTOR3 m_size;					// 大きさ
+	D3DXVECTOR3 m_Getpos;				// 受け取った場所
+	D3DXVECTOR3 m_Getrot;				// 受け取った角度
+	D3DXVECTOR3 m_Getsize;				// 受け取った大きさ
 
 	D3DXVECTOR3 m_bulletRot;			// 弾の角度
 	int m_bulletRotX;					// 弾の角度(X)変更数のカウント
@@ -104,8 +109,9 @@ private:
 
 	bool m_bReticle;					// レティクルの生成判定
 
-
+	bool m_bspin;						// 敵を回転させる判定
 	
+	CEnemy *m_pEnemy;					// 敵クラスのポインタ
 	CMotion *m_pMotion;					// モーションクラスのポインタ
 	CModel *m_pModel[MAX_PLAYER_PARTS]; // モデルクラスのポインタ
 
