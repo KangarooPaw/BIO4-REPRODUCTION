@@ -10,9 +10,25 @@
 
 CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX] = // 各音素材のパラメータ
 {
-	{ "data/SOUND/SE/shot000.wav", 0 },			// 弾発射音
-	{ "data/SOUND/BGM/test000.wav", -1 },	// BGMテスト
-
+	{ "data/SOUND/BGM/title.wav", -1 },			//タイトル
+	{ "data/SOUND/BGM/tutorial.wav", -1 },		//チュートリアル
+	{ "data/SOUND/BGM/game.wav", -1 },			//ゲーム
+	{ "data/SOUND/BGM/result.wav", -1 },		//リザルト
+	{ "data/SOUND/SE/back_walk.wav", 0 },		//後ろに歩く
+	{ "data/SOUND/SE/dash.wav", 0 },			//ダッシュ
+	{ "data/SOUND/SE/decision.wav", 0 },		//決定
+	{ "data/SOUND/SE/door_open.wav", 0 },		//門を開く
+	{ "data/SOUND/SE/game_start.wav", 0 },		//ゲームスタート
+	{ "data/SOUND/SE/get.wav", 0 },				//アイテム取得
+	{ "data/SOUND/SE/knife.wav", 0 },			//ナイフ
+	{ "data/SOUND/SE/player_damage.wav", 0 },	//ダメージ(プレイヤー)
+	{ "data/SOUND/SE/reload.wav", 0 },			//リロード
+	{ "data/SOUND/SE/rotation.wav", 0 },		//ゾンビの回転
+	{ "data/SOUND/SE/shot.wav", 0 },			//射撃
+	{ "data/SOUND/SE/turn.wav", 0 },			//後ろを向く
+	{ "data/SOUND/SE/wooden_box.wav", 0 },		//木箱を破壊
+	{ "data/SOUND/SE/zombie_damage.wav", 0 },	//ダメージ(ゾンビ)
+	{ "data/SOUND/SE/zombie_death.wav", 0 },	//死(ゾンビ)
 };
 
 CSound::CSound()
