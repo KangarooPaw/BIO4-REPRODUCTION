@@ -58,6 +58,7 @@ CEnemy::CEnemy(int nPriority) :CScene(nPriority)
 	m_nCntAttack = 0;
 	m_bHit = false;
 	m_bAttack = false;
+	m_EnemyState = ENEMYSTATE_NOMAL;
 }
 
 //----------------------------------------
@@ -71,11 +72,12 @@ CEnemy::~CEnemy()
 //----------------------------------------
 //生成処理
 //----------------------------------------
-CEnemy * CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
+CEnemy * CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, ENEMYSTATE EnemyState)
+
 {
     CEnemy *pEnemy;
     pEnemy = new CEnemy;
-    pEnemy->SetEnemy(pos, rot, size);
+    pEnemy->SetEnemy(pos, rot, size, EnemyState);
     pEnemy->Init();
     return pEnemy;
 }
@@ -247,7 +249,11 @@ void CEnemy::Update(void)
 	bool bOpenGate = CGame::GetGate()->GetOpen();
 	//bOpenGateがfalseの場合
 	if (bOpenGate == false)
+	// 敵の状態
+	switch (m_EnemyState)
 	{
+	case ENEMYSTATE_NOMAL:
+
 		// モーションの更新処理
 		m_pMotion->UpdateMotion();
 		if (CGame::GetPlayer != NULL)
@@ -334,6 +340,15 @@ void CEnemy::Update(void)
 
 		// 座標、回転、サイズのセット(親のモデルだけ動かすため)
 		m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
+		break;
+
+	case ENEMYSTATE_ITEM:
+		// 座標、回転、サイズのセット(親のモデルだけ動かすため)
+		m_pModel[0]->SetModel(m_pos, m_rot + D3DXVECTOR3(D3DX_PI / 2, 0.0f, 0.0f), m_size);
+		break;
+
+	default:
+		break;
 	}
 }
 
@@ -385,6 +400,7 @@ void CEnemy::HitBullet(int nDamage)
 	}
 	if (m_nEnemyLife <= 0)
 	{
+		Create(m_pos, m_rot, m_size, ENEMYSTATE_ITEM);
 		CItem::DropItem(m_pos, CItem::TYPE_KEY);
 		Uninit();
 	}
@@ -401,10 +417,27 @@ void CEnemy::SetChase(bool bChase)
 //----------------------------------------
 //各種設定
 //----------------------------------------
-void CEnemy::SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
+void CEnemy::SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, ENEMYSTATE EnemyState)
 {
 	m_pos = pos;
 	m_rot = rot; 
 	m_size = size;
+	m_EnemyState = EnemyState;
 	SetObjType(OBJTYPE_ENEMY);
+}
+
+//=============================================================================
+// 座標のセット
+//=============================================================================
+void CEnemy::SetPos(D3DXVECTOR3 pos)
+{
+	m_pos = pos;
+}
+
+//=============================================================================
+// 回転のセット
+//=============================================================================
+void CEnemy::SetRot(D3DXVECTOR3 rot)
+{
+	m_rot = rot;
 }

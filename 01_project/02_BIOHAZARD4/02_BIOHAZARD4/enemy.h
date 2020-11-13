@@ -29,10 +29,16 @@ class CModel;
 class CEnemy :public CScene
 {
 public:
+	typedef enum
+	{
+		ENEMYSTATE_NOMAL = 0,
+		ENEMYSTATE_ITEM,
+	}ENEMYSTATE;
+
 	CEnemy(int nPriority = CScene::OBJTYPE_ENEMY);//コンストラクタ
 	~CEnemy();//デストラクタ
 
-	static CEnemy *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);//生成処理
+	static CEnemy *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, ENEMYSTATE EnemyState);//生成処理
 	static HRESULT Load(void);//モデルの読み込み
 	static void Unload(void);//モデルの破棄
 	static HRESULT LoadTexture(void);//テクスチャの読み込み
@@ -44,12 +50,17 @@ public:
 	void HitBullet(int nDamage);
 
 	static void SetChase(bool bChase);
-	void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);
+	void SetPos(D3DXVECTOR3 pos);
+	void SetRot(D3DXVECTOR3 rot);
+	void SetEnemy(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size, ENEMYSTATE EnemyState);
 
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
 	D3DXVECTOR3 GetSize(void) { return m_size; }
 	LPD3DXMESH GetMesh(void) { return m_pMesh[MAX_ENEMY_PARTS]; }
+	ENEMYSTATE GetEnemyState(void) { return m_EnemyState; }
+	LPD3DXMESH GetEnemyMesh(int nCount) { return m_pMesh[nCount]; }
+
 private:
 	static LPD3DXMESH m_pMesh[MAX_ENEMY_PARTS];		 // メッシュ情報のポインタ
 	static LPD3DXBUFFER m_pBuffMat[MAX_ENEMY_PARTS]; // マテリアル情報のポインタ
@@ -72,6 +83,7 @@ private:
 	int m_nEnemyLife;					// 敵の体力
 	int m_nCntFrame;					// フレームカウント
 	int m_nDamageCnt;					// ダメージモーションフレーム
+	ENEMYSTATE m_EnemyState;			// 敵の状態
 };
 
 #endif
