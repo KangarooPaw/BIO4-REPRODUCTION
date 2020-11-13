@@ -189,32 +189,7 @@ void CCamera::Keyboard(void)
 			posV.y = m_Distance*cosf(m_lTheta) + posR.y;
 			posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 
-			//---------------------------
-			//カメラの角度変更
-			//---------------------------
-			//右スティックを左に倒す
-			if (pInputKeyboard->GetKeyPress(DIK_A))
-			{
-				m_Distance = CAMERA_GAZE;	//距離
-				posR.x += MOVE;
-			}
-			//右スティックを右に倒す
-			if (pInputKeyboard->GetKeyPress(DIK_D))
-			{
-				m_Distance = CAMERA_GAZE;	//距離
-				posR.x -= MOVE;
-			}
-			//右スティックを上に倒す
-			if (pInputKeyboard->GetKeyPress(DIK_W))
-			{
-				posR.y = pPlayerPos.y + GAZE_Y + MOVE;
-			}
-			//右スティックを下に倒す
-			if (pInputKeyboard->GetKeyPress(DIK_S))
-			{
-				posR.y = pPlayerPos.y + GAZE_Y - MOVE;
-			}
-			m_rotY = pPlayerRot.y;
+			//m_rotY = pPlayerRot.y;
 		}
 		//LTで銃を構える/LBでナイフを構える
 		else if (pInputKeyboard->GetKeyPress(DIK_LSHIFT) ||
@@ -389,32 +364,7 @@ void CCamera::GamePad(void)
 			posV.y = m_Distance*cosf(m_lTheta) + posR.y;
 			posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 
-			//---------------------------
-			//カメラの角度変更
-			//---------------------------
-			//右スティックを左に倒す
-			if (pStick.lRx <= -500 || pStick.lZ <= -500)
-			{
-				m_Distance = CAMERA_GAZE;	//距離
-				posR.x += MOVE;
-			}
-			//右スティックを右に倒す
-			if (pStick.lRx >= 500 || pStick.lZ >= 500)
-			{
-				m_Distance = CAMERA_GAZE;	//距離
-				posR.x -= MOVE;
-			}
-			//右スティックを上に倒す
-			if (pStick.lRy <= -500 || pStick.lRz <= -500)
-			{
-				posR.y = pPlayerPos.y + GAZE_Y + MOVE;
-			}
-			//右スティックを下に倒す
-			if (pStick.lRy >= 500 || pStick.lRz >= 500)
-			{
-				posR.y = pPlayerPos.y + GAZE_Y - MOVE;
-			}
-			m_rotY = pPlayerRot.y;
+			//m_rotY = pPlayerRot.y;
 		}
 		//LTで銃を構える/LBでナイフを構える
 		else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) ||

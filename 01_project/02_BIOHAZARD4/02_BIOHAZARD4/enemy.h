@@ -22,6 +22,7 @@
 //=============================================================================
 class CMotion;
 class CModel;
+class CScene;
 
 //=============================================================================
 // エネミークラス
@@ -84,6 +85,14 @@ private:
 	int m_nCntFrame;					// フレームカウント
 	int m_nDamageCnt;					// ダメージモーションフレーム
 	ENEMYSTATE m_EnemyState;			// 敵の状態
+
+	//レイ用
+	CScene *m_pScene;
+	OBJTYPE m_objType;
+	BOOL m_bRayHit;
+	float m_fDistanceEnemy;
+	D3DXVECTOR3 m_vexStart, m_vexDirection;
+	float m_fRadius;
 };
 
 #endif

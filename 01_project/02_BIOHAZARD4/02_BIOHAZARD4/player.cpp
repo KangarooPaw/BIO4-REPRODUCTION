@@ -1197,7 +1197,7 @@ void CPlayer::GamePad(void)
 					m_nHaveBullet = 0;
 					return;
 				}
-				for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; ++m_nMagazineBullet)
+				for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; ++m_nMagazineBullet, --m_nHaveBullet)
 				{	
 					if (m_bReloadMotion == false)
 					{
@@ -1208,7 +1208,7 @@ void CPlayer::GamePad(void)
 						m_bAllMotion = true;
 					}
 
-					m_nHaveBullet--;
+					
 					if (m_nHaveBullet < 0)
 					{
 						m_nHaveBullet = 0;
