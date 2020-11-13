@@ -744,7 +744,7 @@ void CPlayer::Keyboard(void)
 			for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; m_nMagazineBullet++)
 			{
 				m_nHaveBullet--;
-				if (m_nHaveBullet <= 0)
+				if (m_nHaveBullet < 0)
 				{
 					m_nHaveBullet = 0;
 					return;
@@ -1142,7 +1142,7 @@ void CPlayer::GamePad(void)
 				for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; m_nMagazineBullet++)
 				{
 					m_nHaveBullet--;
-					if (m_nHaveBullet <= 0)
+					if (m_nHaveBullet < 0)
 					{
 						m_nHaveBullet = 0;
 						return;
