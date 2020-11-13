@@ -1209,7 +1209,7 @@ void CPlayer::GamePad(void)
 					}
 
 					m_nHaveBullet--;
-					if (m_nHaveBullet == 0)
+					if (m_nHaveBullet < 0)
 					{
 						m_nHaveBullet = 0;
 						return;
