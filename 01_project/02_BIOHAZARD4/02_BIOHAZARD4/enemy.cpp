@@ -332,6 +332,55 @@ void CEnemy::Update(void)
 				}
 			}
 		}
+		// 動かないものに対してのレイ
+		m_pScene = NULL;
+		do
+		{
+			m_pScene = GetScene(OBJTYPE_NONE);
+			if (m_pScene != NULL)
+			{
+				m_objType = m_pScene->GetObjType();
+				if (m_objType == OBJTYPE_NONE || m_objType == OBJTYPE_BOX)
+				{
+					m_bRayHit = false;
+					m_fDistanceEnemy = 0.0f;
+					m_fRadius = 360.0f / 8.0f;
+
+					for (int nCount = 0; nCount < 8; nCount++)
+					{
+						// 始める座標
+						m_vexStart = m_pos + D3DXVECTOR3(0.0f, 20.0f, 0.0f);
+
+						// レイを出す角度
+						m_vexDirection = D3DXVECTOR3(0.0f, m_fRadius * nCount, 0.0f);
+
+						D3DXIntersect(((CMap*)m_pScene)->GetMapMesh(), &m_vexStart, &D3DXVECTOR3(sinf(m_vexDirection.y), 0.0f, cosf(m_vexDirection.y)),
+							&m_bRayHit, NULL, NULL, NULL, &m_fDistanceEnemy, NULL, NULL);
+
+						if (m_bRayHit == true)
+						{
+							// 範囲より小さかったら
+							if (m_fDistanceEnemy < 15.0f)
+							{
+								// 戻す
+								m_pos -= (D3DXVECTOR3(sinf(m_vexDirection.y), 0.0f, cosf(m_vexDirection.y)));
+
+								for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
+								{
+									// モデルのパーツごとの座標と回転を受け取る
+									m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
+								}
+
+								// 座標、回転、サイズのセット
+								m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
+
+								return;
+							}
+						}
+					}
+				}
+			}
+		} while (m_pScene != NULL);
 
 		for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
 		{
@@ -341,6 +390,9 @@ void CEnemy::Update(void)
 
 		// 座標、回転、サイズのセット(親のモデルだけ動かすため)
 		m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
+
+
+
 		break;
 
 	case ENEMYSTATE_ITEM:
