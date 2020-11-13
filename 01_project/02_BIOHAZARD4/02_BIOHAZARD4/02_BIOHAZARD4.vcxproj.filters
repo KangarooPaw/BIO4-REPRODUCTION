@@ -201,8 +201,13 @@
     <ClCompile Include="gameover.cpp">
       <Filter>ソース ファイル\mode</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="gate.cpp">
+      <Filter>ソース ファイル\Scene\3D</Filter>
+=======
     <ClCompile Include="mouse.cpp">
       <Filter>ソース ファイル\Input</Filter>
+>>>>>>> 8ad8ba47300f130fa3ea1e72350c37a4bf5bc843
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -356,8 +361,13 @@
     <ClInclude Include="gameover.h">
       <Filter>ヘッダー ファイル\mode</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="gate.h">
+      <Filter>ヘッダー ファイル\Scene\3D</Filter>
+=======
     <ClInclude Include="mouse.h">
       <Filter>ヘッダー ファイル\Input</Filter>
+>>>>>>> 8ad8ba47300f130fa3ea1e72350c37a4bf5bc843
     </ClInclude>
   </ItemGroup>
 </Project>

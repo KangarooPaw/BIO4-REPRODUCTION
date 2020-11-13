@@ -157,6 +157,7 @@
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="gameover.cpp" />
+    <ClCompile Include="gate.cpp" />
     <ClCompile Include="heal.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="key.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="collision.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="gameover.h" />
+    <ClInclude Include="gate.h" />
     <ClInclude Include="heal.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="key.h" />
