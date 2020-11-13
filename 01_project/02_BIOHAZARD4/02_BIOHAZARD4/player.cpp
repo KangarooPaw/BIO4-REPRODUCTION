@@ -389,6 +389,7 @@ void CPlayer::Update(void)
 				m_bDeathMotion = false;
 				m_nDeathMotionCnt = 0;
 				Uninit();
+				return;
 			}
 		}
 	}
@@ -422,7 +423,7 @@ void CPlayer::Update(void)
 					if (bHit == true)
 					{
 						// îÕàÕÇÊÇËè¨Ç≥Ç©Ç¡ÇΩÇÁ
-						if (fDistancePlayer < 20.0f)
+						if (fDistancePlayer < 15.0f)
 						{
 							// ñﬂÇ∑
 							m_pos -= (D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)));

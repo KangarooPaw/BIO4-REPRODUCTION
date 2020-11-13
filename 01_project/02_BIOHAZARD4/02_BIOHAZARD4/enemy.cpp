@@ -16,6 +16,7 @@
 #include "game.h"
 #include "bullet.h"
 #include "item.h"
+#include "map.h"
 
 //----------------------------------------
 //Ã“Iƒƒ“ƒo•Ï”
