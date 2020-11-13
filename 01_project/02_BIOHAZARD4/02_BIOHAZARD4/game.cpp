@@ -81,6 +81,7 @@ HRESULT CGame::Init(void)
 
 	// 門生成
 	m_pGate = m_pGate = CGate::Create(D3DXVECTOR3(-180.0f, 50.0f, 1060.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 20.0f));
+
 	//ボックス
 	for (int nCountX = 1; nCountX < 5; nCountX++)
 	{
