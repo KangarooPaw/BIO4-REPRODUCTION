@@ -20,7 +20,6 @@ CFade::~CFade()
 HRESULT CFade::Init(void)
 {
 	CScene2D::Init();
-
 	return S_OK;
 }
 
