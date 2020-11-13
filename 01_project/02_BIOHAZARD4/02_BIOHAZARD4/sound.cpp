@@ -26,7 +26,7 @@ CSound::SOUNDPARAM CSound::m_aParam[SOUND_LABEL_MAX] = // 各音素材のパラメータ
 	{ "data/SOUND/SE/rotation.wav", 0 },		//ゾンビの回転
 	{ "data/SOUND/SE/shot.wav", 0 },			//射撃
 	{ "data/SOUND/SE/turn.wav", 0 },			//後ろを向く
-	{ "data/SOUND/SE/wooden_box.wav", 0 },		//木箱を破壊する
+	{ "data/SOUND/SE/wooden_box.wav", 0 },		//木箱を破壊
 	{ "data/SOUND/SE/zombie_damage.wav", 0 },	//ダメージ(ゾンビ)
 	{ "data/SOUND/SE/zombie_death.wav", 0 },	//死(ゾンビ)
 };
