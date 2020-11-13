@@ -7,8 +7,8 @@
 //--------------------------------
 //ê√ìIÉÅÉìÉoïœêî
 //--------------------------------
-CScene *CScene::m_pTop[PRIORITY] = {};
-CScene *CScene::m_pCur[PRIORITY] = {};
+CScene *CScene::m_pTop[OBJTYPE_MAX] = {};
+CScene *CScene::m_pCur[OBJTYPE_MAX] = {};
 int CScene::m_nNumAll = 0;
 int CScene::m_nCount = 0;
 int CScene::m_nNext = 0;
@@ -293,7 +293,7 @@ void CScene::UpdateAll(void)
 //--------------------------------
 void CScene::DrawAll(void)
 {	
-	for (int nCountpriority = 0; nCountpriority < PRIORITY; nCountpriority++)
+	for (int nCountpriority = 0; nCountpriority < OBJTYPE_MAX; nCountpriority++)
 	{
 		CScene*pScene = m_pTop[nCountpriority];
 		CScene*pSceneNext = NULL;

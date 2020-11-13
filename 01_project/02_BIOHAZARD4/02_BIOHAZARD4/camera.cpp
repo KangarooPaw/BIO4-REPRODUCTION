@@ -252,7 +252,6 @@ void CCamera::Keyboard(void)
 			//右スティックを下に倒す
 			if (pInputKeyboard->GetKeyPress(DIK_S))
 			{
-
 				m_lTheta -= D3DXToRadian(1);
 				posR.y -= cosf(m_lTheta);
 				m_RotY--;
@@ -286,7 +285,7 @@ void CCamera::Keyboard(void)
 void CCamera::GamePad(void)
 {
 	//コントローラーの取得処理
-	DIJOYSTATE pStick;
+	DIJOYSTATE pStick = {};
 	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
 	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
 	if (pJoystickDevice != NULL)

@@ -48,8 +48,8 @@ protected:
 
 private:
 	OBJTYPE m_objType;					//オブジェクトの種類
-	static CScene *m_pTop[PRIORITY];	//先頭のオブジェクトへのポインタ
-	static CScene *m_pCur[PRIORITY];	//現在のオブジェクトへのポインタ
+	static CScene *m_pTop[OBJTYPE_MAX];	//先頭のオブジェクトへのポインタ
+	static CScene *m_pCur[OBJTYPE_MAX];	//現在のオブジェクトへのポインタ
 	CScene *m_pPrev;					//前のオブジェクトへのポインタ
 	CScene *m_pNext;					//次のオブジェクトへのポインタ
 	static int m_nNumAll;

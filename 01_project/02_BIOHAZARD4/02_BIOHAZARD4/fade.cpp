@@ -9,8 +9,13 @@ CManager::MODE CFade::m_mode = CManager::MODE_NONE;
 
 CFade::CFade(int nPriority) :CScene2D(nPriority)
 {
+	m_pVtxBuff = NULL;
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 	m_TexPos = 0;
 	m_color = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+	m_PolygonWidth = 0;
+	m_PolygonHeight = 0;
 }
 
 CFade::~CFade()
@@ -19,6 +24,7 @@ CFade::~CFade()
 
 HRESULT CFade::Init(void)
 {
+	SetPosition(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f));
 	CScene2D::Init();
 
 	return S_OK;
@@ -54,11 +60,11 @@ void CFade::SetFade(CManager::MODE mode)
 	SetPosition(D3DXVECTOR3((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2), 0.0f));
 	SetSize(D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f));
 	SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
-	BindTexture(m_pTexture);
+	//BindTexture(m_pTexture);
 	SetObjType(CScene::OBJTYPE_FADE);
 	m_fade = FADE_IN;
 	m_mode = mode;
-	SetUpdateStop(true);
+	//SetUpdateStop(true);
 }
 
 void CFade::FadeIn(void)
@@ -82,7 +88,7 @@ void CFade::FadeOut(void)
 	{
 		m_color.a = 0.0f;
 		m_fade = FADE_NONE;
-		SetUpdateStop(false);
+		//SetUpdateStop(false);
 		return;
 	}
 	SetColor(m_color);
