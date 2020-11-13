@@ -241,22 +241,25 @@ HRESULT CSound::PlaySound(SOUND_LABEL label)
 	buffer.Flags = XAUDIO2_END_OF_STREAM;
 	buffer.LoopCount = m_aParam[label].nCntLoop;
 
-	// 状態取得
-	m_apSourceVoice[label]->GetState(&xa2state);
-	if (xa2state.BuffersQueued != 0)
-	{// 再生中
-	 // 一時停止
-		m_apSourceVoice[label]->Stop(0);
+	if (m_apSourceVoice[label] != NULL)
+	{
+		// 状態取得
+		m_apSourceVoice[label]->GetState(&xa2state);
+		if (xa2state.BuffersQueued != 0)
+		{// 再生中
+		 // 一時停止
+			m_apSourceVoice[label]->Stop(0);
 
-		// オーディオバッファの削除
-		m_apSourceVoice[label]->FlushSourceBuffers();
+			// オーディオバッファの削除
+			m_apSourceVoice[label]->FlushSourceBuffers();
+		}
+
+		// オーディオバッファの登録
+		m_apSourceVoice[label]->SubmitSourceBuffer(&buffer);
+
+		// 再生
+		m_apSourceVoice[label]->Start(0);
 	}
-
-	// オーディオバッファの登録
-	m_apSourceVoice[label]->SubmitSourceBuffer(&buffer);
-
-	// 再生
-	m_apSourceVoice[label]->Start(0);
 
 	return S_OK;
 }
@@ -291,10 +294,13 @@ void CSound::StopSound(void)
 	// 一時停止
 	for (int nCntSound = 0; nCntSound < SOUND_LABEL_MAX; nCntSound++)
 	{
-		if (m_apSourceVoice[nCntSound])
+		if (m_apSourceVoice[nCntSound] != NULL)
 		{
-			// 一時停止
-			m_apSourceVoice[nCntSound]->Stop(0);
+			if (m_apSourceVoice[nCntSound])
+			{
+				// 一時停止
+				m_apSourceVoice[nCntSound]->Stop(0);
+			}
 		}
 	}
 }
