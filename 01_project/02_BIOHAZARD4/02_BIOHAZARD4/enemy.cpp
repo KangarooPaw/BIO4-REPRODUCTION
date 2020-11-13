@@ -466,7 +466,7 @@ void CEnemy::HitBullet(int nDamage,int nType)
 			{
 				CItem::DropItem(m_pos, CItem::TYPE_KEY);
 			}
-			if (nType == 0)//ヘッドショット
+			if (nType == 0)// ヘッドショット
 			{
 				Create(m_pos, m_rot, m_size, ENEMYSTATE_ITEM);
 			}
