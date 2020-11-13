@@ -100,13 +100,12 @@ void CUi::Unload(void)
 //----------------------------------------
 HRESULT CUi::Init(void)
 {	
-	
+	CScene2D::Init();
 	SetObjType(CScene::OBJTYPE_UI);
 	SetPosition(m_pos);		//位置
 	SetSize(m_size);		//サイズ
 	SetRotation(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	SetColor(D3DXCOLOR(1.0f,1.0f,1.0f,1.0f));
-	CScene2D::Init();
 	BindTexture(m_pTexture[m_type]);
 
 	return S_OK;
