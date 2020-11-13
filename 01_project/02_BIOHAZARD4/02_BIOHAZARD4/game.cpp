@@ -88,14 +88,14 @@ HRESULT CGame::Init(void)
 		}
 	}
 
-	//“G
-	for (int nCountX = 1; nCountX < 2; nCountX++)
-	{
-		for (int nCountZ = 1; nCountZ < 5; nCountZ++)
-		{
-			CEnemy::Create(D3DXVECTOR3(200.0f + (nCountX * 50.0f), 0.0f, -100.0f + (nCountZ * 50.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
-		}
-	}
+	////“G
+	//for (int nCountX = 1; nCountX < 2; nCountX++)
+	//{
+	//	for (int nCountZ = 1; nCountZ < 5; nCountZ++)
+	//	{
+	//		CEnemy::Create(D3DXVECTOR3(200.0f + (nCountX * 50.0f), 0.0f, -100.0f + (nCountZ * 50.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+	//	}
+	//}
 	return S_OK;
 }
 

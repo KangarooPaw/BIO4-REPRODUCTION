@@ -16,12 +16,35 @@
 //#include "sound.h"
 #include "ui.h"
 #include "mode.h"
+#include "player.h"
+#include "life.h"
+#include "enemy.h"
+#include "polygon.h"
+#include "camera.h"
+#include "light.h"
+#include "scene.h"
+#include "map.h"
+#include "item.h"
+#include "box.h"
+#include "skybox.h"
+#include "bullet_ui.h"
+#include "key.h"
+#include "gate.h"
 
+//*****************************************************************************
+//静的メンバ変数
+//*****************************************************************************
+CPlayer *CTutorial::m_pPlayer = NULL;
+CBulletUi *CTutorial::m_pBulletUi = NULL;
+CBulletUi *CTutorial::m_pBulletHaveUi = NULL;
+CKey *CTutorial::m_pKey = NULL;
+CGate *CTutorial::m_pGate = NULL;
 //*****************************************************************************
 //コンストラクタ
 //*****************************************************************************
 CTutorial::CTutorial()
 {
+	m_nCount = 0;
 }
 
 //*****************************************************************************
@@ -38,7 +61,7 @@ HRESULT CTutorial::Init(void)
 {
 	//チュートリアルのUIの生成
 	CUi::Create(D3DXVECTOR3(SCREEN_CENTER_X, SCREEN_CENTER_Y, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f), CUi::TYPE_TUTORIAL);
-	 
+
 	return S_OK;
 }
 
