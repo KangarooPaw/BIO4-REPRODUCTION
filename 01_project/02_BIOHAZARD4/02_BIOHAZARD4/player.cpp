@@ -752,9 +752,6 @@ void CPlayer::Keyboard(void)
 			}
 		}
 	}
-
-	// 敵を回す処理
-	spin();
 }
 
 //=============================================================================
@@ -868,7 +865,7 @@ void CPlayer::spin(void)
 							if (fDistancePlayer < (fDistance * 2))
 							{
 								// 敵を消す
-								((CEnemy*)pScene)->HitBullet(0);
+								((CEnemy*)pScene)->HitBullet(1);
 								return;
 							}
 						}
@@ -885,7 +882,7 @@ void CPlayer::spin(void)
 void CPlayer::GamePad(void)
 {
 	//コントローラーの取得処理
-	DIJOYSTATE pStick;
+	DIJOYSTATE pStick = {};
 	CInputJoystick *pInputJoystick = CManager::GetInputJoystick();
 	LPDIRECTINPUTDEVICE8 pJoystickDevice = CInputJoystick::GetDevice();
 	if (pJoystickDevice != NULL)
@@ -1152,6 +1149,9 @@ void CPlayer::GamePad(void)
 			}
 		}
 	}
+
+	// 敵を回す処理
+	spin();
 }
 
 //----------------------------------------

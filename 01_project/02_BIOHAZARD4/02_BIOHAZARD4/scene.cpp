@@ -293,7 +293,7 @@ void CScene::UpdateAll(void)
 //--------------------------------
 void CScene::DrawAll(void)
 {	
-	for (int nCountpriority = 0; nCountpriority < PRIORITY; nCountpriority++)
+	for (int nCountpriority = 0; nCountpriority < OBJTYPE_MAX; nCountpriority++)
 	{
 		CScene*pScene = m_pTop[nCountpriority];
 		CScene*pSceneNext = NULL;

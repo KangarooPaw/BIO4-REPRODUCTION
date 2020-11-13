@@ -18,7 +18,7 @@ public:
 		FADE_OUT
 	}FADE;
 
-	CFade(int nPriority);							//コンストラクタ
+	CFade(int nPriority = OBJTYPE_FADE);							//コンストラクタ
 	~CFade();										//デストラクタ
 	HRESULT Init(void);								//初期化処理
 	void Uninit(void);								//終了処理	
@@ -30,7 +30,7 @@ public:
 
 private:
 	static LPDIRECT3DTEXTURE9 m_pTexture;			//テクスチャ変数
-	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff = NULL;		// 頂点バッファへのポインタ
+	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		// 頂点バッファへのポインタ
 	D3DXVECTOR3				m_pos;					// ポリゴンの位置
 	D3DXCOLOR				m_color;				//色
 	int						m_PolygonWidth;
