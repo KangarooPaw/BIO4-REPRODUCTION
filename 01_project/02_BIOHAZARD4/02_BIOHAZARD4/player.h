@@ -54,6 +54,7 @@ public:
 	void Update(void);//更新処理
 	void Draw(void);//描画処理
 	
+	void Keyboard(void);//キーボードの処理
 	void GamePad(void);//ゲームパッド処理
 	void spin(void); // 敵を回す処理
 

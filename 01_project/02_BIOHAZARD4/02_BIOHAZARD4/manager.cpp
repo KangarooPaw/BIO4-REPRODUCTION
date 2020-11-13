@@ -11,6 +11,7 @@
 #include "manager.h"
 #include "renderer.h"
 #include "keyboard.h"
+#include "mouse.h"
 #include "joystick.h"
 #include "scene.h"
 #include "scene2d.h"
@@ -47,6 +48,7 @@
 //=============================================================================
 CRenderer *CManager::m_pRenderer = NULL;
 CInputKeyboard *CManager::m_pInputKeyboard = NULL;
+CInputMouse *CManager::m_pInputMouse = NULL;
 CInputJoystick *CManager::m_pInputJoystick = NULL;
 CCamera *CManager::m_pCamera = NULL;
 CLight *CManager::m_pLight = NULL;
@@ -84,6 +86,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindouw)
 	//キーボード
 	m_pInputKeyboard = new CInputKeyboard;
 	m_pInputKeyboard->Init(hInstance, hWnd);
+	//マウスの生成
+	m_pInputMouse = new CInputMouse;
+	m_pInputMouse->Init(hInstance, hWnd);
 	//ゲームパッド
 	m_pInputJoystick = new CInputJoystick;
 	m_pInputJoystick->Init(hInstance, hWnd);
@@ -414,6 +419,11 @@ CRenderer *CManager::GetRenderer(void)
 CInputKeyboard *CManager::GetInputKeyboard(void)
 {
 	return m_pInputKeyboard;
+}
+
+CInputMouse * CManager::GetInputMouse(void)
+{
+	return m_pInputMouse;
 }
 
 //ゲームパッド

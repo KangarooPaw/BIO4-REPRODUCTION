@@ -6,6 +6,7 @@
 //前方宣言
 class CRenderer;
 class CInputKeyboard;
+class CInputMouse;
 class CInputJoystick;
 class CCamera;
 class CLight;
@@ -15,6 +16,7 @@ class CModel;
 class CDebugProc;
 class CMode;
 class CSound;
+
 
 //マネージャークラス
 class CManager
@@ -51,8 +53,9 @@ public:
 	void SetNumFPS(int nCountFPS) { m_nCountFPS = nCountFPS; }
 
 	static CRenderer *GetRenderer(void);	//レンダラー
-	static CInputKeyboard *GetInputKeyboard(void);	//キーボード
-	static CInputJoystick *GetInputJoystick(void);	//ゲームパッド
+	static CInputKeyboard *GetInputKeyboard(void);//キーボード
+	static CInputMouse *GetInputMouse(void);//マウス
+	static CInputJoystick *GetInputJoystick(void);//ゲームパッド
 	static CCamera *GetCamera(void);		//カメラ
 	static CLight *GetLight(void);			//ライト
 	static CFade *GetFade(void);			//フェード
@@ -62,6 +65,7 @@ public:
 private:								  
 	static CRenderer *m_pRenderer;			//レンダラー
 	static CInputKeyboard *m_pInputKeyboard;//キーボード
+	static CInputMouse *m_pInputMouse;		//マウス
 	static CInputJoystick *m_pInputJoystick;//ゲームパッド
 	static CCamera *m_pCamera;				//カメラ
 	static CLight *m_pLight;				//ライト
