@@ -48,7 +48,6 @@ CUi *CUi::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, TYPE type)
 	pUi->m_size = size;
 	pUi->m_type = type;
 	pUi->Init();
-
 	return pUi;
 }
 
@@ -104,11 +103,10 @@ HRESULT CUi::Init(void)
 	CScene2D::Init();
 	SetObjType(CScene::OBJTYPE_UI);
 	SetPosition(m_pos);		//位置
-	SetSize(m_size);			//サイズ
+	SetSize(m_size);		//サイズ
 	SetRotation(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	SetColor(D3DXCOLOR(1.0f,1.0f,1.0f,1.0f));
 	BindTexture(m_pTexture[m_type]);
-
 
 	return S_OK;
 }
