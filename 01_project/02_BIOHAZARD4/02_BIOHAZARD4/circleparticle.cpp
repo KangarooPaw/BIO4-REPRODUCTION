@@ -14,6 +14,7 @@
 //--------------------------------------------------------------------
 CCircleParticle::CCircleParticle()
 {
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_ColorType = COLOR_NONE;
 	m_fRadian = 0.0f;
 	m_fLength = 0.0f;
@@ -51,16 +52,19 @@ HRESULT CCircleParticle::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot
 	// CParticleクラスのInit
 	CParticle::Init(pos, size, rot, col, TexType);
 
+	m_pos = pos;
+
 	// 弧度
 	m_fRadian = fRadian;
+
 	// 半径
 	m_fLength = fLength;
 
 	// カラー加算値を0.01fに
-	m_fAddColor = 0.05f;
+	m_fAddColor = 0.01f;
 
 	// 角度0.01f
-	m_fAngle = 0.01f;
+	m_fAngle = 0.1f;
 
 	// カラータイプ
 	m_ColorType = COLOR_ADD;
@@ -96,8 +100,8 @@ void CCircleParticle::Update(void)
 	m_fRadian += m_fAngle;
 
 	// 座標を求める
-	pos.x = cosf(m_fRadian) * m_fLength;
-	pos.z = sinf(m_fRadian) * m_fLength;
+	pos.x = m_pos.x + cosf(m_fRadian) * m_fLength;
+	pos.z = m_pos.z + sinf(m_fRadian) * m_fLength;
 
 	if (m_ColorType != COLOR_NONE)
 	{
@@ -116,7 +120,7 @@ void CCircleParticle::Update(void)
 		{
 			// a値減算
 			col.a -= m_fAddColor;
-			// a値が0.5以下の場合
+			// a値が0.1以下の場合
 			if (col.a <= PARTICLE_CIRCLE_COL_MIN)
 			{
 				col.a = PARTICLE_CIRCLE_COL_MIN;
@@ -155,4 +159,18 @@ void CCircleParticle::Draw(void)
 
 	// 元に戻す
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+}
+//--------------------------------------------------------------------
+// 円のパーティクル生成
+//--------------------------------------------------------------------
+void CCircleParticle::CircleCreate(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, int nMax, float fLength)
+{
+	// nMax回繰り返す
+	for (int nCnt = 0; nCnt < nMax; nCnt++)
+	{
+		// 弧度
+		float fRadian = (float)nCnt / nMax;
+		// パーティクル生成
+		CCircleParticle::Create(pos, size, rot, col, CParticle::TEX_TYPE_2, fRadian, fLength);
+	}
 }
