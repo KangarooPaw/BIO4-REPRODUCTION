@@ -13,7 +13,7 @@
 #include "keyboard.h"
 #include "joystick.h"
 #include "time.h"
-//#include "sound.h"
+#include "sound.h"
 #include "ui.h"
 #include "mode.h"
 
@@ -36,6 +36,8 @@ CResult::~CResult()
 //*****************************************************************************
 HRESULT CResult::Init(void)
 {
+	//サウンドの再生
+	CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_BGM_RESULT);
 
 	return S_OK;
 }
@@ -45,6 +47,9 @@ HRESULT CResult::Init(void)
 //*****************************************************************************
 void CResult::Uninit(void)
 {
+	//サウンドの停止
+	CManager::GetSound()->StopSound(CSound::SOUND_LABEL_BGM_RESULT);
+
 	//指定したオブジェクト以外のメモリの開放処理
 	CScene::DesignationReleaseAll(CScene::OBJTYPE_FADE);
 }
@@ -58,6 +63,9 @@ void CResult::Update(void)
 	{
 		if (CManager::GetInputKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetInputJoystick()->GetJoystickTrigger(CInputJoystick::BUTTON_B))
 		{ //Enterキー または Bボタンを押したとき
+		  //サウンドの再生
+			CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_DECISION);
+
 		  //フェードの生成
 			CManager::CreateFade(CManager::MODE_TITLE);
 		}

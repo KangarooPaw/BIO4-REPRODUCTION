@@ -268,15 +268,18 @@ void CSound::StopSound(SOUND_LABEL label)
 {
 	XAUDIO2_VOICE_STATE xa2state;
 
-	// 状態取得
-	m_apSourceVoice[label]->GetState(&xa2state);
-	if (xa2state.BuffersQueued != 0)
-	{// 再生中
-	 // 一時停止
-		m_apSourceVoice[label]->Stop(0);
+	if (m_apSourceVoice[label] != NULL)
+	{
+		// 状態取得
+		m_apSourceVoice[label]->GetState(&xa2state);
+		if (xa2state.BuffersQueued != 0)
+		{// 再生中
+		 // 一時停止
+			m_apSourceVoice[label]->Stop(0);
 
-		// オーディオバッファの削除
-		m_apSourceVoice[label]->FlushSourceBuffers();
+			// オーディオバッファの削除
+			m_apSourceVoice[label]->FlushSourceBuffers();
+		}
 	}
 }
 

@@ -61,6 +61,7 @@ public:
 	static CFade *GetFade(void);			//フェード
 	static CDebugProc*GetDebug(void);		//デバッグ
 	static MODE GetMode(void);				//モード
+	static CSound *GetSound(void);			//サウンド
 
 private:								  
 	static CRenderer *m_pRenderer;			//レンダラー

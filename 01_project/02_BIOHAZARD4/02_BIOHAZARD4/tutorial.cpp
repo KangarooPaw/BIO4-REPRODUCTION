@@ -13,7 +13,7 @@
 #include "keyboard.h"
 #include "joystick.h"
 #include "time.h"
-//#include "sound.h"
+#include "sound.h"
 #include "ui.h"
 #include "mode.h"
 #include "player.h"
@@ -59,6 +59,9 @@ CTutorial::~CTutorial()
 //*****************************************************************************
 HRESULT CTutorial::Init(void)
 {
+	//サウンドの再生
+	CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_BGM_TUTORIAL);
+
 	//チュートリアルのUIの生成
 	CUi::Create(D3DXVECTOR3(SCREEN_CENTER_X, SCREEN_CENTER_Y, 0.0f), D3DXVECTOR3(SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f), CUi::TYPE_TUTORIAL);
 
@@ -70,6 +73,9 @@ HRESULT CTutorial::Init(void)
 //*****************************************************************************
 void CTutorial::Uninit(void)
 {
+	//サウンドの停止
+	CManager::GetSound()->StopSound(CSound::SOUND_LABEL_BGM_TUTORIAL);
+
 	//指定したオブジェクト以外のメモリの開放処理
 	CScene::DesignationReleaseAll(CScene::OBJTYPE_FADE);
 }
@@ -83,6 +89,9 @@ void CTutorial::Update(void)
 	{
 		if (CManager::GetInputKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetInputJoystick()->GetJoystickTrigger(CInputJoystick::BUTTON_B))
 		{ //Enterキー または Bボタンを押したとき
+		  //サウンドの再生
+			CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_GAME_START);
+
 		  //フェードの生成
 			CManager::CreateFade(CManager::MODE_GAME);
 		}

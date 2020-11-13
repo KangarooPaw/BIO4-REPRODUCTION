@@ -26,6 +26,7 @@
 #include "gate.h"
 #include "map.h"
 #include "collision.h"
+#include "sound.h"
 
 #define ADD_BULLET 10 //弾薬箱の玉取得数
 //----------------------------------------
@@ -380,6 +381,9 @@ void CPlayer::Update(void)
 			//ターン中なら
 			if (m_bTurn == true)
 			{
+				//サウンドの再生
+				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_TURN);
+
 				m_rot.y += D3DXToRadian(6);
 				m_nTurnCnt++;
 				//ターンの終了
@@ -841,6 +845,9 @@ void CPlayer::spin(void)
 	// 回すフラグが立った
 	else if (m_bspin == true)
 	{
+		//サウンドの再生
+		CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_ROTATION);
+
 		// 自機と敵の距離
 		float fDistance = 26.0f;
 
@@ -981,6 +988,9 @@ void CPlayer::GamePad(void)
 			//左スティックを後ろに倒す
 			if (pStick.lY >= 500)
 			{
+				//サウンドの再生
+				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_BACK_WALK);
+
 				//ダメージモーション中でないなら
 				if (m_bDamageMotion == false)
 				{
@@ -999,6 +1009,9 @@ void CPlayer::GamePad(void)
 			//アイテムを取得する
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
 			{
+				//サウンドの再生
+				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_GET);
+
 				PickUpItem();
 			}
 			//弾の角度をプレイヤーの角度と同じにする
@@ -1072,6 +1085,9 @@ void CPlayer::GamePad(void)
 			// Xボタンを押したらナイフを振る
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 			{
+				//サウンドの再生
+				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_KNIFE);
+
 				if (m_bKnifeMotion == false)
 				{
 					//ナイフを振るモーション			
@@ -1171,6 +1187,9 @@ void CPlayer::GamePad(void)
 			//残弾数が0以上なら
 			if (m_nMagazineBullet > 0)
 			{
+				//サウンドの再生
+				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_SHOT);
+
 				// Xボタンを押したら弾を発射
 				if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 				{
@@ -1192,6 +1211,9 @@ void CPlayer::GamePad(void)
 			//リロード
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
 			{
+				//サウンドの再生
+				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_RELOAD);
+
 				if (m_nHaveBullet <= 0)
 				{
 					m_nHaveBullet = 0;
@@ -1239,6 +1261,9 @@ void CPlayer::SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 //----------------------------------------
 void CPlayer::HitDamage(int nDamage)
 {
+	//サウンドの再生
+	CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_PLAYER_DAMAGE);
+
 	if (m_bDamageMotion == false)
 	{	//ダメージモーション
 		m_pMotion->SetMotion(CMotion::MOTION_DAMAGE);
@@ -1271,6 +1296,9 @@ void CPlayer::PickUpItem(void)
 				// 当たり判定
 				if (CollisionItem(m_pos, m_size, ItemPos, ItemSize) == true)
 				{
+					//サウンドの再生
+					CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_GET);
+
 					switch (ItemType)
 					{
 					case CItem::TYPE_HERB:

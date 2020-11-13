@@ -16,6 +16,7 @@
 #include "model.h"
 #include "item.h"
 #include "boxeffect.h"
+#include "sound.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -242,6 +243,9 @@ bool CBox::HitBox(void)
 {
 	if (m_bHit == false)
 	{
+		//サウンドの再生
+		CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_WOODEN_BOX);
+
 		int nRand = rand() % 3;
 		//アイテム生成
 		CItem::Create(D3DXVECTOR3(m_pos.x, m_pos.y + 5.0f, m_pos.z), D3DXVECTOR3(ITEM_ROT_X, 0.0f, 0.0f), D3DXVECTOR3(ITEM_SIZE, ITEM_SIZE, ITEM_SIZE), (CItem::TYPE)nRand);

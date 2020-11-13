@@ -15,6 +15,7 @@
 #include "model.h"
 #include "gate.h"
 #include "game.h"
+#include "sound.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -194,6 +195,9 @@ void CGate::Update(void)
 			// m_bOpenがtrueの場合
 			if (m_bOpen == true)
 			{
+				//サウンドの再生
+				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_DOOR_OPEN);
+
 				// カウントインクリメント
 				m_nCount++;
 				// m_nCountが60以上の場合

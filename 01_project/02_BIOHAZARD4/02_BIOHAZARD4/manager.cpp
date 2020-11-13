@@ -464,3 +464,9 @@ CManager::MODE CManager::GetMode(void)
 {
 	return m_mode;
 }
+
+//ƒTƒEƒ“ƒh‚Ìæ“¾
+CSound * CManager::GetSound(void)
+{
+	return m_pSound;
+}

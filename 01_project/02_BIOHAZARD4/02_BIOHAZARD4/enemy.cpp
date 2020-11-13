@@ -18,6 +18,7 @@
 #include "item.h"
 #include "map.h"
 #include "gate.h"
+#include "sound.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -455,6 +456,9 @@ void CEnemy::HitBullet(int nDamage,int nType)
 		}
 		if (m_nEnemyLife <= 0)
 		{
+			//サウンドの再生
+			CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_ZOMBIE_DEATH);
+
 			if (int nRand = rand() % 3 == 1)
 			{
 				CItem::DropItem(m_pos, CItem::TYPE_KEY);
@@ -464,6 +468,11 @@ void CEnemy::HitBullet(int nDamage,int nType)
 				Create(m_pos, m_rot, m_size, ENEMYSTATE_ITEM);
 			}
 			Uninit();
+		}
+		else
+		{
+			//サウンドの再生
+			CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_ZOMBIE_DAMAGE);
 		}
 	}
 }

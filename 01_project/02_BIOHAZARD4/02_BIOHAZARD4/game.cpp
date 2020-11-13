@@ -14,7 +14,7 @@
 #include "joystick.h"
 #include "fade.h"
 //#include "time.h"
-//#include "sound.h"
+#include "sound.h"
 //#include "ui.h"
 #include "mode.h"
 #include "player.h"
@@ -60,6 +60,9 @@ CGame::~CGame()
 //*****************************************************************************
 HRESULT CGame::Init(void)
 {
+	//サウンドの再生
+	CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_BGM_GAME);
+
 	//カメラ
 	CManager::CreateCamera();
 
@@ -104,6 +107,9 @@ HRESULT CGame::Init(void)
 //*****************************************************************************
 void CGame::Uninit(void)
 {
+	//サウンドの停止
+	CManager::GetSound()->StopSound(CSound::SOUND_LABEL_BGM_GAME);
+
 	//指定したオブジェクト以外のメモリの開放処理
 	CScene::DesignationReleaseAll(CScene::OBJTYPE_FADE);
 }
