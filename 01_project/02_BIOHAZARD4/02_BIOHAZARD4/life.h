@@ -33,7 +33,7 @@ public:
 		STATE_YELLOW,
 		STATE_RED,
 	}STATE;
-	CLife(int nPriority = 7);
+	CLife(int nPriority = 8);
 	~CLife();
 
 	static CLife * Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, float Length);

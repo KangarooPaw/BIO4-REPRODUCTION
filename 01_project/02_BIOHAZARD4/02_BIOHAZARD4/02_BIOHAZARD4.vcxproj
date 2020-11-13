@@ -154,13 +154,8 @@
     <ClCompile Include="boxeffect.cpp" />
     <ClCompile Include="bullet_ui.cpp" />
     <ClCompile Include="circleparticle.cpp" />
-    <ClCompile Include="collision.cpp" />
     <ClCompile Include="explosion.cpp" />
-    <ClCompile Include="gameover.cpp" />
-    <ClCompile Include="heal.cpp" />
     <ClCompile Include="item.cpp" />
-    <ClCompile Include="key.cpp" />
-    <ClCompile Include="key_ui.cpp" />
     <ClCompile Include="kira.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="map.cpp" />
@@ -181,7 +176,6 @@
     <ClCompile Include="mode.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="model_hierarchy.cpp" />
-    <ClCompile Include="mouse.cpp" />
     <ClCompile Include="number.cpp" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="player.cpp" />
@@ -207,13 +201,8 @@
     <ClInclude Include="boxeffect.h" />
     <ClInclude Include="bullet_ui.h" />
     <ClInclude Include="circleparticle.h" />
-    <ClInclude Include="collision.h" />
     <ClInclude Include="explosion.h" />
-    <ClInclude Include="gameover.h" />
-    <ClInclude Include="heal.h" />
     <ClInclude Include="item.h" />
-    <ClInclude Include="key.h" />
-    <ClInclude Include="key_ui.h" />
     <ClInclude Include="kira.h" />
     <ClInclude Include="life.h" />
     <ClInclude Include="map.h" />
@@ -234,7 +223,6 @@
     <ClInclude Include="mode.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="model_hierarchy.h" />
-    <ClInclude Include="mouse.h" />
     <ClInclude Include="number.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="player.h" />

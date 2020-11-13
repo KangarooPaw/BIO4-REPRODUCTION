@@ -113,7 +113,7 @@ HRESULT CLife::Init(void)
 	// 角度
 	float fAngle = 0.01f;
 
-	m_pScene2D = new CScene2D(5);
+	m_pScene2D = new CScene2D(8);
 	// 初期化
 	m_pScene2D->Init();
 	// サイズ設定
@@ -131,7 +131,7 @@ HRESULT CLife::Init(void)
 	for (int nCnt = 0; nCnt < MAX_LIFE; nCnt++)
 	{
 		// メモリ確保
-		m_apScene2D[nCnt] = new CScene2D(5);
+		m_apScene2D[nCnt] = new CScene2D(8);
 		// 初期化
 		m_apScene2D[nCnt]->Init();
 		// サイズ設定
