@@ -80,9 +80,15 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_nHaveBullet = 10;
 	//鍵初期化
 	m_nKey = 0;
+
+	//全モーションの判定
+	m_bAllMotion = false;
 	//ナイフモーション
 	m_nKnifeMotionCnt = 0;
 	m_bKnifeMotion = false;
+	//リロードモーション
+	m_nReloadMotionCnt = 0;
+	m_bReloadMotion = false;
 	//ダメージモーション
 	m_nDamageMotionCnt = 0;	
 	m_bDamageMotion = false;
@@ -104,6 +110,7 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	memset(m_pModel, NULL, sizeof(m_pModel));
 	m_bDeath = false;
 	// 敵を回す判定
+	m_nSpinCnt = 0;
 	m_bspin = false;
 	m_pEnemy = NULL;
 }
@@ -305,11 +312,12 @@ void CPlayer::Update(void)
 		CBulletUi *pHaveBulletUi = CGame::GetBulletHaveUi();
 		//key取得
 		CKey *pHaveKey = CGame::GetKey();
-
+		//マガジン内弾数
 		if (pBulletUi != NULL)
 		{
 			pBulletUi->SetbulletUi((float)m_nMagazineBullet);
 		}
+		//所持弾数
 		if (pHaveBulletUi != NULL)
 		{
 			pHaveBulletUi->SetbulletUi((float)m_nHaveBullet);
@@ -338,9 +346,24 @@ void CPlayer::Update(void)
 				if (m_nKnifeMotionCnt % 45 == 0)
 				{
 					m_bKnifeMotion = false;
+					m_bAllMotion = false;
 					m_nKnifeMotionCnt = 0;
 				}
 			}
+
+			//リロードモーション中なら
+			if (m_bReloadMotion == true)
+			{
+				m_nReloadMotionCnt++;
+				//40フレームでリセット
+				if (m_nReloadMotionCnt % 60 == 0)
+				{
+					m_bReloadMotion = false;
+					m_bAllMotion = false;
+					m_nReloadMotionCnt = 0;
+				}
+			}
+
 			//ダメージモーション中なら
 			if (m_bDamageMotion == true)
 			{
@@ -349,9 +372,11 @@ void CPlayer::Update(void)
 				if (m_nDamageMotionCnt % 60 == 0)
 				{
 					m_bDamageMotion = false;
+					m_bAllMotion = false;
 					m_nDamageMotionCnt = 0;
 				}
 			}
+
 			//ターン中なら
 			if (m_bTurn == true)
 			{
@@ -361,14 +386,15 @@ void CPlayer::Update(void)
 				if (m_nTurnCnt == 30)
 				{
 					m_bTurn = false;
+					m_bAllMotion = false;
 					m_nTurnCnt = 0;
 					//弾の角度設定
 					m_bulletRot = m_rot;
 				}
 			}
 
-			//ターンしてないなら
-			else if (m_bTurn == false)
+			//モーション中でないなら
+			if (m_bAllMotion == false)
 			{
 				//Keyboard();
 				GamePad();
@@ -381,27 +407,6 @@ void CPlayer::Update(void)
 
 			// 座標、回転、サイズのセット
 			m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
-		}
-		if (m_bDeath == true)
-		{
-			if (m_bDeathMotion == false)
-			{
-				m_pMotion->SetMotion(CMotion::MOTION_DEATH);
-				m_bDeathMotion = true;
-				return;
-			}
-			//死亡モーション中なら
-			if (m_bDeathMotion == true)
-			{
-				m_nDeathMotionCnt++;
-				//120フレームでリセット
-				if (m_nDeathMotionCnt % 120 == 0)
-				{
-					m_bDeathMotion = false;
-					m_nDeathMotionCnt = 0;
-					Uninit();
-				}
-			}
 		}
 
 		// 動かないものに対してのレイ
@@ -454,6 +459,28 @@ void CPlayer::Update(void)
 				}
 			}
 		} while (pScene != NULL);
+
+		if (m_bDeath == true)
+		{
+			if (m_bDeathMotion == false)
+			{
+				m_pMotion->SetMotion(CMotion::MOTION_DEATH);
+				m_bDeathMotion = true;
+				return;
+			}
+			//死亡モーション中なら
+			if (m_bDeathMotion == true)
+			{
+				m_nDeathMotionCnt++;
+				//120フレームでリセット
+				if (m_nDeathMotionCnt % 120 == 0)
+				{
+					m_bDeathMotion = false;
+					m_nDeathMotionCnt = 0;
+					Uninit();
+				}
+			}
+		}
 	}
 }
 
@@ -547,6 +574,7 @@ void CPlayer::Keyboard(void)
 			if (pInputKeyboard->GetKeyPress(DIK_SPACE))
 			{
 				m_bTurn = true;
+				m_bAllMotion = true;
 			}
 		}
 		//左クリックでアイテムを取得する
@@ -569,7 +597,7 @@ void CPlayer::Keyboard(void)
 		{
 			//ナイフを構えるモーション
 			m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
-			m_bKnifeMotion = true;
+
 		}
 
 		//A
@@ -625,7 +653,7 @@ void CPlayer::Keyboard(void)
 		// 左クリックを押したらナイフを振る
 		if (pInputMouse->GetMouseTriggerLeft())
 		{
-			if (m_bKnifeMotion == true)
+			if (m_bKnifeMotion == false)
 			{
 				//ナイフを振るモーション			
 				m_pMotion->SetMotion(CMotion::MOTION_SLASH);
@@ -638,6 +666,9 @@ void CPlayer::Keyboard(void)
 					5,
 					10,
 					CBullet::BULLETTYPE_PLAYER);
+
+				m_bKnifeMotion = true;
+				m_bAllMotion = true;
 			}
 		}
 	}
@@ -742,12 +773,21 @@ void CPlayer::Keyboard(void)
 		if (pInputKeyboard->GetKeyPress(DIK_SPACE))
 		{
 			for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; m_nMagazineBullet++)
-			{
-				m_nHaveBullet--;
+			{	
 				if (m_nHaveBullet < 0)
 				{
 					m_nHaveBullet = 0;
 					return;
+				}
+				m_nHaveBullet--;
+
+				if (m_bReloadMotion == false)
+				{
+					//リロードモーション
+					m_pMotion->SetMotion(CMotion::MOTION_RELOAD);
+
+					m_bReloadMotion = true;
+					m_bAllMotion = true;
 				}
 			}
 		}
@@ -818,7 +858,17 @@ void CPlayer::spin(void)
 		// 座標、回転、サイズのセット
 		m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, rot, m_size);
 
+		//スピンモーション
 		m_pMotion->SetMotion(CMotion::MOTION_SPIN);
+
+		m_nSpinCnt++;
+		if (m_nSpinCnt == 600)
+		{
+			m_nSpinCnt = 0;
+			m_bspin = false;
+			m_pEnemy->Uninit();
+			
+		}
 
 		// 動くものに対してのレイ
 		CScene *pScene = NULL;
@@ -865,7 +915,7 @@ void CPlayer::spin(void)
 							if (fDistancePlayer < (fDistance * 2))
 							{
 								// 敵を消す
-								((CEnemy*)pScene)->HitBullet(1);
+								((CEnemy*)pScene)->HitBullet(10,1);
 								return;
 							}
 						}
@@ -942,6 +992,7 @@ void CPlayer::GamePad(void)
 				if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
 				{
 					m_bTurn = true;
+					m_bAllMotion = true;
 				}
 			}
 			//アイテムを取得する
@@ -964,7 +1015,7 @@ void CPlayer::GamePad(void)
 			{
 				//ナイフを構えるモーション
 				m_pMotion->SetMotion(CMotion::MOTION_HOLDKNIFE);
-				m_bKnifeMotion = true;
+
 			}
 
 			//右スティックを左に倒す
@@ -1020,7 +1071,7 @@ void CPlayer::GamePad(void)
 			// Xボタンを押したらナイフを振る
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 			{
-				if (m_bKnifeMotion == true)
+				if (m_bKnifeMotion == false)
 				{
 					//ナイフを振るモーション			
 					m_pMotion->SetMotion(CMotion::MOTION_SLASH);
@@ -1033,6 +1084,9 @@ void CPlayer::GamePad(void)
 						5,
 						10,
 						CBullet::BULLETTYPE_PLAYER);
+
+					m_bKnifeMotion = true;
+					m_bAllMotion = true;
 				}
 			}
 		}
@@ -1127,6 +1181,7 @@ void CPlayer::GamePad(void)
 						100,
 						10,
 						CBullet::BULLETTYPE_PLAYER);
+
 					//射撃モーション
 					m_pMotion->SetMotion(CMotion::MOTION_SHOT);
 					CEnemy::SetChase(true);
@@ -1136,15 +1191,28 @@ void CPlayer::GamePad(void)
 			//リロード
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
 			{
-				for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; m_nMagazineBullet++)
+				if (m_nHaveBullet <= 0)
+				{
+					m_nHaveBullet = 0;
+					return;
+				}
+				for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; ++m_nMagazineBullet)
 				{	
-					if (m_nHaveBullet < 0)
+					if (m_bReloadMotion == false)
+					{
+						//リロードモーション
+						m_pMotion->SetMotion(CMotion::MOTION_RELOAD);
+
+						m_bReloadMotion = true;
+						m_bAllMotion = true;
+					}
+
+					m_nHaveBullet--;
+					if (m_nHaveBullet == 0)
 					{
 						m_nHaveBullet = 0;
 						return;
 					}
-					m_nHaveBullet--;
-
 				}
 			}
 		}

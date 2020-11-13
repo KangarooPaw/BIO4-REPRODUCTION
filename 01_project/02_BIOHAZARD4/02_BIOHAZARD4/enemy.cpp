@@ -390,7 +390,7 @@ void CEnemy::Draw(void)
 //----------------------------------------
 //ヒット処理
 //----------------------------------------
-void CEnemy::HitBullet(int nDamage)
+void CEnemy::HitBullet(int nDamage,int nType)
 {
 	if (m_EnemyState == ENEMYSTATE_NOMAL)
 	{
@@ -403,8 +403,14 @@ void CEnemy::HitBullet(int nDamage)
 		}
 		if (m_nEnemyLife <= 0)
 		{
-			Create(m_pos, m_rot, m_size, ENEMYSTATE_ITEM);
-			CItem::DropItem(m_pos, CItem::TYPE_KEY);
+			if (int nRand = rand() % 3 == 1)
+			{
+				CItem::DropItem(m_pos, CItem::TYPE_KEY);
+			}
+			if (nType == 0)//ヘッドショット
+			{
+				Create(m_pos, m_rot, m_size, ENEMYSTATE_ITEM);
+			}
 			Uninit();
 		}
 	}

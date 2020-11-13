@@ -138,10 +138,20 @@ void CBullet::Update(void)
 					if (nEnemyState == CEnemy::ENEMYSTATE_NOMAL)
 					{
 						// ìñÇΩÇËîªíË
-						if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
+						if (CollisionBullet(m_pos, m_size, D3DXVECTOR3(m_Getpos.x, m_Getpos.y + 35.0f, m_Getpos.z), D3DXVECTOR3(m_Getsize.x, m_Getsize.y - 70.0f, m_Getsize.z)) == true)
 						{
 							// ìGÇè¡Ç∑
-							((CEnemy*)pScene)->HitBullet(m_nDamage);
+							((CEnemy*)pScene)->HitBullet(m_nDamage,0);//ÉwÉbÉhÉVÉáÉbÉg
+
+							CBlood::BloodSplash(m_pos, D3DXVECTOR3(SPLACH_BLOOD_SIZE_X, SPLACH_BLOOD_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255));
+							// íeÇè¡Ç∑
+							Uninit();
+							return;
+						}
+						else if (CollisionBullet(m_pos, m_size, m_Getpos, m_Getsize) == true)
+						{
+							// ìGÇè¡Ç∑
+							((CEnemy*)pScene)->HitBullet(m_nDamage,1);//í èÌ
 
 							CBlood::BloodSplash(m_pos, D3DXVECTOR3(SPLACH_BLOOD_SIZE_X, SPLACH_BLOOD_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255));
 							// íeÇè¡Ç∑

@@ -122,6 +122,8 @@ void CCamera::Keyboard(void)
 	D3DXVECTOR3 pPlayerRot = CGame::GetPlayer()->GetRot();
 	//プレイヤーの死亡フラグの取得
 	bool pPlayerDeath = CGame::GetPlayer()->GetDeath();
+	//プレイヤーのモーション判定
+	bool pPlayerMotion = CGame::GetPlayer()->GetMotion();
 	//ターン中なら
 	if (m_bTurn == true)
 	{
@@ -145,7 +147,7 @@ void CCamera::Keyboard(void)
 		posV.y = m_Distance*cosf(m_lTheta) + posR.y;
 		posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 	}
-	else if (pPlayerDeath == false)
+	else if (pPlayerDeath == false&&pPlayerMotion==false)
 	{
 		if (pInputKeyboard->GetKeyPress(DIK_LSHIFT) == false &&
 			pInputMouse->GetMouseTriggerRight() == false)
@@ -316,6 +318,16 @@ void CCamera::GamePad(void)
 	D3DXVECTOR3 pPlayerRot = CGame::GetPlayer()->GetRot();
 	//プレイヤーの死亡フラグの取得
 	bool pPlayerDeath = CGame::GetPlayer()->GetDeath();
+	//プレイヤーのモーション判定
+	bool pPlayerMotion = CGame::GetPlayer()->GetMotion();
+	if (m_bTurn == false)
+	{
+		//左スティックを後ろに倒す//Aボタンを押して反転
+		if (pStick.lY >= 500 && pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
+		{
+			m_bTurn = true;
+		}
+	}
 	//ターン中なら
 	if (m_bTurn == true)
 	{
@@ -339,7 +351,7 @@ void CCamera::GamePad(void)
 		posV.y = m_Distance*cosf(m_lTheta) + posR.y;
 		posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 	}
-	else if (pPlayerDeath == false)
+	else if (pPlayerDeath == false&&pPlayerMotion == false)
 	{
 		if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false &&
 			pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
@@ -363,11 +375,6 @@ void CCamera::GamePad(void)
 			if (pStick.lX >= 500)
 			{
 				m_lPhi -= D3DXToRadian(2);
-			}
-			//左スティックを後ろに倒す//Aボタンを押して反転
-			if (pStick.lY >= 500 && pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
-			{
-				m_bTurn = true;
 			}
 
 			//注視点

@@ -72,6 +72,7 @@ public:
 		MOTION_HOLDENEMY,	 // 敵をつかむモーション
 		MOTION_SPIN,		 // 敵を回すモーション
 		MOTION_SPINEND,		 // 回すのを止めるモーション
+		MOTION_RELOAD,		 // リロードモーション
 		MOTION_MAX
 	}MOTIONSTATE;
 

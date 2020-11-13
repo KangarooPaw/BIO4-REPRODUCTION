@@ -87,6 +87,7 @@ public:
 	D3DXVECTOR3 GetRot(void) { return m_rot; }//角度
 	D3DXVECTOR3 GetSize(void) { return m_size; }//サイズ
 	bool GetDeath(void) { return m_bDeath; }//死亡フラグ
+	bool GetMotion(void) { return m_bAllMotion; }
 	bool GetHasKeyAll(void) { return m_bHasKeyAll; }
 private:
 	bool CollisionItem(D3DXVECTOR3 pos1, D3DXVECTOR3 size1, D3DXVECTOR3 pos2, D3DXVECTOR3 size2);
@@ -115,8 +116,13 @@ private:
 	int m_nHaveBullet;					//所持弾数
 	int m_nKey;//鍵所持数
 
+	bool m_bAllMotion;					//全モーションの判定
+
 	int m_nKnifeMotionCnt;				// ナイフモーションのカウント	
 	bool m_bKnifeMotion;				// ナイフモーションの判定
+
+	int m_nReloadMotionCnt;				//リロードモーションのカウント
+	bool m_bReloadMotion;				//リロードモーションの判定
 
 	int m_nDamageMotionCnt;				// ダメージモーションのカウント
 	bool m_bDamageMotion;				// ダメージモーションの判定
@@ -131,6 +137,7 @@ private:
 	bool m_bReticle;					// レティクルの生成判定
 
 	static bool m_bHasKeyAll;				// 鍵を全て持っているかの判定
+	int m_nSpinCnt;						//スピンのカウント
 	bool m_bspin;						// 敵を回転させる判定
 	
 	CEnemy *m_pEnemy;					// 敵クラスのポインタ

@@ -47,7 +47,7 @@ public:
 	void Uninit(void);//I—¹ˆ—
 	void Update(void);//XVˆ—
 	void Draw(void);//•`‰æˆ—
-	void HitBullet(int nDamage);
+	void HitBullet(int nDamage,int nType);
 
 	static void SetChase(bool bChase);
 	void SetPos(D3DXVECTOR3 pos);

@@ -128,15 +128,6 @@ void CGameover::Uninit(void)
 //*****************************************************************************
 void CGameover::Update(void)
 {
-	if (CScene::GetUpdateStop() == false)
-	{
-		if (CManager::GetInputKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetInputJoystick()->GetJoystickTrigger(CInputJoystick::BUTTON_B))
-		{ //Enterキー または Bボタンを押したとき
-		  //フェードの生成
-			CManager::CreateFade(CManager::MODE_TITLE);
-		}
-	}
-
 	VERTEX_2D *pVtx;
 
 	// 頂点バッファをロックし、頂点情報へのポインタを取得
@@ -163,6 +154,15 @@ void CGameover::Update(void)
 	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 	m_pVtxBuff->Unlock();
+
+	if (CScene::GetUpdateStop() == false)
+	{
+		if (CManager::GetInputKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetInputJoystick()->GetJoystickTrigger(CInputJoystick::BUTTON_B))
+		{ //Enterキー または Bボタンを押したとき
+		  //フェードの生成
+			CManager::CreateFade(CManager::MODE_TITLE);
+		}
+	}
 }
 
 //*****************************************************************************
