@@ -366,23 +366,23 @@ void CPlayer::Update(void)
 					m_bulletRot = m_rot;
 				}
 			}
-		}
-		//ターンしてないなら
-		else if (m_bTurn == false)
-		{
-			//Keyboard();
-			GamePad();
-		}
-		for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
-		{
-			// モデルのパーツごとの座標と回転を受け取る
-			m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
-		}
+
+			//ターンしてないなら
+			else if (m_bTurn == false)
+			{
+				//Keyboard();
+				GamePad();
+			}
+			for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+			{
+				// モデルのパーツごとの座標と回転を受け取る
+				m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
+			}
 
 			// 座標、回転、サイズのセット
 			m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
 		}
-		else if (m_bDeath == true)
+		if (m_bDeath == true)
 		{
 			if (m_bDeathMotion == false)
 			{
@@ -403,58 +403,58 @@ void CPlayer::Update(void)
 				}
 			}
 		}
-	}
 
-	// 動かないものに対してのレイ
-	CScene *pScene = NULL;
-	do
-	{
-		pScene = GetScene(OBJTYPE_NONE);
-		if (pScene != NULL)
+		// 動かないものに対してのレイ
+		CScene *pScene = NULL;
+		do
 		{
-			OBJTYPE objType = pScene->GetObjType();
-			if (objType == OBJTYPE_NONE)
+			pScene = GetScene(OBJTYPE_NONE);
+			if (pScene != NULL)
 			{
-				BOOL bHit = false;
-				float fDistancePlayer = 0.0f;
-				D3DXVECTOR3 vecStart, vecDirection;
-				float fRadius = 360.0f / 8.0f;
-
-				for (int nCount = 0; nCount < 8; nCount++)
+				OBJTYPE objType = pScene->GetObjType();
+				if (objType == OBJTYPE_NONE)
 				{
-					// 始める座標
-					vecStart = m_pos + D3DXVECTOR3(0.0f, 20.0f, 0.0f);
+					BOOL bHit = false;
+					float fDistancePlayer = 0.0f;
+					D3DXVECTOR3 vecStart, vecDirection;
+					float fRadius = 360.0f / 8.0f;
 
-					// レイを出す角度
-					vecDirection = D3DXVECTOR3(0.0f, fRadius * nCount, 0.0f);
-
-					D3DXIntersect(((CMap*)pScene)->GetMapMesh(), &vecStart, &D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)),
-						&bHit, NULL, NULL, NULL, &fDistancePlayer, NULL, NULL);
-
-					if (bHit == true)
+					for (int nCount = 0; nCount < 8; nCount++)
 					{
-						// 範囲より小さかったら
-						if (fDistancePlayer < 15.0f)
+						// 始める座標
+						vecStart = m_pos + D3DXVECTOR3(0.0f, 20.0f, 0.0f);
+
+						// レイを出す角度
+						vecDirection = D3DXVECTOR3(0.0f, fRadius * nCount, 0.0f);
+
+						D3DXIntersect(((CMap*)pScene)->GetMapMesh(), &vecStart, &D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)),
+							&bHit, NULL, NULL, NULL, &fDistancePlayer, NULL, NULL);
+
+						if (bHit == true)
 						{
-							// 戻す
-							m_pos -= (D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)));
-
-							for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+							// 範囲より小さかったら
+							if (fDistancePlayer < 15.0f)
 							{
-								// モデルのパーツごとの座標と回転を受け取る
-								m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
+								// 戻す
+								m_pos -= (D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)));
+
+								for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
+								{
+									// モデルのパーツごとの座標と回転を受け取る
+									m_pModel[nCount]->SetModel(m_pMotion->GetPos(nCount), m_pMotion->GetRot(nCount), m_size);
+								}
+
+								// 座標、回転、サイズのセット
+								m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
+
+								return;
 							}
-
-							// 座標、回転、サイズのセット
-							m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
-
-							return;
 						}
 					}
 				}
 			}
-		}
-	} while (pScene != NULL);
+		} while (pScene != NULL);
+	}
 }
 
 //----------------------------------------
