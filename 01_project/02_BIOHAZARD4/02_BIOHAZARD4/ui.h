@@ -4,7 +4,7 @@
 #include "scene2d.h"
 
 //テクスチャ
-#define TEXTURE_TITLE			"data/TEXTURE/gameover.png"
+#define TEXTURE_TITLE			"data/TEXTURE/title.png"
 //テクスチャ
 #define TEXTURE_TUTORIAL			"data/TEXTURE/gameover.png"
 //テクスチャ

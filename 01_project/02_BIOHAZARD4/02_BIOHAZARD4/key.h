@@ -7,7 +7,7 @@
 #ifndef _KEY_H_
 #define _KEY_H_
 #include "key_ui.h"
-#define MAX_KEY 3 //最大桁数
+#define MAX_KEY 4 //最大桁数
 #define PLAYER_LIFE 1 //プレイヤーのライフ
 //2Dオブジェクトクラス
 class CKey : public CScene
