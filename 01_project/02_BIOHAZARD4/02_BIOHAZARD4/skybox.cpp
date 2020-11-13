@@ -21,6 +21,7 @@ D3DXMATRIX CSkyBox::m_mtxWorld = {};	 // 行列計算用
 char* CSkyBox::m_apFileName = { "data/MODEL/MAP/sky.x" };// マップ
 LPDIRECT3DTEXTURE9 CSkyBox::m_pTexture[MAX_MATERIAL] = {};
 
+#define ADD_ROT 0.0005f;
 //----------------------------------------
 //インクリメント
 //----------------------------------------
@@ -161,7 +162,11 @@ void CSkyBox::Uninit(void)
 //----------------------------------------
 void CSkyBox::Update(void)
 {
+	m_pModel->Update();
 
+	//回転
+	m_rot.y += ADD_ROT;
+	SetSky(m_pos, m_rot, m_size);
 }
 
 //----------------------------------------
@@ -204,5 +209,6 @@ void CSkyBox::SetSky(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 	m_pos = pos;				//場所
 	m_rot = rot;				//角度
 	m_size = size;				//大きさ
+	m_pModel->SetModel(m_pos, m_rot, m_size);
 	SetObjType(OBJTYPE_SKYBOX); //オブジェクトタイプの設定
 }

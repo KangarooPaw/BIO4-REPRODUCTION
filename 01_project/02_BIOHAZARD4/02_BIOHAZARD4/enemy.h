@@ -87,12 +87,7 @@ private:
 	ENEMYSTATE m_EnemyState;			// “G‚Ìó‘Ô
 
 	//ƒŒƒC—p
-	CScene *m_pScene;
-	OBJTYPE m_objType;
-	BOOL m_bRayHit;
-	float m_fDistanceEnemy;
-	D3DXVECTOR3 m_vexStart, m_vexDirection;
-	float m_fRadius;
+
 };
 
 #endif

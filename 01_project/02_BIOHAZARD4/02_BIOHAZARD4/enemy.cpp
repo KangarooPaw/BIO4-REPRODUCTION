@@ -249,12 +249,21 @@ void CEnemy::Update(void)
 {
 	// 門が開くかを取得
 	bool bOpenGate = CGame::GetGate()->GetOpen();
+
+	CScene *m_pScene;
+	OBJTYPE m_objType;
+	BOOL m_bRayHit = false;
+	float m_fDistanceEnemy = 0.0f;
+	D3DXVECTOR3 m_vexStart, m_vexDirection;
+	float m_fRadius = -45.0f;
+
 	//bOpenGateがfalseの場合
 	if (bOpenGate == false)
 	// 敵の状態
 	switch (m_EnemyState)
 	{
 	case ENEMYSTATE_NOMAL:
+
 
 		// モーションの更新処理
 		m_pMotion->UpdateMotion();
@@ -329,6 +338,7 @@ void CEnemy::Update(void)
 						5,
 						10,
 						CBullet::BULLETTYPE_ENEMY);
+					m_pMotion->SetMotion(CMotion::MOTION_SHOT);
 					m_bAttack = false;
 				}
 			}
@@ -341,19 +351,15 @@ void CEnemy::Update(void)
 			if (m_pScene != NULL)
 			{
 				m_objType = m_pScene->GetObjType();
-				if (m_objType == OBJTYPE_NONE || m_objType == OBJTYPE_BOX)
+				if (m_objType == OBJTYPE_NONE)
 				{
-					m_bRayHit = false;
-					m_fDistanceEnemy = 0.0f;
-					m_fRadius = 360.0f / 8.0f;
-
-					for (int nCount = 0; nCount < 8; nCount++)
+					for (int nCount = 0; nCount < 3; nCount++)
 					{
 						// 始める座標
 						m_vexStart = m_pos + D3DXVECTOR3(0.0f, 20.0f, 0.0f);
 
 						// レイを出す角度
-						m_vexDirection = D3DXVECTOR3(0.0f, m_fRadius * nCount, 0.0f);
+						m_vexDirection = D3DXVECTOR3(0.0f, m_fRadius + (nCount * 45.0f), 0.0f);
 
 						D3DXIntersect(((CMap*)m_pScene)->GetMapMesh(), &m_vexStart, &D3DXVECTOR3(sinf(m_vexDirection.y), 0.0f, cosf(m_vexDirection.y)),
 							&m_bRayHit, NULL, NULL, NULL, &m_fDistanceEnemy, NULL, NULL);
@@ -391,9 +397,6 @@ void CEnemy::Update(void)
 
 		// 座標、回転、サイズのセット(親のモデルだけ動かすため)
 		m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
-
-
-
 		break;
 
 	case ENEMYSTATE_ITEM:
