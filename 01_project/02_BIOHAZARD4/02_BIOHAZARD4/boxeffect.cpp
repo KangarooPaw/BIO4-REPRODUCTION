@@ -12,6 +12,7 @@
 #include "billboard.h"
 #include "boxeffect.h"
 #include "box.h"
+#include "circleparticle.h"
 
 #define SHARD_VALUE 20			//–Ø•Ð‚Ì—Ê
 #define SHARD_SPEED 0.5f		//–Ø•Ð‚Ì”ò‚ÑŽU‚é‘¬‚³
@@ -188,6 +189,7 @@ void CBoxEffect::Update(void)
 
 		if (m_nPatternAnim >= SMOKE_ANIM_PATTERN)
 		{
+			CCircleParticle::CircleCreate(m_pos, D3DXVECTOR3(PARTICLE_CIRCLE_SIZE_X, PARTICLE_CIRCLE_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), MAX_CIRCLE, 7.5f);
 			Uninit();
 			return;
 		}

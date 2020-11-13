@@ -12,6 +12,11 @@
 //*****************************************************************************
 #include "mode.h"
 
+
+class CPlayer;
+class CBulletUi;
+class CKey;
+class CGate;
 //*****************************************************************************
 //クラス定義
 //*****************************************************************************
@@ -24,6 +29,13 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+private:
+	static CPlayer *m_pPlayer;	//プレイヤー
+	static CBulletUi *m_pBulletUi;//弾の残弾数表示
+	static CBulletUi *m_pBulletHaveUi;//持っている弾数表示
+	static CKey *m_pKey;//持っているカギ表示
+	static CGate *m_pGate;				// 門
+	int m_nCount;
 };
 
 #endif
