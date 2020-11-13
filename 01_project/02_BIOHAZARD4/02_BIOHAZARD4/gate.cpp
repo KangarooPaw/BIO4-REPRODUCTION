@@ -56,8 +56,8 @@ CGate * CGate::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
 	CGate *pGate;
 	pGate = new CGate(OBJTYPE_GATE);
-	pGate->Init();
 	pGate->SetGate(pos, rot, size);
+	pGate->Init();
 
 	return pGate;
 }
@@ -161,6 +161,9 @@ HRESULT CGate::Init(void)
 			m_pModel[nCnt]->BindTexture(m_pTexture[nCnt][nCntMat], nCntMat);
 		}
 	}
+
+	m_pModel[TYPE_LEFT]->SetModel(D3DXVECTOR3(m_pos.x - 142, m_pos.y, m_pos.x), m_rot, m_size);
+	m_pModel[TYPE_RIGHT]->SetModel(D3DXVECTOR3(m_pos.x + 142, m_pos.y, m_pos.x), -m_rot, m_size);
 	return S_OK;
 }
 
