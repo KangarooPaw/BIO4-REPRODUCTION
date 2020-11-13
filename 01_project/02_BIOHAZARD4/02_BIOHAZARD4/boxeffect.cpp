@@ -55,7 +55,7 @@ CBoxEffect * CBoxEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 s
 	CBoxEffect *pBoxEffect;
 
 	// メモリ確保
-	pBoxEffect = new CBoxEffect(5);
+	pBoxEffect = new CBoxEffect(9);
 	//タイプ
 	pBoxEffect->m_type = type;
 	// 初期化

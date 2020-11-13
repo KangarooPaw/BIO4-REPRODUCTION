@@ -12,7 +12,7 @@
 //--------------------------------------------------------------------
 // コンストラクタ
 //--------------------------------------------------------------------
-CCircleParticle::CCircleParticle()
+CCircleParticle::CCircleParticle(int nPriority) : CParticle(nPriority)
 {
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_ColorType = COLOR_NONE;
@@ -36,7 +36,7 @@ CCircleParticle * CCircleParticle::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3D
 	CCircleParticle *pCircleParticle;
 
 	// メモリ確保
-	pCircleParticle = new CCircleParticle;
+	pCircleParticle = new CCircleParticle(5);
 
 	// 初期化
 	pCircleParticle->Init(pos, size, rot, col, TexType, fRadian, fLength);
