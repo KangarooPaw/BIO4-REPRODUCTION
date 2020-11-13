@@ -862,7 +862,8 @@ void CPlayer::spin(void)
 		m_pMotion->SetMotion(CMotion::MOTION_SPIN);
 
 		m_nSpinCnt++;
-		if (m_nSpinCnt == 600)
+		//5•b‚ÅƒXƒsƒ“‚ÌI—¹
+		if (m_nSpinCnt == 300)
 		{
 			m_nSpinCnt = 0;
 			m_bspin = false;
