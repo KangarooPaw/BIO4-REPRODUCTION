@@ -190,7 +190,7 @@ void CMap::Draw(void)
 
 		// ワールドマトリックスの設定
 		//m_pModel[nCount]->SetWorldMatrix(m_mtxWorld[nCount]);
-
+	
 		// モデルクラスの描画処理
 		m_pModel->Draw();
 

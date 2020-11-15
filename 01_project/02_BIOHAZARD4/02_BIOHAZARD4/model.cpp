@@ -86,31 +86,24 @@ void CModel::Update(void)
 //----------------------------------------
 void CModel::Draw(void)
 {
-	//LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-	//D3DXMATRIX mtxRot, mtxTrans;
-	//D3DMATERIAL9 matDef;
-	//D3DXMATERIAL*pMat;
-	//D3DXMatrixIdentity(&m_mtxWorld);
-	//D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
-	//D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
-	//D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
-	//D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
-	//pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
-	//pDevice->GetMaterial(&matDef);
-	//pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
-	//for (int nCntMat = 0; nCntMat < (int)m_nNumMat; nCntMat++)
-	//{
-	//	pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
-	//	m_pMesh->DrawSubset(nCntMat);
-	//}
-	//pDevice->SetMaterial(&matDef);
 
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	D3DXMATRIX mtxRot, mtxTrans;
 	D3DMATERIAL9 matDef;
 	D3DXMATERIAL*pMat;
 
-	
+	if (m_bIsFog == false)
+	{
+		// フォグ設定
+		float FogStart = 0.0f, FogEnd = FogStart + 1700.0f;
+		pDevice->SetRenderState(D3DRS_FOGENABLE, TRUE); // フォグ有効
+		pDevice->SetRenderState(D3DRS_FOGCOLOR, D3DXCOLOR(0.2f, 0.1f, 0.1f, 0.5f)); // フォグ色
+		pDevice->SetRenderState(D3DRS_FOGVERTEXMODE, D3DFOG_LINEAR); // バーテックスフォグ
+		pDevice->SetRenderState(D3DRS_RANGEFOGENABLE, TRUE); // 範囲ベースのフォグ
+		pDevice->SetRenderState(D3DRS_FOGSTART, *((DWORD*)(&FogStart))); // フォグ開始点
+		pDevice->SetRenderState(D3DRS_FOGEND, *((DWORD*)(&FogEnd))); // フォグ終了点
+	}
+
 	//ワールドマトリクスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
 
@@ -165,6 +158,7 @@ void CModel::Draw(void)
 	//保持していたマテリアルを戻す
 	pDevice->SetMaterial(&matDef);
 	pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
+	
 }
 
 
