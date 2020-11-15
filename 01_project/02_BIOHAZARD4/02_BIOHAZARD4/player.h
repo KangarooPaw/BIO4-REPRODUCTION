@@ -142,6 +142,11 @@ private:
 	bool m_bspin;						// 敵を回転させる判定
 	bool m_bButtonUI;					// ボタンUIの使用判定
 	
+	bool m_bSoundBackWalk;				//サウンドが再生されているかの判定(後ろに歩く)
+	bool m_bSoundDash;					//サウンドが再生されているかの判定(ダッシュ)
+	bool m_bSoundTurn;					//サウンドが再生されているかの判定(ターン)
+	bool m_bSoundRotation;				//サウンドが再生されているかの判定(ゾンビの回転)
+
 	CEnemy *m_pEnemy;					// 敵クラスのポインタ
 	CMotion *m_pMotion;					// モーションクラスのポインタ
 	CModel *m_pModel[MAX_PLAYER_PARTS]; // モデルクラスのポインタ

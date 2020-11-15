@@ -490,3 +490,11 @@ void CMotion::SetMotion(MOTIONSTATE motionstate)
 {
 	m_motionState = motionstate;
 }
+
+//=============================================================================
+// モーションクラスのどのモーションを再生しているかを取得
+//=============================================================================
+CMotion::MOTIONSTATE CMotion::GetMotion(void)
+{
+	return m_motionState;
+}

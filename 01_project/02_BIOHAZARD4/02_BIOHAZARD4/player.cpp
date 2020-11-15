@@ -119,6 +119,11 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	// ボタンのUI使用判定
 	m_bButtonUI = false;
 	m_pEnemy = NULL;
+	//サウンドが再生されているかの判定
+	m_bSoundBackWalk = false;
+	m_bSoundDash = false;
+	m_bSoundTurn = false;
+	m_bSoundRotation = false;
 }
 
 //----------------------------------------
@@ -400,8 +405,13 @@ void CPlayer::Update(void)
 			//ターン中なら
 			if (m_bTurn == true)
 			{
-				//サウンドの再生
-				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_TURN);
+				if (m_bSoundTurn == false)
+				{
+					//サウンドの再生
+					CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_TURN);
+
+					m_bSoundTurn = true;
+				}
 
 				m_rot.y += D3DXToRadian(6);
 				m_nTurnCnt++;
@@ -893,8 +903,13 @@ void CPlayer::spin(void)
 	// 回すフラグが立った
 	else if (m_bspin == true)
 	{
-		//サウンドの再生
-		CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_ROTATION);
+		if (m_bSoundRotation == false)
+		{
+			//サウンドの再生
+			CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_ROTATION);
+
+			m_bSoundRotation = true;
+		}
 
 		// 自機と敵の距離
 		float fDistance = 26.0f;
@@ -1108,22 +1123,30 @@ void CPlayer::GamePad(void)
 				//ダメージモーション中でないなら
 				if (m_bDamageMotion == false)
 				{
-					//サウンドの再生
-					//CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_DASH);
+					if (m_bSoundDash == false)
+					{
+						//サウンドの再生
+						CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_DASH);
+
+						m_bSoundDash = true;
+					}
+
 					//走るモーション
 					m_pMotion->SetMotion(CMotion::MOTION_RUN);
 				}
 				m_pos.x += -sinf(m_rot.y)*1.0f;
 				m_pos.z += -cosf(m_rot.y)*1.0f;
 			}
-			else
-			{
-				//サウンドの再生
-				//CManager::GetSound()->StopSound(CSound::SOUND_LABEL_SE_DASH);
-			}
 			//左スティックを後ろに倒す
 			if (pStick.lY >= 500)
 			{
+				if (m_bSoundBackWalk == false)
+				{
+					//サウンドの再生
+					CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_BACK_WALK);
+
+					m_bSoundBackWalk = true;
+				}
 
 				//ダメージモーション中でないなら
 				if (m_bDamageMotion == false)
@@ -1145,10 +1168,35 @@ void CPlayer::GamePad(void)
 					}
 				}
 			}
-			else
+			//ダッシュサウンドが再生中のとき
+			if (m_bSoundDash == true)
 			{
-				//サウンドの再生
-				//CManager::GetSound()->StopSound(CSound::SOUND_LABEL_SE_BACK_WALK);
+				if (m_pMotion->GetMotion() != CMotion::MOTION_RUN)
+				{
+					//サウンドの停止
+					CManager::GetSound()->StopSound(CSound::SOUND_LABEL_SE_DASH);
+
+					m_bSoundDash = false;
+				}
+			}
+			//後ろに歩くサウンドが再生中のとき
+			if (m_bSoundBackWalk == true)
+			{
+				if (m_pMotion->GetMotion() != CMotion::MOTION_BACK)
+				{
+					//サウンドの停止
+					CManager::GetSound()->StopSound(CSound::SOUND_LABEL_SE_BACK_WALK);
+
+					m_bSoundBackWalk = false;
+				}
+			}
+			//ターンサウンドが再生中のとき
+			if (m_bSoundTurn == true)
+			{
+				//サウンドの停止
+				CManager::GetSound()->StopSound(CSound::SOUND_LABEL_SE_TURN);
+
+				m_bSoundTurn = false;
 			}
 			////アイテムを取得する
 			//if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
@@ -1361,9 +1409,6 @@ void CPlayer::GamePad(void)
 			//リロード
 			if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
 			{
-				//サウンドの再生
-				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_RELOAD);
-
 				if (m_nHaveBullet <= 0)
 				{
 					m_nHaveBullet = 0;
@@ -1373,6 +1418,9 @@ void CPlayer::GamePad(void)
 				{
 					if (m_bReloadMotion == false)
 					{
+						//サウンドの再生
+						CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_RELOAD);
+
 						//リロードモーション
 						m_pMotion->SetMotion(CMotion::MOTION_RELOAD);
 
