@@ -1108,11 +1108,18 @@ void CPlayer::GamePad(void)
 				//ダメージモーション中でないなら
 				if (m_bDamageMotion == false)
 				{
+					//サウンドの再生
+					//CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_DASH);
 					//走るモーション
 					m_pMotion->SetMotion(CMotion::MOTION_RUN);
 				}
 				m_pos.x += -sinf(m_rot.y)*1.0f;
 				m_pos.z += -cosf(m_rot.y)*1.0f;
+			}
+			else
+			{
+				//サウンドの再生
+				//CManager::GetSound()->StopSound(CSound::SOUND_LABEL_SE_DASH);
 			}
 			//左スティックを後ろに倒す
 			if (pStick.lY >= 500)
@@ -1122,7 +1129,7 @@ void CPlayer::GamePad(void)
 				if (m_bDamageMotion == false)
 				{
 					//サウンドの再生
-					CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_BACK_WALK);
+					//CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_BACK_WALK);
 					//戻るモーション
 					m_pMotion->SetMotion(CMotion::MOTION_BACK);
 				}
@@ -1137,6 +1144,11 @@ void CPlayer::GamePad(void)
 						m_bAllMotion = true;
 					}
 				}
+			}
+			else
+			{
+				//サウンドの再生
+				//CManager::GetSound()->StopSound(CSound::SOUND_LABEL_SE_BACK_WALK);
 			}
 			////アイテムを取得する
 			//if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))

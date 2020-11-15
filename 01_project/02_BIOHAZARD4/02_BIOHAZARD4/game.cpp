@@ -60,6 +60,9 @@ CGame::~CGame()
 //*****************************************************************************
 HRESULT CGame::Init(void)
 {
+	//randの初期化
+	srand((unsigned)time(NULL));
+
 	//サウンドの再生
 	CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_BGM_GAME);
 
@@ -83,20 +86,29 @@ HRESULT CGame::Init(void)
 	m_pGate = m_pGate = CGate::Create(D3DXVECTOR3(-170.0f, 50.0f, 1060.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 20.0f));
 
 	//ボックス
-	for (int nCountX = 1; nCountX < 5; nCountX++)
+	for (int nCountX = 1; nCountX < 6; nCountX++)
 	{
-		for (int nCountZ = 1; nCountZ < 5; nCountZ++)
+		for (int nCountZ = 1; nCountZ < 6; nCountZ++)
 		{
 			CBox::Create(D3DXVECTOR3(100.0f + (nCountX * 50.0f), 20.0f, 100.0f + (nCountZ * 50.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
 		}
 	}
-
+	for (int nCnt = 0; nCnt < 20; nCnt++)
+	{
+		float fPosX = float(rand() % 1400 - 700);
+		float fPosZ = float(rand() % 1400 - 700);
+		CEnemy::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+	}
 	////敵
-	//for (int nCountX = 1; nCountX < 2; nCountX++)
+	//for (int nCountX = 1; nCountX < 3; nCountX++)
 	//{
-	//	for (int nCountZ = 1; nCountZ < 5; nCountZ++)
+	//	for (int nCountZ = 1; nCountZ < 3; nCountZ++)
 	//	{
-	//		CEnemy::Create(D3DXVECTOR3(200.0f + (nCountX * 50.0f), 0.0f, -100.0f + (nCountZ * 50.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+	//		CEnemy::Create(D3DXVECTOR3(-200.0f + (nCountX * 100.0f), 0.0f, -100.0f + (nCountZ * 100.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+	//		CEnemy::Create(D3DXVECTOR3(400.0f + (nCountX * 100.0f), 0.0f, -400.0f + (nCountZ * 100.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+	//		CEnemy::Create(D3DXVECTOR3(500.0f + (nCountX * 100.0f), 0.0f, 700.0f + (nCountZ * 100.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+	//		CEnemy::Create(D3DXVECTOR3(-700.0f + (nCountX * 100.0f), 0.0f, 600.0f + (nCountZ * 100.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+	//		CEnemy::Create(D3DXVECTOR3(-200.0f + (nCountX * 100.0f), 0.0f, 860.0f + (nCountZ * 100.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
 	//	}
 	//}
 	return S_OK;
