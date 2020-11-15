@@ -107,6 +107,8 @@ HRESULT CGame::Init(void)
 //*****************************************************************************
 void CGame::Uninit(void)
 {
+	//サウンドの停止
+	CManager::GetSound()->StopSound();
 
 	//指定したオブジェクト以外のメモリの開放処理
 	CScene::DesignationReleaseAll(CScene::OBJTYPE_FADE);

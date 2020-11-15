@@ -11,7 +11,7 @@
 #include "joystick.h"
 #include "model.h"
 #include "bullet.h"
-
+#include "skybox.h"
 //----------------------------------------
 //インクリメント
 //----------------------------------------
@@ -22,7 +22,7 @@ CModel::CModel()
 	m_nNumMat = NULL;
 	memset(m_mtxWorld, 0, sizeof(m_mtxWorld));
 	m_nldxModelParent = 0;
-
+	m_bIsFog = false;
 	memset(m_pTexture, 0, sizeof(m_pTexture));
 
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -110,6 +110,18 @@ void CModel::Draw(void)
 	D3DMATERIAL9 matDef;
 	D3DXMATERIAL*pMat;
 
+	if (m_bIsFog == false)
+	{
+		// フォグ設定
+		float FogStart = 200.0f, FogEnd = 250.0f;
+		pDevice->SetRenderState(D3DRS_FOGENABLE, TRUE); // フォグ有効
+		pDevice->SetRenderState(D3DRS_FOGCOLOR, D3DXCOLOR(0.1f, 0.0f, 0.0f, 0.05f)); // フォグ色
+		pDevice->SetRenderState(D3DRS_FOGVERTEXMODE, D3DFOG_LINEAR); // バーテックスフォグ
+		pDevice->SetRenderState(D3DRS_RANGEFOGENABLE, TRUE); // 範囲ベースのフォグ
+		pDevice->SetRenderState(D3DRS_FOGSTART, *((DWORD*)(&FogStart))); // フォグ開始点
+		pDevice->SetRenderState(D3DRS_FOGEND, *((DWORD*)(&FogEnd))); // フォグ終了点
+	}
+	
 	//ワールドマトリクスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
 
@@ -163,6 +175,7 @@ void CModel::Draw(void)
 
 	//保持していたマテリアルを戻す
 	pDevice->SetMaterial(&matDef);
+	pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
 }
 
 
@@ -211,4 +224,9 @@ void CModel::SetParent(CModel *cmodel)
 void CModel::SetWorldMatrix(D3DXMATRIX mtxWorld)
 {
 	m_mtxWorld = mtxWorld;
+}
+
+void CModel::SetBoolFog(bool bFog)
+{
+    m_bIsFog = bFog;
 }
