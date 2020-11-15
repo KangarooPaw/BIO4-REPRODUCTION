@@ -8,8 +8,8 @@
 //----------------------------------------------------
 // É}ÉNÉçíËã`
 //----------------------------------------------------
-#define RETICLE_SIZE_X 2
-#define RETICLE_SIZE_Y 2
+#define RETICLE_SIZE_X 4.0f
+#define RETICLE_SIZE_Y 5.0f
 
 #include "billboard.h"
 

@@ -469,7 +469,7 @@ void CEnemy::HitBullet(int nDamage,int nType)
 			//ƒTƒEƒ“ƒh‚ÌÄ¶
 			CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_ZOMBIE_DEATH);
 
-			if (int nRand = rand() % 3 == 1)
+			if (int nRand = rand() % 10 == 1)
 			{
 				CItem::DropItem(m_pos, CItem::TYPE_KEY);
 			}

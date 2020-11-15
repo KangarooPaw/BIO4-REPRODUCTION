@@ -204,6 +204,8 @@ void CGate::Update(void)
 				{
 					//サウンドの再生
 					CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_DOOR_OPEN);
+					//サウンドの停止
+					CManager::GetSound()->StopSound(CSound::SOUND_LABEL_SE_DASH);
 
 					m_bSoundGateOpen = true;
 				}

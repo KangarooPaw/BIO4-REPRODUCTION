@@ -86,10 +86,10 @@ HRESULT CGame::Init(void)
 	// ñÂê∂ê¨
 	m_pGate = CGate::Create(D3DXVECTOR3(-146.0f, 50.0f, 827.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 20.0f));
 
-	for (int nCnt = 0; nCnt < 20; nCnt++)
+	for (int nCnt = 0; nCnt < 10; nCnt++)
 	{
-		float fPosX = float(rand() % 1400 - 700);
-		float fPosZ = float(rand() % 1400 - 700);
+		float fPosX = float(rand() % 700 - 300);
+		float fPosZ = float(rand() % 700 - 300);
 		CEnemy::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
 	}
 
@@ -144,11 +144,12 @@ void CGame::Uninit(void)
 void CGame::Update(void)
 {
 	m_EnemyCount++;
-	if (m_EnemyCount == 600)
+	if (m_EnemyCount == 250)
 	{
 		m_EnemyCount = 0;
-		CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
-		CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+		float fPosX = float(rand() % 700 - 300);
+		float fPosZ = float(rand() % 700 - 300);
+		CEnemy::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
 	}
 }
 

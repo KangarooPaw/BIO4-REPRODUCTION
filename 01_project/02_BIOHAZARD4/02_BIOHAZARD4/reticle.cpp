@@ -57,7 +57,7 @@ HRESULT CReticle::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// テクスチャ読み込み
-	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/reticle001.png", &m_pTexture);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/reticle.png", &m_pTexture);
 
 	return S_OK;
 }
@@ -164,6 +164,15 @@ void CReticle::Update(void)
 //-----------------------------------------------------------
 void CReticle::Draw(void)
 {
+	//レンダラー取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	// ライトの効果を無効に
+	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 	// 描画
 	CBillboard::Draw();
+
+	// ライトの効果を有効に
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }

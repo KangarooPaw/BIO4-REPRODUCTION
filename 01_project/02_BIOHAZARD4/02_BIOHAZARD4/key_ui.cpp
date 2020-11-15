@@ -137,6 +137,13 @@ void CKeyUi::Draw(void)
 	CRenderer *pRenderer = CManager::GetRenderer();
 	LPDIRECT3DDEVICE9 pDevice = pRenderer->GetDevice();
 
+	//アルファテストを有効化
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	//アルファテスト基準値の設定
+	pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	//アルファテストの比較方法の設定（GREATERは基準値より大きい場合)
+	pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
 	pDevice->SetFVF(FVF_VERTEX_2D);
 
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
@@ -144,6 +151,9 @@ void CKeyUi::Draw(void)
 	pDevice->SetTexture(0, m_pTexture);
 
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, NUM_POLYGON);
+
+	//アルファテストを無効化
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 //=============================================================================
 // 星セット処理

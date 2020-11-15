@@ -23,6 +23,7 @@ CModel::CModel()
 	memset(m_mtxWorld, 0, sizeof(m_mtxWorld));
 	m_nldxModelParent = 0;
 	m_bIsFog = false;
+	m_bShow = false;
 	memset(m_pTexture, 0, sizeof(m_pTexture));
 
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -104,61 +105,64 @@ void CModel::Draw(void)
 		pDevice->SetRenderState(D3DRS_FOGEND, *((DWORD*)(&FogEnd))); // フォグ終了点
 	}
 
-	//ワールドマトリクスの初期化
-	D3DXMatrixIdentity(&m_mtxWorld);
-
-	//向きを反映
-	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x , m_rot.z);
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
-
-	//位置を反映
-	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
-
-	if (m_pBuffMat != NULL)
+	// 表示しないフラグが立ってない時
+	if (m_bShow == false)
 	{
-		//マテリアルデータへのポインタを取得する
-		pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
-	}
+		//ワールドマトリクスの初期化
+		D3DXMatrixIdentity(&m_mtxWorld);
 
-	D3DXMATRIX mtxParent;
-	if (m_pParent != NULL)
-	{
-		mtxParent = m_pParent->GetMtxWorld();
-	}
-	else
-	{
-		pDevice->GetTransform(D3DTS_WORLD2, &mtxParent);
-	}
+		//向きを反映
+		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
-	//モデルパーツに親のマトリックスを掛け合わせることで、位置や回転を親に追従させる
-	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
+		//位置を反映
+		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
-	//ワールドマトリックスの設定
-	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
-
-	//現在のマテリアルを取得する
-	pDevice->GetMaterial(&matDef);
-
-	for (int nCntMat = 0; nCntMat < (int)m_nNumMat; nCntMat++)
-	{
-		//マテリアルの設定
-		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
-		pDevice->SetTexture(0, m_pTexture[nCntMat]);
-
-		pMat[nCntMat].MatD3D.Ambient = pMat[nCntMat].MatD3D.Diffuse;
-
-		if (m_pMesh != NULL)
+		if (m_pBuffMat != NULL)
 		{
-			//モデルパーツの描画
-			m_pMesh->DrawSubset(nCntMat);
+			//マテリアルデータへのポインタを取得する
+			pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
 		}
-	}
 
-	//保持していたマテリアルを戻す
-	pDevice->SetMaterial(&matDef);
-	pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
-	
+		D3DXMATRIX mtxParent;
+		if (m_pParent != NULL)
+		{
+			mtxParent = m_pParent->GetMtxWorld();
+		}
+		else
+		{
+			pDevice->GetTransform(D3DTS_WORLD2, &mtxParent);
+		}
+
+		//モデルパーツに親のマトリックスを掛け合わせることで、位置や回転を親に追従させる
+		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxParent);
+
+		//ワールドマトリックスの設定
+		pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+
+		//現在のマテリアルを取得する
+		pDevice->GetMaterial(&matDef);
+
+		for (int nCntMat = 0; nCntMat < (int)m_nNumMat; nCntMat++)
+		{
+			//マテリアルの設定
+			pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
+			pDevice->SetTexture(0, m_pTexture[nCntMat]);
+
+			pMat[nCntMat].MatD3D.Ambient = pMat[nCntMat].MatD3D.Diffuse;
+
+			if (m_pMesh != NULL)
+			{
+				//モデルパーツの描画
+				m_pMesh->DrawSubset(nCntMat);
+			}
+		}
+
+		//保持していたマテリアルを戻す
+		pDevice->SetMaterial(&matDef);
+		pDevice->SetRenderState(D3DRS_FOGENABLE, FALSE);
+	}
 }
 
 
@@ -202,7 +206,7 @@ void CModel::SetParent(CModel *cmodel)
 }
 
 //=============================================================================
-// モデルの
+// モデルの行列のセット
 //=============================================================================
 void CModel::SetWorldMatrix(D3DXMATRIX mtxWorld)
 {
@@ -212,4 +216,12 @@ void CModel::SetWorldMatrix(D3DXMATRIX mtxWorld)
 void CModel::SetBoolFog(bool bFog)
 {
     m_bIsFog = bFog;
+}
+
+//=============================================================================
+// モデルを表示するかのセット
+//=============================================================================
+void CModel::SetBoolShow(bool bShow)
+{
+	m_bShow = bShow;
 }
