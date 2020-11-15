@@ -26,6 +26,9 @@ public:
 	void Draw(void);
 	static HRESULT Load(void);
 	static void Unload(void);
+
+private:
+	bool m_bSoundDecision;	//決定ボタンサウンドが再生されているかの判定
 };
 
 #endif

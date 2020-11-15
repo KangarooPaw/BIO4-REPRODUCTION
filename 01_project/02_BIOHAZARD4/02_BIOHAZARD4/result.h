@@ -33,6 +33,7 @@ public:
 	void Draw(void);
 private:
 	TYPE m_Type;
+	bool m_bSoundDecision;	//決定ボタンサウンドが再生されているかの判定
 };
 
 #endif

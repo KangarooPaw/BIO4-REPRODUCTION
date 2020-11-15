@@ -23,6 +23,7 @@
 //*****************************************************************************
 CGameover::CGameover()
 {
+	m_bSoundDecision = false;
 }
 
 //*****************************************************************************
@@ -65,13 +66,18 @@ void CGameover::Update(void)
 {
 	if (CScene::GetUpdateStop() == false)
 	{
-		if (CManager::GetInputKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetInputJoystick()->GetJoystickTrigger(CInputJoystick::BUTTON_B))
-		{ //Enterキー または Bボタンを押したとき
-			//サウンドの再生
-			CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_DECISION);
+		if (m_bSoundDecision == false)
+		{
+			if (CManager::GetInputKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetInputJoystick()->GetJoystickTrigger(CInputJoystick::BUTTON_B))
+			{ //Enterキー または Bボタンを押したとき
+				//サウンドの再生
+				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_DECISION);
 
-			//フェードの生成
-			CManager::CreateFade(CManager::MODE_TITLE);
+				//フェードの生成
+				CManager::CreateFade(CManager::MODE_TITLE);
+
+				m_bSoundDecision = true;
+			}
 		}
 	}
 }
