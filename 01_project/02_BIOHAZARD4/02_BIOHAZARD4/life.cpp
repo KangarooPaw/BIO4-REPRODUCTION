@@ -57,7 +57,7 @@ CLife * CLife::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, float Length)
 	CLife * pLife;
 
 	//ƒƒ‚ƒŠŠm•Û
-	pLife = new CLife;
+	pLife = new CLife(OBJTYPE_UI);
 
 	// pos‘ã“ü
 	pLife->m_pos = pos;

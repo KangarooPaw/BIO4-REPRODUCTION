@@ -35,7 +35,7 @@ CButton_UI * CButton_UI::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, int nType)
 	// CButton_UIのポインタ
 	CButton_UI *pButton_UI;
 	// メモリ確保
-	pButton_UI = new CButton_UI;
+	pButton_UI = new CButton_UI(OBJTYPE_UI);
 	// 初期化処理
 	pButton_UI->Init(pos, size, nType);
 	return pButton_UI;

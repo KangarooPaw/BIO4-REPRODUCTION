@@ -839,19 +839,20 @@ void CPlayer::spin(void)
 					// 当たり判定
 					if (CCollision::SphereCollision(m_pos, m_size.x, m_Getpos, m_Getsize.x) == true)
 					{
-						// m_bButtonUIがfalseの場合
-						if (m_bButtonUI == false)
-						{
-							// ボタンUI生成
-							CButton_UI::Create(BUTTON_UI_POS,
-								D3DXVECTOR3(BUTTON_UI_SIZE_X, BUTTON_UI_SIZE_Y, 0.0f),
-								CButton_UI::TYPE_SPIN);
-							m_bButtonUI = true;
-						}
 
 						// 円の中の敵がアイテム状態の時
 						if (((CEnemy*)pScene)->GetEnemyState() == CEnemy::ENEMYSTATE_ITEM)
 						{
+							// m_bButtonUIがfalseの場合
+							if (m_bButtonUI == false)
+							{
+								// ボタンUI生成
+								CButton_UI::Create(BUTTON_UI_POS,
+									D3DXVECTOR3(BUTTON_UI_SIZE_X, BUTTON_UI_SIZE_Y, 0.0f),
+									CButton_UI::TYPE_SPIN);
+								m_bButtonUI = true;
+							}
+
 							if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
 							{
 								// m_bButtonUIがtrueの場合
@@ -870,15 +871,15 @@ void CPlayer::spin(void)
 								return;
 							}
 						}
-					}
-					else
-					{
-						// m_bButtonUIがtrueの場合
-						if (m_bButtonUI == true)
+						else
 						{
-							m_bButtonUI = false;
-							// ボタンUIの使用状態をfalseに
-							CButton_UI::SetbUse(m_bButtonUI);
+							// m_bButtonUIがtrueの場合
+							if (m_bButtonUI == true)
+							{
+								m_bButtonUI = false;
+								// ボタンUIの使用状態をfalseに
+								CButton_UI::SetbUse(m_bButtonUI);
+							}
 						}
 					}
 				}
@@ -993,6 +994,87 @@ void CPlayer::GamePad(void)
 	}
 	if (pJoystickDevice != NULL)
 	{
+		// アイテムを拾う処理
+		//当たり判定処理
+		CScene *pScene = NULL;
+		do
+		{
+			pScene = GetScene(OBJTYPE_ITEM);
+			if (pScene != NULL)
+			{
+				OBJTYPE objType = pScene->GetObjType();
+				if (objType == OBJTYPE_ITEM)
+				{
+					// 座標とサイズの受け取り
+					D3DXVECTOR3 ItemPos = ((CItem*)pScene)->GetPos();
+					D3DXVECTOR3 ItemSize = ((CItem*)pScene)->GetSize();
+					int ItemType = ((CItem*)pScene)->GetType();
+
+					// 当たり判定
+					if (CollisionItem(m_pos, m_size, ItemPos, ItemSize) == true)
+					{
+						// m_bButtonUIがfalseの場合
+						if (m_bButtonUI == false)
+						{
+							// ボタンUI生成
+							CButton_UI::Create(BUTTON_UI_POS,
+								D3DXVECTOR3(BUTTON_UI_SIZE_X, BUTTON_UI_SIZE_Y, 0.0f),
+								CButton_UI::TYPE_PICKUP);
+							m_bButtonUI = true;
+						}
+						if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
+						{
+							// m_bButtonUIがtrueの場合
+							if (m_bButtonUI == true)
+							{
+								m_bButtonUI = false;
+								// ボタンUIの使用状態をfalseに
+								CButton_UI::SetbUse(m_bButtonUI);
+							}
+							//サウンドの再生
+							CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_GET);
+							switch (ItemType)
+							{
+								// ボタンUI生成
+								CButton_UI::Create(D3DXVECTOR3(BUTTON_UI_POS), D3DXVECTOR3(BUTTON_UI_SIZE_X, BUTTON_UI_SIZE_Y, 0.0f), CButton_UI::TYPE_PICKUP);
+							case CItem::TYPE_HERB:
+								CHeal::HealCreate(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+								CLife::LifeIncrement(20);
+								break;
+							case CItem::TYPE_SPRAY:
+								CHeal::HealCreate(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+								CLife::LifeIncrement(100);
+								break;
+							case CItem::TYPE_AMMO:
+								m_nHaveBullet += ADD_BULLET;
+								break;
+							case CItem::TYPE_KEY:
+								if (m_nKey <= MAX_KEY)
+								{
+									m_nKey++;
+								}
+								break;
+							default:
+								break;
+							}
+							((CItem*)pScene)->Uninit();
+							return;
+						}
+					}
+					else
+					{
+						// m_bButtonUIがtrueの場合
+						if (m_bButtonUI == true)
+						{
+							m_bButtonUI = false;
+							// ボタンUIの使用状態をfalseに
+							CButton_UI::SetbUse(m_bButtonUI);
+						}
+					}
+				}
+			}
+		} while (pScene != NULL);
+
 		//LB/LTを押していないなら
 		if ((pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false && pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false))
 		{
@@ -1262,7 +1344,7 @@ void CPlayer::GamePad(void)
 					return;
 				}
 				for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; ++m_nMagazineBullet, --m_nHaveBullet)
-				{	
+				{
 					if (m_bReloadMotion == false)
 					{
 						//リロードモーション
@@ -1272,7 +1354,7 @@ void CPlayer::GamePad(void)
 						m_bAllMotion = true;
 					}
 
-					
+
 					if (m_nHaveBullet < 0)
 					{
 						m_nHaveBullet = 0;
@@ -1281,86 +1363,6 @@ void CPlayer::GamePad(void)
 				}
 			}
 		}
-		// アイテムを拾う処理
-		//当たり判定処理
-		CScene *pScene = NULL;
-		do
-		{
-			pScene = GetScene(OBJTYPE_ITEM);
-			if (pScene != NULL)
-			{
-				OBJTYPE objType = pScene->GetObjType();
-				if (objType == OBJTYPE_ITEM)
-				{
-					// 座標とサイズの受け取り
-					D3DXVECTOR3 ItemPos = ((CItem*)pScene)->GetPos();
-					D3DXVECTOR3 ItemSize = ((CItem*)pScene)->GetSize();
-					int ItemType = ((CItem*)pScene)->GetType();
-
-					// 当たり判定
-					if (CollisionItem(m_pos, m_size, ItemPos, ItemSize) == true)
-					{
-						// m_bButtonUIがfalseの場合
-						if (m_bButtonUI == false)
-						{
-							// ボタンUI生成
-							CButton_UI::Create(BUTTON_UI_POS,
-								D3DXVECTOR3(BUTTON_UI_SIZE_X, BUTTON_UI_SIZE_Y, 0.0f),
-								CButton_UI::TYPE_PICKUP);
-							m_bButtonUI = true;
-						}
-						if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_X))
-						{
-							// m_bButtonUIがtrueの場合
-							if (m_bButtonUI == true)
-							{
-								m_bButtonUI = false;
-								// ボタンUIの使用状態をfalseに
-								CButton_UI::SetbUse(m_bButtonUI);
-							}
-							//サウンドの再生
-							CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_GET);
-							switch (ItemType)
-							{
-								// ボタンUI生成
-								CButton_UI::Create(D3DXVECTOR3(BUTTON_UI_POS), D3DXVECTOR3(BUTTON_UI_SIZE_X, BUTTON_UI_SIZE_Y, 0.0f), CButton_UI::TYPE_PICKUP);
-							case CItem::TYPE_HERB:
-								CHeal::HealCreate(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
-								CLife::LifeIncrement(20);
-								break;
-							case CItem::TYPE_SPRAY:
-								CHeal::HealCreate(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
-								CLife::LifeIncrement(100);
-								break;
-							case CItem::TYPE_AMMO:
-								m_nHaveBullet += ADD_BULLET;
-								break;
-							case CItem::TYPE_KEY:
-								if (m_nKey <= MAX_KEY)
-								{
-									m_nKey++;
-								}
-								break;
-							default:
-								break;
-							}
-							((CItem*)pScene)->Uninit();
-							return;
-						}
-					}
-					else
-					{
-						// m_bButtonUIがtrueの場合
-						if (m_bButtonUI == true)
-						{
-							m_bButtonUI = false;
-							// ボタンUIの使用状態をfalseに
-							CButton_UI::SetbUse(m_bButtonUI);
-						}
-					}
-				}
-			}
-		} while (pScene != NULL);
 	}
 
 	// 敵を回す処理
@@ -1402,7 +1404,6 @@ void CPlayer::PickUpItem(void)
 {
 	//当たり判定処理
 	CScene *pScene = NULL;
-	CScene * pParticle = NULL;
 	do
 	{
 		pScene = GetScene(OBJTYPE_ITEM);
