@@ -122,7 +122,6 @@ void CModel::Draw(void)
 		pDevice->SetRenderState(D3DRS_FOGEND, *((DWORD*)(&FogEnd))); // フォグ終了点
 	}
 	
-
 	//ワールドマトリクスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
 
