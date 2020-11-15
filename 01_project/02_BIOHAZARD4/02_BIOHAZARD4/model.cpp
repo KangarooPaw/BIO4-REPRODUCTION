@@ -110,17 +110,17 @@ void CModel::Draw(void)
 	D3DMATERIAL9 matDef;
 	D3DXMATERIAL*pMat;
 
-	//if (m_bIsFog == false)
-	//{
-	//	// フォグ設定
-	//	float FogStart = 200.0f, FogEnd = 250.0f;
-	//	pDevice->SetRenderState(D3DRS_FOGENABLE, TRUE); // フォグ有効
-	//	pDevice->SetRenderState(D3DRS_FOGCOLOR, D3DXCOLOR(0.1f, 0.0f, 0.0f, 0.05f)); // フォグ色
-	//	pDevice->SetRenderState(D3DRS_FOGVERTEXMODE, D3DFOG_LINEAR); // バーテックスフォグ
-	//	pDevice->SetRenderState(D3DRS_RANGEFOGENABLE, TRUE); // 範囲ベースのフォグ
-	//	pDevice->SetRenderState(D3DRS_FOGSTART, *((DWORD*)(&FogStart))); // フォグ開始点
-	//	pDevice->SetRenderState(D3DRS_FOGEND, *((DWORD*)(&FogEnd))); // フォグ終了点
-	//}
+	if (m_bIsFog == false)
+	{
+		// フォグ設定
+		float FogStart = 200.0f, FogEnd = 250.0f;
+		pDevice->SetRenderState(D3DRS_FOGENABLE, TRUE); // フォグ有効
+		pDevice->SetRenderState(D3DRS_FOGCOLOR, D3DXCOLOR(0.1f, 0.0f, 0.0f, 0.05f)); // フォグ色
+		pDevice->SetRenderState(D3DRS_FOGVERTEXMODE, D3DFOG_LINEAR); // バーテックスフォグ
+		pDevice->SetRenderState(D3DRS_RANGEFOGENABLE, TRUE); // 範囲ベースのフォグ
+		pDevice->SetRenderState(D3DRS_FOGSTART, *((DWORD*)(&FogStart))); // フォグ開始点
+		pDevice->SetRenderState(D3DRS_FOGEND, *((DWORD*)(&FogEnd))); // フォグ終了点
+	}
 	
 	//ワールドマトリクスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
