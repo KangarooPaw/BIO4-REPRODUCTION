@@ -20,6 +20,7 @@
 #include "gate.h"
 #include "sound.h"
 #include "blood.h"
+#include "collision.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -55,6 +56,9 @@ CEnemy::CEnemy(int nPriority) :CScene(nPriority)
     m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     m_size = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_Getpos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_Getrot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_Getsize = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nEnemyLife = 30;
 	m_nCntFrame = 0;
 	m_nDamageCnt = 0;
@@ -264,8 +268,6 @@ void CEnemy::Update(void)
 	switch (m_EnemyState)
 	{
 	case ENEMYSTATE_NOMAL:
-
-
 		// モーションの更新処理
 		m_pMotion->UpdateMotion();
 		if (CGame::GetPlayer != NULL)
@@ -390,6 +392,9 @@ void CEnemy::Update(void)
 			}
 		} while (m_pScene != NULL);
 
+		// 敵同士の当たり判定
+		EnemyCollision();
+
 		for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
 		{
 			// モデルのパーツごとのモーションの座標と回転を受け取る
@@ -480,6 +485,41 @@ void CEnemy::HitBullet(int nDamage,int nType)
 			CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_ZOMBIE_DAMAGE);
 		}
 	}
+}
+
+void CEnemy::EnemyCollision(void)
+{
+	CScene *pScene = NULL;
+	do
+	{
+		pScene = GetScene(OBJTYPE_ENEMY);
+		if (pScene != NULL)
+		{
+			OBJTYPE objType = pScene->GetObjType();
+			if (objType == OBJTYPE_ENEMY)
+			{
+				// 座標とサイズの受け取り
+				m_Getpos = ((CEnemy*)pScene)->GetPos();
+				m_Getrot = ((CEnemy*)pScene)->GetRot();
+				m_Getsize = ((CEnemy*)pScene)->GetSize();
+
+				float c = sqrtf(m_size.x * m_size.x + m_Getsize.x * m_Getsize.x);
+				float fAngle = atan2f(m_pos.x - m_Getpos.x, m_pos.z - m_Getpos.z);
+
+				if (m_Getpos != m_pos)
+				{
+					// 当たり判定
+					if (CCollision::SphereCollision(m_pos, m_size.x, m_Getpos, m_Getsize.x) == true)
+					{
+						// 戻す
+						m_pos += (D3DXVECTOR3(cosf(fAngle), 0.0f, sinf(fAngle)));
+
+					}
+				}
+			}
+		}
+	} while (pScene != NULL);
+
 }
 
 //----------------------------------------

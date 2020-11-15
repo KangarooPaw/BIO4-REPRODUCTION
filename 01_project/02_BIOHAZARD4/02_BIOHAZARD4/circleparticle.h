@@ -20,8 +20,15 @@
 class CCircleParticle : public CParticle
 {
 public:
+	// カラー加算、減算
+	typedef enum
+	{
+		COLOR_NONE = 0,
+		COLOR_ADD,
+		COLOR_MIN,
+	}COLOR_TYPE;
 
-	CCircleParticle(int nPriority = OBJTYPE_PARTICLE);
+	CCircleParticle(int nPriority = OBJTYPE_CIRCLE);
 	~CCircleParticle();
 	static CCircleParticle *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, CParticle::TEX_TYPE TexType, float fRadian, float fLength);
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, CParticle::TEX_TYPE TexType, float fRadian, float fLength);
@@ -29,8 +36,11 @@ public:
 	void Update(void);
 	void Draw(void);
 	static void CircleCreate(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, int nMax, float fLength);
+
+	D3DXVECTOR3 GetPos(void) { return m_pos; }
 private:
 	D3DXVECTOR3 m_pos;		// 位置座標
+	COLOR_TYPE m_ColorType;	// カラータイプ
 	float m_fRadian;		// 弧度
 	float m_fLength;		// 半径
 	float m_fAngle;			// 角度

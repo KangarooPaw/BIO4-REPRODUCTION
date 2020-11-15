@@ -58,9 +58,9 @@ CGate * CGate::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
 	CGate *pGate;
 	pGate = new CGate(OBJTYPE_GATE);
+	pGate->SetGate(pos, rot, size);
 	pGate->Init();
 	pGate->SetGate(pos, rot, size);
-
 
 	return pGate;
 }
@@ -114,7 +114,7 @@ HRESULT CGate::LoadTexture(void)
 			}
 		}
 	}
-	
+
 	return S_OK;
 }
 //----------------------------------------

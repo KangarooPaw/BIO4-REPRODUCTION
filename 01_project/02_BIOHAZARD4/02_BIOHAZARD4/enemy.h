@@ -14,7 +14,7 @@
 #define MOTION_ENEMY_TEXT ("data/MODEL/ENEMY/MOTION/motion.txt") // モーションのテキスト
 #define LOAD_ENEMY_TEXT ("data/MODEL/ENEMY/MOTION/enemy.txt") // 各モデルパーツの初期値
 
-#define ENEMY_SIZE_X 20.0f//　当たり判定サイズ
+#define ENEMY_SIZE_X 10.0f//　当たり判定サイズ
 #define ENEMY_SIZE_Y 100.0f
 #define ENEMY_SIZE_Z 20.0f
 //=============================================================================
@@ -49,6 +49,7 @@ public:
 	void Update(void);//更新処理
 	void Draw(void);//描画処理
 	void HitBullet(int nDamage,int nType);
+	void EnemyCollision(void);
 
 	static void SetChase(bool bChase);
 	void SetPos(D3DXVECTOR3 pos);
@@ -75,6 +76,9 @@ private:
 	D3DXVECTOR3 m_pos;					// 場所
 	D3DXVECTOR3 m_rot;					// 角度
 	D3DXVECTOR3 m_size;					// 大きさ
+	D3DXVECTOR3 m_Getpos;				// 受け取った場所
+	D3DXVECTOR3 m_Getrot;				// 受け取った角度
+	D3DXVECTOR3 m_Getsize;				// 受け取った大きさ
 	CMotion *m_pMotion;					// モーションクラスのポインタ
 	CModel *m_pModel[MAX_ENEMY_PARTS];	// モデルクラスのポインタ
 	static bool m_bChase;				// チェイス判定

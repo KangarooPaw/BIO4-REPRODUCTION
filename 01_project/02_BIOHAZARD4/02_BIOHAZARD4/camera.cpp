@@ -89,7 +89,7 @@ void CCamera::Update(void)
 		if (bGateOpen == true)
 		{
 			// ˆÊ’u‚ð–å‚Ì‘O‚É
-			posV = D3DXVECTOR3(GatePos.x, GatePos.y + 50, GatePos.z - 300);
+			posV = D3DXVECTOR3(GatePos.x, GatePos.y + 50, GatePos.z - 200);
 			// ’Ž‹“_
 			posR.x = GatePos.x;
 			posR.y = GatePos.y + 50;
@@ -102,7 +102,7 @@ void CCamera::Update(void)
 		D3DXMatrixLookAtLH(&mtxView, &posV, &posR, &vecU);
 		pDevice->SetTransform(D3DTS_VIEW, &mtxView);
 		D3DXMatrixIdentity(&mtxProjection);
-		D3DXMatrixPerspectiveFovLH(&mtxProjection, D3DXToRadian(90), SCREEN_WIDTH / SCREEN_HEIGHT, 10, 10000);
+		D3DXMatrixPerspectiveFovLH(&mtxProjection, D3DXToRadian(90), SCREEN_WIDTH / SCREEN_HEIGHT, 10, 5000);
 		pDevice->SetTransform(D3DTS_PROJECTION, &mtxProjection);
 	}
 }

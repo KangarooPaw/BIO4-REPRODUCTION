@@ -18,7 +18,7 @@ LPD3DXMESH CMap::m_pMesh =NULL;
 LPD3DXBUFFER CMap::m_pBuffMat = NULL;
 DWORD CMap::m_nNumMat = NULL;
 D3DXMATRIX CMap::m_mtxWorld = {};	 // 行列計算用
-char* CMap::m_apFileName = {"data/MODEL/MAP/map.x"};// マップ
+char* CMap::m_apFileName = {"data/MODEL/MAP/map2.x"};// マップ
 LPDIRECT3DTEXTURE9 CMap::m_pTexture[MAX_MATERIAL] = {};
 
 //----------------------------------------

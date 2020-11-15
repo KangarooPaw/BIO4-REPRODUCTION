@@ -46,6 +46,7 @@ CGate *CGame::m_pGate = NULL;
 CGame::CGame()
 {
 	m_nCount = 0;
+	m_EnemyCount = 0;
 }
 
 //*****************************************************************************
@@ -83,34 +84,45 @@ HRESULT CGame::Init(void)
 	CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
 
 	// 門生成
-	m_pGate = m_pGate = CGate::Create(D3DXVECTOR3(-170.0f, 50.0f, 1060.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 20.0f));
+	m_pGate = CGate::Create(D3DXVECTOR3(-146.0f, 50.0f, 827.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 100.0f, 20.0f));
 
-	//ボックス
-	for (int nCountX = 1; nCountX < 6; nCountX++)
-	{
-		for (int nCountZ = 1; nCountZ < 6; nCountZ++)
-		{
-			CBox::Create(D3DXVECTOR3(100.0f + (nCountX * 50.0f), 20.0f, 100.0f + (nCountZ * 50.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
-		}
-	}
 	for (int nCnt = 0; nCnt < 20; nCnt++)
 	{
 		float fPosX = float(rand() % 1400 - 700);
 		float fPosZ = float(rand() % 1400 - 700);
 		CEnemy::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
 	}
-	////敵
-	//for (int nCountX = 1; nCountX < 3; nCountX++)
-	//{
-	//	for (int nCountZ = 1; nCountZ < 3; nCountZ++)
-	//	{
-	//		CEnemy::Create(D3DXVECTOR3(-200.0f + (nCountX * 100.0f), 0.0f, -100.0f + (nCountZ * 100.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
-	//		CEnemy::Create(D3DXVECTOR3(400.0f + (nCountX * 100.0f), 0.0f, -400.0f + (nCountZ * 100.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
-	//		CEnemy::Create(D3DXVECTOR3(500.0f + (nCountX * 100.0f), 0.0f, 700.0f + (nCountZ * 100.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
-	//		CEnemy::Create(D3DXVECTOR3(-700.0f + (nCountX * 100.0f), 0.0f, 600.0f + (nCountZ * 100.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
-	//		CEnemy::Create(D3DXVECTOR3(-200.0f + (nCountX * 100.0f), 0.0f, 860.0f + (nCountZ * 100.0f)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
-	//	}
-	//}
+
+	CBox::Create(D3DXVECTOR3(760.0f, 30.0f, -3.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(700.0f, 30.0f, -35.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(622.0f, 30.0f, -60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+
+	CBox::Create(D3DXVECTOR3(615.0f, 30.0f, 445.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(600.0f, 30.0f, 510.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(555.0f, 30.0f, 580.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+
+	CBox::Create(D3DXVECTOR3(560.0f, 30.0f, 320.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(630.0f, 30.0f, 350.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+
+	CBox::Create(D3DXVECTOR3(-600.0f, 30.0f, 560.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(-600.0f, 30.0f, 640.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+
+	CBox::Create(D3DXVECTOR3(-660.0f, 15.0f, -35.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(-600.0f, 15.0f, -40.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+
+	CBox::Create(D3DXVECTOR3(-360.0f, 25.0f, -290.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(-440.0f, 25.0f, -385.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(-500.0f, 25.0f, -340.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+
+	CBox::Create(D3DXVECTOR3(45.0f, 25.0f, -570.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(5.0f, 25.0f, -690.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(-100.0f, 25.0f, -660.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+
+	CBox::Create(D3DXVECTOR3(350.0f, 20.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(375.0f, 20.0f, 230.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(290.0f, 20.0f, 290.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+	CBox::Create(D3DXVECTOR3(310.0f, 20.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(BOX_SIZE, BOX_SIZE, BOX_SIZE), CBox::TYPE_NORMAL);
+
 	return S_OK;
 }
 
@@ -131,7 +143,13 @@ void CGame::Uninit(void)
 //*****************************************************************************
 void CGame::Update(void)
 {
-
+	m_EnemyCount++;
+	if (m_EnemyCount == 600)
+	{
+		m_EnemyCount = 0;
+		CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+		CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+	}
 }
 
 //*****************************************************************************

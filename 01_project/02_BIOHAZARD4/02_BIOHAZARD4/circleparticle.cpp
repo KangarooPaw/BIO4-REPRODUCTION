@@ -15,6 +15,7 @@
 CCircleParticle::CCircleParticle(int nPriority) : CParticle(nPriority)
 {
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_ColorType = COLOR_NONE;
 	m_fRadian = 0.0f;
 	m_fLength = 0.0f;
 	m_fAngle = 0.0f;
@@ -35,7 +36,7 @@ CCircleParticle * CCircleParticle::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3D
 	CCircleParticle *pCircleParticle;
 
 	// メモリ確保
-	pCircleParticle = new CCircleParticle(5);
+	pCircleParticle = new CCircleParticle(OBJTYPE_CIRCLE);
 
 	// 初期化
 	pCircleParticle->Init(pos, size, rot, col, TexType, fRadian, fLength);
@@ -64,6 +65,9 @@ HRESULT CCircleParticle::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot
 
 	// 角度0.1f
 	m_fAngle = 0.1f;
+
+	// カラータイプ
+	m_ColorType = COLOR_ADD;
 
 	// ラジアン計算
 	m_fRadian = m_fRadian * D3DX_PI * 2;

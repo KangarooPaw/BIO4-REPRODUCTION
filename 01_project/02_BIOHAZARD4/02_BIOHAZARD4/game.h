@@ -44,6 +44,7 @@ private:
 	static CKey *m_pKey;//‚Á‚Ä‚¢‚éƒJƒM•\¦
 	static CGate *m_pGate;				// –å
 	int m_nCount;
+	int m_EnemyCount;
 };
 
 #endif
