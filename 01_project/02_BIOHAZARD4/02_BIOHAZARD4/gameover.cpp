@@ -51,6 +51,9 @@ HRESULT CGameover::Init()
 //*****************************************************************************
 void CGameover::Uninit(void)
 {
+	//サウンドの停止
+	CManager::GetSound()->StopSound(CSound::SOUND_LABEL_BGM_RESULT);
+
 	//指定したオブジェクト以外のメモリの開放処理
 	CScene::DesignationReleaseAll(CScene::OBJTYPE_FADE);
 }
@@ -64,10 +67,9 @@ void CGameover::Update(void)
 	{
 		if (CManager::GetInputKeyboard()->GetKeyTrigger(DIK_RETURN) || CManager::GetInputJoystick()->GetJoystickTrigger(CInputJoystick::BUTTON_B))
 		{ //Enterキー または Bボタンを押したとき
-		  //サウンドの再生
+			//サウンドの再生
 			CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_DECISION);
-			//サウンドの停止
-			CManager::GetSound()->StopSound(CSound::SOUND_LABEL_BGM_RESULT);
+
 			//フェードの生成
 			CManager::CreateFade(CManager::MODE_TITLE);
 		}

@@ -161,7 +161,11 @@ void CManager::Uninit(void)
 		delete m_pInputKeyboard;
 		m_pInputKeyboard = NULL;
 	}
-	
+	if (m_pMode != NULL)
+	{
+		//その時のモードの終了処理
+		m_pMode->Uninit();
+	}
 	if (m_pSound != NULL)
 	{
 		//サウンド終了
@@ -169,12 +173,6 @@ void CManager::Uninit(void)
 		m_pSound->Uninit();
 		delete m_pSound;
 		m_pSound = NULL;
-	}
-
-	if (m_pMode != NULL)
-	{
-		//その時のモードの終了処理
-		m_pMode->Uninit();
 	}
 	//レンダラーの終了
 	if (m_pRenderer != NULL)

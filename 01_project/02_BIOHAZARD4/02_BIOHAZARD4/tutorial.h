@@ -36,6 +36,7 @@ private:
 	static CKey *m_pKey;//持っているカギ表示
 	static CGate *m_pGate;				// 門
 	int m_nCount;
+	bool m_bSoundGameStart;	//ゲームスタートサウンドが再生されているかの判定
 };
 
 #endif

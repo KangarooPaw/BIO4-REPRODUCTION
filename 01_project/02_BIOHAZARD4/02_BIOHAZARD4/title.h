@@ -24,6 +24,9 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
+private:
+	bool m_bSoundDecision;	//決定ボタンサウンドが再生されているかの判定
 };
 
 #endif
