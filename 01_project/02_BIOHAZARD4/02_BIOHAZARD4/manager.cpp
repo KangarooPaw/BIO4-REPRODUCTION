@@ -44,6 +44,7 @@
 #include "gameover.h"
 #include "gate.h"
 #include "button_ui.h"
+#include "reticle.h"
 
 //=============================================================================
 //スタティック変数初期化
@@ -263,6 +264,7 @@ void CManager::LoadAll(void)
 	CGameover::Load();
 	CGate::Load();
 	CButton_UI::Load();
+	CReticle::Load();
 }
 
 //=============================================================================
@@ -270,6 +272,7 @@ void CManager::LoadAll(void)
 //=============================================================================
 void CManager::UnloadAll(void)
 {	
+	CReticle::Unload();
 	CButton_UI::Unload();
 	CGate::Unload();
 	CBullet::Unload();

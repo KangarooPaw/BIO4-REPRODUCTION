@@ -16,7 +16,7 @@
 class CReticle : public CBillboard
 {
 public:
-	CReticle(int nPriority = 5);
+	CReticle(int nPriority = OBJTYPE_UI);
 	~CReticle();
 	static CReticle *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col);
 	static HRESULT Load(void);

@@ -40,7 +40,7 @@ CReticle * CReticle::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, 
 	CReticle *pReticle;
 
 	// メモリ確保
-	pReticle = new CReticle(5);
+	pReticle = new CReticle(OBJTYPE_UI);
 
 	// 初期化
 	pReticle->Init(pos, size, rot, col);
@@ -57,7 +57,7 @@ HRESULT CReticle::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// テクスチャ読み込み
-	//D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/particle003.png", &m_pTexture);
+	D3DXCreateTextureFromFile(pDevice, "data/TEXTURE/reticle001.png", &m_pTexture);
 
 	return S_OK;
 }
@@ -98,7 +98,7 @@ HRESULT CReticle::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXC
 	SetPosition(m_pos);
 
 	// サイズ設定
-	SetSize(size);
+	SetSize(m_size);
 
 	// 向き設定
 	SetRotation(m_rot);

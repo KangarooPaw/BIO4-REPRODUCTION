@@ -140,6 +140,8 @@ void CBillboard::Draw(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 	D3DXMATRIX mtxRot, mtxTrans; //行列計算用のマトリクス
 
+	//ライト無効
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 	//アルファテスト
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pDevice->SetRenderState(D3DRS_ALPHAREF, m_nAlpha);
@@ -179,6 +181,8 @@ void CBillboard::Draw(void)
 	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);   //数値
 	//アルファテスト無効化
 	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	//ライト有効
+	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 }
 //---------------------------------------------
 //　位置座標設定
