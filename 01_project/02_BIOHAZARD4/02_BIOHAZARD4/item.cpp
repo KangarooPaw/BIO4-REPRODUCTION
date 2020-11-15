@@ -15,12 +15,13 @@
 #include "kira.h"
 #include "joystick.h"
 #include "circleparticle.h"
+
 #define ROT_ADDSPEED 0.01f //向き加算
 #define UPDOWN_SPEED 0.05f //上下運動スピード
 #define ITEM_UP_VALUE 2.5f //上に上がる力
 #define ITEM_GRAVITY 0.05f //重力
 #define ITEM_KIRAKIRA_INTERVAL 50 //きらきら間隔
-
+#define ITEM_PARTICLE_INTERVAL 60 // 円のパーティクル生成する間隔
 //----------------------------------------
 //静的メンバ変数
 //----------------------------------------
@@ -204,6 +205,14 @@ void CItem::Update(void)
 		if (m_nCountTimer % ITEM_KIRAKIRA_INTERVAL == 0)
 		{
 			CKira::EffectKira(m_pos, D3DXVECTOR3(KIRA_SIZE_X, KIRA_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255));
+		}
+	}
+	if (m_type != TYPE_KEY)
+	{
+		m_nCountTimer++;
+		if (m_nCountTimer % ITEM_PARTICLE_INTERVAL == 0)
+		{
+			CCircleParticle::CircleCreate(m_pos, D3DXVECTOR3(PARTICLE_CIRCLE_SIZE_X, PARTICLE_CIRCLE_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), MAX_CIRCLE, 7.5f);
 		}
 	}
 

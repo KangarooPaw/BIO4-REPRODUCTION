@@ -29,6 +29,8 @@
 #include "sound.h"
 #include "circleparticle.h"
 #include "button_ui.h"
+#include "mazleflash.h"
+
 #define ADD_BULLET 10 //弾薬箱の玉取得数
 //----------------------------------------
 //静的メンバ変数
@@ -1035,8 +1037,6 @@ void CPlayer::GamePad(void)
 							CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_GET);
 							switch (ItemType)
 							{
-								// ボタンUI生成
-								CButton_UI::Create(D3DXVECTOR3(BUTTON_UI_POS), D3DXVECTOR3(BUTTON_UI_SIZE_X, BUTTON_UI_SIZE_Y, 0.0f), CButton_UI::TYPE_PICKUP);
 							case CItem::TYPE_HERB:
 								CHeal::HealCreate(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
 								CLife::LifeIncrement(20);
@@ -1312,7 +1312,7 @@ void CPlayer::GamePad(void)
 			//残弾数が0以上なら
 			if (m_nMagazineBullet > 0)
 			{
-				// Xボタンを押したら弾を発射
+				// R2ボタンを押したら弾を発射
 				if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 				{
 					//サウンドの再生
@@ -1325,7 +1325,14 @@ void CPlayer::GamePad(void)
 						100,
 						10,
 						CBullet::BULLETTYPE_PLAYER);
-
+					// マズルフラッシュ生成
+					CMazleFlash::Create(
+						D3DXVECTOR3(m_pModel[13]->GetMtxWorld()._41, m_pModel[13]->GetMtxWorld()._42 + 5, m_pModel[13]->GetMtxWorld()._43),
+						D3DXVECTOR3(MAZLE_FLASH_SIZE_X, MAZLE_FLASH_SIZE_Y, 0.0f),
+						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+						D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f),
+						CParticle::TEX_TYPE_1
+					);
 					//射撃モーション
 					m_pMotion->SetMotion(CMotion::MOTION_SHOT);
 					CEnemy::SetChase(true);

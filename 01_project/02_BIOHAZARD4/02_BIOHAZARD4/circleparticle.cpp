@@ -15,7 +15,6 @@
 CCircleParticle::CCircleParticle(int nPriority) : CParticle(nPriority)
 {
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_ColorType = COLOR_NONE;
 	m_fRadian = 0.0f;
 	m_fLength = 0.0f;
 	m_fAngle = 0.0f;
@@ -63,14 +62,14 @@ HRESULT CCircleParticle::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot
 	// カラー加算値を0.01fに
 	m_fAddColor = 0.01f;
 
-	// 角度0.01f
+	// 角度0.1f
 	m_fAngle = 0.1f;
-
-	// カラータイプ
-	m_ColorType = COLOR_ADD;
 
 	// ラジアン計算
 	m_fRadian = m_fRadian * D3DX_PI * 2;
+
+	// アルファテストの数値設定
+	SetAlpha(100);
 
 	return S_OK;
 }
@@ -103,31 +102,9 @@ void CCircleParticle::Update(void)
 	pos.x = m_pos.x + cosf(m_fRadian) * m_fLength;
 	pos.z = m_pos.z + sinf(m_fRadian) * m_fLength;
 
-	if (m_ColorType != COLOR_NONE)
-	{
-		if (m_ColorType == COLOR_ADD)
-		{
-			// a値加算
-			col.a += m_fAddColor;
-			// a値が1.0f以上の場合
-			if (col.a >= PARTICLE_CIRCLE_COL_MAX)
-			{
-				col.a = PARTICLE_CIRCLE_COL_MAX;
-				m_ColorType = COLOR_MIN;
-			}
-		}
-		if (m_ColorType == COLOR_MIN)
-		{
-			// a値減算
-			col.a -= m_fAddColor;
-			// a値が0.1以下の場合
-			if (col.a <= PARTICLE_CIRCLE_COL_MIN)
-			{
-				col.a = PARTICLE_CIRCLE_COL_MIN;
-				m_ColorType = COLOR_ADD;
-			}
-		}
-	}
+	// a値減算
+	col.a -= m_fAddColor;
+	
 	// カラー設定
 	SetColor(col);
 
