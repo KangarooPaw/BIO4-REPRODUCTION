@@ -31409,7 +31409,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "ConcreteBench.jpg";
+    "data\\TEXTURE\\ConcreteBench.jpg";
    }
   }
   Material {
@@ -31430,7 +31430,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "statue.jpg";
+    "data\\TEXTURE\\statue.jpg";
    }
   }
   Material {
@@ -31445,7 +31445,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "Metal023_2K_Color.png";
+    "data\\TEXTURE\\Metal023_2K_Color.png";
    }
   }
   Material {
@@ -31460,7 +31460,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\BIO4-REPRODUCTION\\01_project\\02_BIOHAZARD4\\02_BIOHAZARD4\\data\\TEXTURE\\casa_bosque_wall_1_2.jpeg";
+    "data\\TEXTURE\\casa_bosque_wall_1_2.jpeg";
    }
   }
   Material {
@@ -31475,7 +31475,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "casa_bosque_room_29_153.jpeg";
+    "data\\TEXTURE\\casa_bosque_room_29_153.jpeg";
    }
   }
   Material {
@@ -31502,7 +31502,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "brown_mud_dry_diff_2k.png";
+    "data\\TEXTURE\\brown_mud_dry_diff_2k.png";
    }
   }
   Material {
@@ -31511,7 +31511,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "roof_09_diff_2k.png";
+    "data\\TEXTURE\\roof_09_diff_2k.png";
    }
   }
   Material {
@@ -31526,7 +31526,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "Concrete032_2K_Color.png";
+    "data\\TEXTURE\\Concrete032_2K_Color.png";
    }
   }
   Material {
@@ -31535,7 +31535,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "WoodFloor041_2K_Color.png";
+    "data\\TEXTURE\\WoodFloor041_2K_Color.png";
    }
   }
   Material {
@@ -31544,7 +31544,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "Metal023_2K_Color.png";
+    "data\\TEXTURE\\Metal023_2K_Color.png";
    }
   }
   Material {
@@ -31553,7 +31553,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "wood_planks_dirt_diff_1k.png";
+    "data\\TEXTURE\\wood_planks_dirt_diff_1k.png";
    }
   }
   Material {
@@ -31562,7 +31562,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "wood_planks_dirt_diff_1k.png";
+    "data\\TEXTURE\\wood_planks_dirt_diff_1k.png";
    }
   }
   Material {
@@ -31571,7 +31571,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "maple_leaf.png";
+    "data\\TEXTURE\\maple_leaf.png";
    }
   }
   Material {
