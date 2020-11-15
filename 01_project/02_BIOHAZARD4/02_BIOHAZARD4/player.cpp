@@ -1117,12 +1117,12 @@ void CPlayer::GamePad(void)
 			//左スティックを後ろに倒す
 			if (pStick.lY >= 500)
 			{
-				//サウンドの再生
-				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_BACK_WALK);
 
 				//ダメージモーション中でないなら
 				if (m_bDamageMotion == false)
 				{
+					//サウンドの再生
+					CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_BACK_WALK);
 					//戻るモーション
 					m_pMotion->SetMotion(CMotion::MOTION_BACK);
 				}
@@ -1131,8 +1131,11 @@ void CPlayer::GamePad(void)
 				//Aボタンを押して反転
 				if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
 				{
-					m_bTurn = true;
-					m_bAllMotion = true;
+					if (m_bReloadMotion == false)
+					{
+						m_bTurn = true;
+						m_bAllMotion = true;
+					}
 				}
 			}
 			////アイテムを取得する

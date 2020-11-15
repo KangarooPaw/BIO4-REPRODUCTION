@@ -24,7 +24,7 @@ public:
 		TYPE_SMOKE,
 		TYPE_MAX,
 	}TYPE;
-	CBoxEffect(int nPriority = 9);
+	CBoxEffect(int nPriority = OBJTYPE_BOX);
 	~CBoxEffect();
 	static CBoxEffect *Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, TYPE type);
 	static HRESULT Load(void);

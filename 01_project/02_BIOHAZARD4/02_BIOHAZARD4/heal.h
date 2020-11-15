@@ -21,7 +21,7 @@ public:
 		TYPE_NONE = 0,
 		TYPE_RHOMBUS,
 	}TYPE;
-	CHeal();
+	CHeal(int nPriority = OBJTYPE_PARTICLE);
 	~CHeal();
 	static CHeal *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, CParticle::TEX_TYPE TexType);
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, CParticle::TEX_TYPE TexType);

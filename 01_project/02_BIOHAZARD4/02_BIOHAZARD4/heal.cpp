@@ -12,7 +12,7 @@
 //--------------------------------------------------------------------
 // コンストラクタ
 //--------------------------------------------------------------------
-CHeal::CHeal()
+CHeal::CHeal(int nPriority) : CParticle(nPriority)
 {
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_fAddColor = 0.0f;
@@ -32,7 +32,7 @@ CHeal * CHeal::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCO
 	CHeal *pHeal;
 
 	// メモリ確保
-	pHeal = new CHeal;
+	pHeal = new CHeal(OBJTYPE_PARTICLE);
 
 	// 初期化
 	pHeal->Init(pos, size, rot, col, TexType);

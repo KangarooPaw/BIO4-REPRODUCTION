@@ -88,6 +88,7 @@ public:
 	D3DXVECTOR3 GetSize(void) { return m_size; }//サイズ
 	bool GetDeath(void) { return m_bDeath; }//死亡フラグ
 	bool GetMotion(void) { return m_bAllMotion; }
+	bool GetTurn(void) { return m_bTurn; }
 	bool GetHasKeyAll(void) { return m_bHasKeyAll; }
 private:
 	bool CollisionItem(D3DXVECTOR3 pos1, D3DXVECTOR3 size1, D3DXVECTOR3 pos2, D3DXVECTOR3 size2);

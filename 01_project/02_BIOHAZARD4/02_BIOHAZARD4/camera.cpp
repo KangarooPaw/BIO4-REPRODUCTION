@@ -295,23 +295,18 @@ void CCamera::GamePad(void)
 	bool pPlayerDeath = CGame::GetPlayer()->GetDeath();
 	//プレイヤーのモーション判定
 	bool pPlayerMotion = CGame::GetPlayer()->GetMotion();
-	if (m_bTurn == false)
-	{
-		//左スティックを後ろに倒す//Aボタンを押して反転
-		if (pStick.lY >= 500 && pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_A))
-		{
-			m_bTurn = true;
-		}
-	}
+	// プレイヤーのターンの判定
+	bool bPlayerTurn = CGame::GetPlayer()->GetTurn();
+
 	//ターン中なら
-	if (m_bTurn == true)
+	if (bPlayerTurn == true)
 	{
 		m_lPhi -= D3DXToRadian(6);
 		m_nTurnCnt++;
 		//ターンの終了
 		if (m_nTurnCnt == 30)
 		{
-			m_bTurn = false;
+			bPlayerTurn = false;
 			m_nTurnCnt = 0;
 		}
 		//注視点

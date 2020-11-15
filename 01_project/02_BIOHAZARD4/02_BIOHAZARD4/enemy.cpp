@@ -19,6 +19,7 @@
 #include "map.h"
 #include "gate.h"
 #include "sound.h"
+#include "blood.h"
 
 //----------------------------------------
 //静的メンバ変数
@@ -452,6 +453,7 @@ void CEnemy::HitBullet(int nDamage,int nType)
 	{
 		if (m_bHit == false)
 		{
+			CBlood::BloodSplash(m_pos, D3DXVECTOR3(SPLACH_BLOOD_SIZE_X, SPLACH_BLOOD_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255));
 			//ダメージモーション
 			m_pMotion->SetMotion(CMotion::MOTION_DAMAGE);
 			m_bHit = true;
