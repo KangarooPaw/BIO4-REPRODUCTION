@@ -161,11 +161,12 @@ void CManager::Uninit(void)
 		delete m_pInputKeyboard;
 		m_pInputKeyboard = NULL;
 	}
-	//サウンド終了
-	m_pSound->CSound::StopSound();
-	m_pSound->Uninit();
+	
 	if (m_pSound != NULL)
 	{
+		//サウンド終了
+		m_pSound->CSound::StopSound();
+		m_pSound->Uninit();
 		delete m_pSound;
 		m_pSound = NULL;
 	}
@@ -261,7 +262,6 @@ void CManager::LoadAll(void)
 	CSkyBox::Load();
 	CNumber::Load();
 	CKeyUi::Load();
-	CGameover::Load();
 	CGate::Load();
 	CButton_UI::Load();
 	CReticle::Load();
@@ -289,7 +289,6 @@ void CManager::UnloadAll(void)
 	CLife::Unload();
 	CNumber::Unload();
 	CKeyUi::Unload();
-	CGameover::Unload();
 }
 
 //=============================================================================
@@ -355,6 +354,7 @@ void CManager::SetMode(MODE mode)
 			m_pMode->Init();
 
 			break;
+
 		case MODE_GAMEOVER:
 
 			//ゲームオーバー画面の生成

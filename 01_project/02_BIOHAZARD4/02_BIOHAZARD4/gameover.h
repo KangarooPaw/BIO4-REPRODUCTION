@@ -26,9 +26,6 @@ public:
 	void Draw(void);
 	static HRESULT Load(void);
 	static void Unload(void);
-private:
-	LPDIRECT3DVERTEXBUFFER9   m_pVtxBuff;
-	static LPDIRECT3DTEXTURE9 m_pTexture;
 };
 
 #endif

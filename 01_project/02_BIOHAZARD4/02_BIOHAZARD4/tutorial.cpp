@@ -73,8 +73,6 @@ HRESULT CTutorial::Init(void)
 //*****************************************************************************
 void CTutorial::Uninit(void)
 {
-	//サウンドの停止
-	CManager::GetSound()->StopSound(CSound::SOUND_LABEL_BGM_TUTORIAL);
 
 	//指定したオブジェクト以外のメモリの開放処理
 	CScene::DesignationReleaseAll(CScene::OBJTYPE_FADE);
@@ -91,7 +89,8 @@ void CTutorial::Update(void)
 		{ //Enterキー または Bボタンを押したとき
 		  //サウンドの再生
 			CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_GAME_START);
-
+			//サウンドの停止
+			CManager::GetSound()->StopSound(CSound::SOUND_LABEL_BGM_TUTORIAL);
 		  //フェードの生成
 			CManager::CreateFade(CManager::MODE_GAME);
 		}

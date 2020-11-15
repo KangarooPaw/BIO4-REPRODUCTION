@@ -10,7 +10,7 @@
 //テクスチャ
 #define TEXTURE_GAMEOVER			"data/TEXTURE/gameover.png"
 //テクスチャ
-#define TEXTURE_RESULT			"data/TEXTURE/gameover.png"
+#define TEXTURE_RESULT			"data/TEXTURE/result.jpg"
 
 class CUi :public CScene2D
 {

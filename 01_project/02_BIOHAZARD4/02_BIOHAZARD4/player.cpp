@@ -325,6 +325,8 @@ void CPlayer::Update(void)
 			{
 				if (CScene::GetUpdateStop() == false)
 				{
+					//サウンドの停止
+					CManager::GetSound()->StopSound(CSound::SOUND_LABEL_BGM_GAME);
 					//フェードの生成
 					CManager::CreateFade(CManager::MODE_RESULT);
 				}
@@ -918,6 +920,8 @@ void CPlayer::spin(void)
 		//5秒でスピンの終了
 		if (m_nSpinCnt == 300)
 		{
+			//サウンドの停止
+			CManager::GetSound()->StopSound(CSound::SOUND_LABEL_SE_ROTATION);
 			m_nSpinCnt = 0;
 			m_bspin = false;
 			m_pEnemy->Uninit();
