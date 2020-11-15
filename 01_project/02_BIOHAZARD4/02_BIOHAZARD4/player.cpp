@@ -1230,12 +1230,11 @@ void CPlayer::GamePad(void)
 			//残弾数が0以上なら
 			if (m_nMagazineBullet > 0)
 			{
-				//サウンドの再生
-				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_SHOT);
-
 				// Xボタンを押したら弾を発射
 				if (pInputJoystick->GetJoystickTrigger(pInputJoystick->BUTTON_R2))
 				{
+					//サウンドの再生
+					CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_SHOT);
 					//弾の生成
 					CBullet::Create(
 						D3DXVECTOR3(m_pos.x + cosf(m_rot.y), m_pos.y + 20.0f, m_pos.z + sinf(m_rot.y)),
