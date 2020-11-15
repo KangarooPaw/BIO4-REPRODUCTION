@@ -89,7 +89,7 @@ void CCamera::Update(void)
 		if (bGateOpen == true)
 		{
 			// ˆÊ’u‚ğ–å‚Ì‘O‚É
-			posV = D3DXVECTOR3(GatePos.x, GatePos.y + 50, GatePos.z - 100);
+			posV = D3DXVECTOR3(GatePos.x, GatePos.y + 50, GatePos.z - 300);
 			// ’‹“_
 			posR.x = GatePos.x;
 			posR.y = GatePos.y + 50;

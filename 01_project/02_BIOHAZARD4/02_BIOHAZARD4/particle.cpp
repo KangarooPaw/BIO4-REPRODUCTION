@@ -101,6 +101,8 @@ HRESULT CParticle::Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DX
 	// テクスチャ受け渡し
 	BindTexture(m_pTexture[m_TexType]);
 
+	// オブジェクトタイプ設定
+	SetObjType(OBJTYPE_PARTICLE);
 	return S_OK;
 }
 //-----------------------------------------------------------

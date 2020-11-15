@@ -153,6 +153,7 @@
     <ClCompile Include="box.cpp" />
     <ClCompile Include="boxeffect.cpp" />
     <ClCompile Include="bullet_ui.cpp" />
+    <ClCompile Include="button_ui.cpp" />
     <ClCompile Include="circleparticle.cpp" />
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="explosion.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="box.h" />
     <ClInclude Include="boxeffect.h" />
     <ClInclude Include="bullet_ui.h" />
+    <ClInclude Include="button_ui.h" />
     <ClInclude Include="circleparticle.h" />
     <ClInclude Include="collision.h" />
     <ClInclude Include="explosion.h" />

@@ -210,6 +210,9 @@
     <ClCompile Include="mouse.cpp">
       <Filter>ソース ファイル\Input</Filter>
     </ClCompile>
+    <ClCompile Include="button_ui.cpp">
+      <Filter>ソース ファイル\Scene\2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -370,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="mouse.h">
       <Filter>ヘッダー ファイル\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="button_ui.h">
+      <Filter>ヘッダー ファイル\Scene\2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

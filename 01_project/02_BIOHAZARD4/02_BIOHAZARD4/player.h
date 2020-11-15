@@ -136,9 +136,10 @@ private:
 
 	bool m_bReticle;					// レティクルの生成判定
 
-	static bool m_bHasKeyAll;				// 鍵を全て持っているかの判定
+	static bool m_bHasKeyAll;			// 鍵を全て持っているかの判定
 	int m_nSpinCnt;						//スピンのカウント
 	bool m_bspin;						// 敵を回転させる判定
+	bool m_bButtonUI;					// ボタンUIの使用判定
 	
 	CEnemy *m_pEnemy;					// 敵クラスのポインタ
 	CMotion *m_pMotion;					// モーションクラスのポインタ
