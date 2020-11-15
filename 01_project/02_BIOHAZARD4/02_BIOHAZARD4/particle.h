@@ -24,7 +24,7 @@ public:
 		TEX_TYPE_KIRA,//‚«‚ç‚«‚ç
 		TEX_TYPE_MAX,
 	}TEX_TYPE;
-	CParticle(int nPriority = 5);
+	CParticle(int nPriority = OBJTYPE_PARTICLE);
 	~CParticle();
 	static HRESULT Load(void);
 	static void Unload(void);

@@ -12,7 +12,7 @@
 //--------------------------------------------------------------------
 // コンストラクタ
 //--------------------------------------------------------------------
-CMazleFlash::CMazleFlash()
+CMazleFlash::CMazleFlash(int nPriority) : CParticle(nPriority)
 {
 	m_fScale = 0.0f;
 	m_fAddScale = 0.0f;
@@ -33,7 +33,7 @@ CMazleFlash * CMazleFlash::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3
 	CMazleFlash *pMazleFlash;
 
 	// メモリ確保
-	pMazleFlash = new CMazleFlash;
+	pMazleFlash = new CMazleFlash(OBJTYPE_PARTICLE);
 
 	// 初期化
 	pMazleFlash->Init(pos, size, rot, col, TexType);

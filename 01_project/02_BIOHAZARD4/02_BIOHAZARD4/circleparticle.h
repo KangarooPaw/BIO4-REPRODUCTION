@@ -21,7 +21,7 @@ class CCircleParticle : public CParticle
 {
 public:
 
-	CCircleParticle(int nPriority = 5);
+	CCircleParticle(int nPriority = OBJTYPE_PARTICLE);
 	~CCircleParticle();
 	static CCircleParticle *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, CParticle::TEX_TYPE TexType, float fRadian, float fLength);
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 size, D3DXVECTOR3 rot, D3DXCOLOR col, CParticle::TEX_TYPE TexType, float fRadian, float fLength);
