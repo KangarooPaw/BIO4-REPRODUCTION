@@ -27,6 +27,7 @@ public:
 
 	void SetParent(CModel *cmodel);
 	void SetWorldMatrix(D3DXMATRIX mtxWorld);
+	void SetBoolFog(bool bFog);
 
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
@@ -43,7 +44,7 @@ private:
 	D3DXVECTOR3 m_pos;		 // 位置
 	D3DXVECTOR3 m_rot;		 // 角度
 	D3DXVECTOR3 m_size;	   // サイズ
-
+	bool        m_bIsFog;//フォグ描画するか
 	CModel *m_pParent;
 };
 

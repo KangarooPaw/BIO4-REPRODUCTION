@@ -135,7 +135,7 @@ HRESULT CSkyBox::Init(void)
 {
 	// モデルの生成
 	m_pModel = CModel::Create();
-
+	m_pModel->SetBoolFog(true);
 	// モデルのバインド
 	m_pModel->BindModel(m_pMesh, m_pBuffMat, m_nNumMat, 0);
 
@@ -199,6 +199,7 @@ void CSkyBox::Draw(void)
 
 	//アルファテスト無効化
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	
 }
 
 //----------------------------------------
