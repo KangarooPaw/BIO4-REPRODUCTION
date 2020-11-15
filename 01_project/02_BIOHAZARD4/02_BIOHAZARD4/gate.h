@@ -64,6 +64,7 @@ private:
 	bool m_bOpen;
 	bool m_bmove;
 	int m_nCount;						//	カウント
+	bool m_bSoundGateOpen;				//ゲートを開けるサウンドが再生されているかの判定
 };
 
 #endif

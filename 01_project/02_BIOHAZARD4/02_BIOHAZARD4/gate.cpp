@@ -40,6 +40,7 @@ CGate::CGate(int nPriority) :CScene(nPriority)
 	m_bOpen = false;
 	m_bmove = false;
 	m_nCount = 0;
+	m_bSoundGateOpen = false;
 }
 
 //----------------------------------------
@@ -199,8 +200,13 @@ void CGate::Update(void)
 			// m_bOpenがtrueの場合
 			if (m_bOpen == true)
 			{
-				//サウンドの再生
-				CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_DOOR_OPEN);
+				if (m_bSoundGateOpen == false)
+				{
+					//サウンドの再生
+					CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_DOOR_OPEN);
+
+					m_bSoundGateOpen = true;
+				}
 
 				// カウントインクリメント
 				m_nCount++;
