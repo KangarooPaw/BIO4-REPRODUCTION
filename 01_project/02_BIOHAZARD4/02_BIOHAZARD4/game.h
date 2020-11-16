@@ -46,5 +46,4 @@ private:
 	int m_nCount;
 	int m_EnemyCount;
 };
-
 #endif
