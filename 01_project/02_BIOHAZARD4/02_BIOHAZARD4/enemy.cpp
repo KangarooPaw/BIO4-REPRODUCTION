@@ -477,6 +477,7 @@ void CEnemy::HitBullet(int nDamage,int nType)
 			{
 				Create(m_pos, m_rot, m_size, ENEMYSTATE_ITEM);
 			}
+			CGame::DeathEnemy(1);
 			Uninit();
 		}
 		else
