@@ -76,12 +76,12 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_Getrot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);  //角度
 	m_Getsize = D3DXVECTOR3(0.0f, 0.0f, 0.0f); //サイズ
 	//弾
-	m_bulletRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	
+	m_bulletRot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_bulletRotX = 0;
 	m_bulletRotY = 0;
 	//残弾初期化
 	m_nMagazineBullet = MAX_MAGAZINE_BULLET;
-	m_nHaveBullet = 10;
+	m_nHaveBullet = 50;
 	//鍵初期化
 	m_nKey = 0;
 
@@ -94,17 +94,17 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_nReloadMotionCnt = 0;
 	m_bReloadMotion = false;
 	//ダメージモーション
-	m_nDamageMotionCnt = 0;	
+	m_nDamageMotionCnt = 0;
 	m_bDamageMotion = false;
 	//死亡モーション
 	m_nDeathMotionCnt = 0;
-	m_bDeathMotion = false;	
+	m_bDeathMotion = false;
 	//死亡フラグ
 	m_bDeath = false;
 	// 全てのカギを持っているか
 	m_bHasKeyAll = false;
 	//ターンモーション
-	m_nTurnCnt = 0;	
+	m_nTurnCnt = 0;
 	m_bTurn = false;
 	//レティクルの生成判定
 	m_bReticle = false;
@@ -711,7 +711,7 @@ void CPlayer::Keyboard(void)
 		{
 			if (m_bKnifeMotion == false)
 			{
-				//ナイフを振るモーション			
+				//ナイフを振るモーション
 				m_pMotion->SetMotion(CMotion::MOTION_SLASH);
 
 				//弾の生成
@@ -829,7 +829,7 @@ void CPlayer::Keyboard(void)
 		if (pInputKeyboard->GetKeyPress(DIK_SPACE))
 		{
 			for (m_nMagazineBullet; m_nMagazineBullet < MAX_MAGAZINE_BULLET; m_nMagazineBullet++)
-			{	
+			{
 				if (m_nHaveBullet < 0)
 				{
 					m_nHaveBullet = 0;
@@ -967,7 +967,7 @@ void CPlayer::spin(void)
 			m_nSpinCnt = 0;
 			m_bspin = false;
 			m_pEnemy->Uninit();
-			
+
 		}
 
 		// 動くものに対してのレイ
@@ -1233,7 +1233,7 @@ void CPlayer::GamePad(void)
 
 				if (m_bKnifeMotion == false)
 				{
-					//ナイフを振るモーション			
+					//ナイフを振るモーション
 					m_pMotion->SetMotion(CMotion::MOTION_SLASH);
 
 					//弾の生成
