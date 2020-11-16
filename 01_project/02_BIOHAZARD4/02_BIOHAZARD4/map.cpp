@@ -1,5 +1,7 @@
 //****************************************************************************************************
+//
 //モデル処理
+//
 //****************************************************************************************************
 
 //****************************************************************************************************
@@ -58,7 +60,7 @@ CMap * CMap::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 HRESULT CMap::Load(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-		// Xファイルの読み込み
+		//Xファイルの読み込み
 		D3DXLoadMeshFromX(m_apFileName,
 			D3DXMESH_SYSTEMMEM,
 			pDevice,
@@ -69,7 +71,7 @@ HRESULT CMap::Load(void)
 			&m_pMesh
 		);
 
-		// テクスチャの読み込み
+		//テクスチャの読み込み
 		LoadTexture();
 
 	return E_NOTIMPL;
@@ -80,14 +82,14 @@ HRESULT CMap::Load(void)
 //****************************************************************************************************
 void CMap::Unload(void)
 {
-		// メッシュの破棄
+		//メッシュの破棄
 		if (m_pMesh != NULL)
 		{
 			m_pMesh->Release();
 			m_pMesh = NULL;
 		}
 
-		// マテリアルの破棄
+		//マテリアルの破棄
 		if (m_pBuffMat != NULL)
 		{
 			m_pBuffMat->Release();
@@ -101,20 +103,20 @@ void CMap::Unload(void)
 }
 
 //****************************************************************************************************
-// テクスチャの読み込み
+//テクスチャの読み込み
 //****************************************************************************************************
 HRESULT CMap::LoadTexture(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	// マテリアル情報を取り出す
+	//マテリアル情報を取り出す
 	D3DXMATERIAL* pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer();
 	for (int nCntMat = 0; nCntMat < (signed)m_nNumMat; nCntMat++)
 	{
-		// 使用しているテクスチャがあれば読み込む
+		//使用しているテクスチャがあれば読み込む
 		if (pMat[nCntMat].pTextureFilename != NULL)
 		{
-			// テクスチャ読み込み
+			//テクスチャ読み込み
 			if (FAILED(D3DXCreateTextureFromFile(
 				pDevice,
 				pMat[nCntMat].pTextureFilename,
@@ -133,17 +135,18 @@ HRESULT CMap::LoadTexture(void)
 //****************************************************************************************************
 HRESULT CMap::Init(void)
 {
-		// モデルの生成
+		//モデルの生成
 		m_pModel = CModel::Create();
 
-		// モデルのバインド
+		//モデルのバインド
 		m_pModel->BindModel(m_pMesh, m_pBuffMat, m_nNumMat, 0);
 
 		for (int nCntMat = 0; nCntMat < (signed)m_nNumMat; nCntMat++)
 		{
-			// テクスチャのバインド
+			//テクスチャのバインド
 			m_pModel->BindTexture(m_pTexture[nCntMat], nCntMat);
 		}
+
 	return S_OK;
 }
 
@@ -154,7 +157,7 @@ void CMap::Uninit(void)
 {
 		if (m_pModel != NULL)
 		{
-			// モデルクラスの終了処理
+			//モデルクラスの終了処理
 			m_pModel->Uninit();
 			m_pModel = NULL;
 		}
@@ -166,7 +169,6 @@ void CMap::Uninit(void)
 //****************************************************************************************************
 void CMap::Update(void)
 {
-
 }
 
 //****************************************************************************************************
@@ -175,8 +177,8 @@ void CMap::Update(void)
 void CMap::Draw(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
 	D3DXMATRIX mtxRot, mtxTrans;
+
 		//ワールドマトリクスの初期化
 		D3DXMatrixIdentity(&m_mtxWorld);
 
@@ -188,10 +190,10 @@ void CMap::Draw(void)
 		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
 		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
-		// ワールドマトリックスの設定
+		//ワールドマトリックスの設定
 		//m_pModel[nCount]->SetWorldMatrix(m_mtxWorld[nCount]);
 
-		// モデルクラスの描画処理
+		//モデルクラスの描画処理
 		m_pModel->Draw();
 
 		//D3DXMATERIAL*pMat;
@@ -215,7 +217,6 @@ void CMap::Draw(void)
 		//		m_pMesh->DrawSubset(nCntMat);
 		//	}
 		//}
-
 }
 
 //****************************************************************************************************
@@ -223,8 +224,8 @@ void CMap::Draw(void)
 //****************************************************************************************************
 void CMap::SetMap(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size)
 {
-	m_pos = pos;				//場所
+	m_pos = pos;			//場所
 	m_rot = rot;				//角度
-	m_size = size;				//大きさ
+	m_size = size;			//大きさ
 	SetObjType(OBJTYPE_NONE); //オブジェクトタイプの設定
 }
