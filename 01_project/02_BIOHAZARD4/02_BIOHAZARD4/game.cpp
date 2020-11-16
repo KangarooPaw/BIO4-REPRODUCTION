@@ -147,15 +147,11 @@ void CGame::Update(void)
 	
 	if (m_nCount == 250)
 	{
-		if (m_EnemyCount <= 30)
-		{
 			m_nCount = 0;
 			float fPosX = float(rand() % 700 - 300);
 			float fPosZ = float(rand() % 700 - 300);
 			CEnemy::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
 			m_EnemyCount++;
-		}
-
 	}
 }
 
