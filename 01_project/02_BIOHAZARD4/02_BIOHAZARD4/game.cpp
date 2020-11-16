@@ -188,3 +188,4 @@ CKey * CGame::GetKey(void)
 {
 	return m_pKey;
 }
+

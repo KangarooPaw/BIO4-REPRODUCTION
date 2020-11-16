@@ -37,6 +37,7 @@ public:
 	static CBulletUi *GetBulletHaveUi(void);
 	static CKey *GetKey(void);
 	static CGate *GetGate(void) { return m_pGate; }
+	static void DeathEnemy(int nCount);
 private:
 	static CPlayer *m_pPlayer;	//プレイヤー
 	static CBulletUi *m_pBulletUi;//弾の残弾数表示

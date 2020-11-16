@@ -31,7 +31,7 @@
 #include "button_ui.h"
 #include "mazleflash.h"
 
-#define ADD_BULLET 10 //’e–ò” ‚Ì‹Êæ“¾”
+#define ADD_BULLET 30 //’e–ò” ‚Ì‹Êæ“¾”
 //----------------------------------------
 //Ã“Iƒƒ“ƒo•Ï”
 //----------------------------------------
@@ -81,7 +81,7 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_bulletRotY = 0;
 	//c’e‰Šú‰»
 	m_nMagazineBullet = MAX_MAGAZINE_BULLET;
-	m_nHaveBullet = 10;
+	m_nHaveBullet = 50;
 	//Œ®‰Šú‰»
 	m_nKey = 0;
 
