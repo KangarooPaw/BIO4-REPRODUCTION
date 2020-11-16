@@ -384,6 +384,14 @@ void CPlayer::Update(void)
 				//45フレームでリセット
 				if (m_nKnifeMotionCnt % 45 == 0)
 				{
+					//弾の生成
+					CBullet::Create(
+						D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f, m_pos.z),
+						D3DXVECTOR3(20.0f, 0.0f, 20.0f),
+						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+						5,
+						30,
+						CBullet::BULLETTYPE_PLAYER);
 					m_bKnifeMotion = false;
 					m_bAllMotion = false;
 					m_nKnifeMotionCnt = 0;
@@ -1235,15 +1243,6 @@ void CPlayer::GamePad(void)
 				{
 					//ナイフを振るモーション			
 					m_pMotion->SetMotion(CMotion::MOTION_SLASH);
-
-					//弾の生成
-					CBullet::Create(
-						D3DXVECTOR3(m_pos.x, m_pos.y + 20.0f, m_pos.z),
-						D3DXVECTOR3(20.0f, 0.0f, 20.0f),
-						D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-						5,
-						10,
-						CBullet::BULLETTYPE_PLAYER);
 
 					m_bKnifeMotion = true;
 					m_bAllMotion = true;
