@@ -460,6 +460,7 @@ void CPlayer::Update(void)
 			if (m_bAllMotion == false)
 			{
 				//Keyboard();
+				//ゲームパッド操作
 				GamePad();
 			}
 			for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
@@ -502,10 +503,9 @@ void CPlayer::Update(void)
 						{
 							// 範囲より小さかったら
 							if (fDistancePlayer < 15.0f)
-							{
+							{ 
 								// 戻す
 								m_pos -= (D3DXVECTOR3(sinf(vecDirection.y), 0.0f, cosf(vecDirection.y)));
-
 								for (int nCount = 0; nCount < MAX_PLAYER_PARTS; nCount++)
 								{
 									// モデルのパーツごとの座標と回転を受け取る
@@ -974,7 +974,7 @@ void CPlayer::spin(void)
 
 		m_nSpinCnt++;
 		//5秒でスピンの終了
-		if (m_nSpinCnt == 300)
+		if (m_nSpinCnt == 550)
 		{
 			//サウンドの停止
 			CManager::GetSound()->StopSound(CSound::SOUND_LABEL_SE_ROTATION);
@@ -1104,6 +1104,12 @@ void CPlayer::GamePad(void)
 				}
 				m_pos.x += -sinf(m_rot.y)*1.0f;
 				m_pos.z += -cosf(m_rot.y)*1.0f;
+				//Aボタンを押して反転
+				if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_A))
+				{
+					m_pos.x += -sinf(m_rot.y)*2.0f;
+					m_pos.z += -cosf(m_rot.y)*2.0f;
+				}
 			}
 			//左スティックを後ろに倒す
 			if (pStick.lY >= 500)

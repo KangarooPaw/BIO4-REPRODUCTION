@@ -353,42 +353,16 @@ void CCamera::GamePad(void)
 			posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;
 			posR.y = pPlayerPos.y + GAZE_Y;
 			posR.z = m_Distance*sinf(-pPlayerRot.y) + pPlayerPos.z;
+			//視点	
+			m_Distance = CAMERA_VIEW;	//距離
+			posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi)) + posR.x;
+			posV.y = m_Distance*cosf(m_lTheta) + posR.y;
+			posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 		}
 		//LTで銃を構える/LBでナイフを構える
 		else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) ||
 			pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
 		{
-			////右スティックを左に倒す
-			//if (pStick.lRx <= -500 || pStick.lZ <= -500)
-			//{
-			//	posR.x += cosf(pPlayerRot.y)*RETICLE_MOVE;
-			//	posR.z -= sinf(pPlayerRot.y)*RETICLE_MOVE;
-			//	m_lPhi += D3DXToRadian(1);
-			//	m_RotX++;
-			//	if (m_RotX >= MAX_ROT_Y)
-			//	{
-			//		posR.x -= cosf(pPlayerRot.y)*RETICLE_MOVE;
-			//		posR.z += sinf(pPlayerRot.y)*RETICLE_MOVE;
-			//		m_lPhi -= D3DXToRadian(1);
-			//		m_RotX = MAX_ROT_Y;
-			//	}
-			//}
-			////右スティックを右に倒す
-			//if (pStick.lRx >= 500 || pStick.lZ >= 500)
-			//{
-			//	posR.x -= cosf(pPlayerRot.y)*RETICLE_MOVE;
-			//	posR.z += sinf(pPlayerRot.y)*RETICLE_MOVE;
-			//	m_lPhi -= D3DXToRadian(1);
-			//	m_RotX--;
-			//	if (m_RotX <= MIN_ROT_Y)
-			//	{
-			//		posR.x += cosf(pPlayerRot.y)*RETICLE_MOVE;
-			//		posR.z -= sinf(pPlayerRot.y)*RETICLE_MOVE;
-			//		m_lPhi += D3DXToRadian(1);
-			//		m_RotX = MIN_ROT_Y;
-			//	}
-			//}
-
 			//右スティックを左に倒す
 			if (pStick.lZ <= -500)
 			{
@@ -405,7 +379,6 @@ void CCamera::GamePad(void)
 			//右スティックを上に倒す
 			if (pStick.lRy <= -500 || pStick.lRz <= -500)
 			{
-
 				m_lTheta += D3DXToRadian(1);
 				posR.y += cosf(m_lTheta);
 				m_RotY++;
@@ -432,8 +405,13 @@ void CCamera::GamePad(void)
 			}
 			//注視点
 			m_Distance = CAMERA_GAZE;	//距離
-			posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;
+			posR.x = m_Distance*cosf(pPlayerRot.y)  + pPlayerPos.x;
 			posR.z = m_Distance*sinf(-pPlayerRot.y) + pPlayerPos.z;
+			//視点													   
+			m_Distance = CAMERA_VIEW;	//距離
+			posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi))  + posR.x;
+			posV.y = m_Distance*cosf(m_lTheta) + posR.y;
+			posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi))  + posR.z;
 			//10フレームだけ進める
 			if (m_nCount <= HOLD_FRAME)
 			{
@@ -446,11 +424,5 @@ void CCamera::GamePad(void)
 			}
 			m_nCount++;
 		}
-
-		//視点	
-		m_Distance = CAMERA_VIEW;	//距離
-		posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi)) + posR.x;
-		posV.y = m_Distance*cosf(m_lTheta) + posR.y;
-		posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 	}
 }
