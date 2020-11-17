@@ -218,7 +218,6 @@ HRESULT CEnemy::Init(void)
 	// 座標、回転、サイズのセット
 	m_pModel[0]->SetModel(m_pMotion->GetPos(0) + m_pos, m_pMotion->GetRot(0) + m_rot, m_size);
 
-    m_bChase = false;
     return S_OK;
 }
 
@@ -372,7 +371,7 @@ void CEnemy::Update(void)
 							// 範囲より小さかったら
 							if (m_fDistanceEnemy < 15.0f)
 							{
-								// 戻す
+								// ずらす
 								m_pos -= (D3DXVECTOR3(sinf(m_vexDirection.y), 0.0f, cosf(m_vexDirection.y)));
 
 								for (int nCount = 0; nCount < MAX_ENEMY_PARTS; nCount++)
@@ -482,6 +481,8 @@ void CEnemy::HitBullet(int nDamage,int nType)
 		}
 		else
 		{
+			m_pos.x -= -sinf(m_rot.y )*0.8f;
+			m_pos.z -= -cosf(m_rot.y )*0.8f;
 			//サウンドの再生
 			CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_SE_ZOMBIE_DAMAGE);
 		}
@@ -513,8 +514,9 @@ void CEnemy::EnemyCollision(void)
 					if (CCollision::SphereCollision(m_pos, m_size.x, m_Getpos, m_Getsize.x) == true)
 					{
 						// 戻す
-						m_pos += (D3DXVECTOR3(cosf(fAngle), 0.0f, sinf(fAngle)));
-
+						//m_pos -= (D3DXVECTOR3(cosf(fAngle), 0.0f, sinf(fAngle)));
+						m_pos.x -= -sinf(m_rot.y + D3DXToRadian(2))*0.4f;
+						m_pos.z -= -cosf(m_rot.y + D3DXToRadian(2))*0.4f;
 					}
 				}
 			}
