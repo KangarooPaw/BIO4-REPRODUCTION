@@ -81,7 +81,7 @@ CPlayer::CPlayer(int nPriority) :CScene(nPriority)
 	m_bulletRotY = 0;
 	//c’e‰Šú‰»
 	m_nMagazineBullet = MAX_MAGAZINE_BULLET;
-	m_nHaveBullet = 10;
+	m_nHaveBullet = 50;
 	//Œ®‰Šú‰»
 	m_nKey = 0;
 

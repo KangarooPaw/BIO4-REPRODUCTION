@@ -144,7 +144,7 @@ void CGame::Uninit(void)
 void CGame::Update(void)
 {
 	m_EnemyCount++;
-	if (m_EnemyCount == 250)
+	if (m_EnemyCount == 600)
 	{
 		m_EnemyCount = 0;
 		float fPosX = float(rand() % 700 - 300);
