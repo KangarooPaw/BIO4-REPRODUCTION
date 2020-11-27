@@ -78,6 +78,7 @@ public:
 	void spin(void); // 敵を回す処理
 
 	void SetPlayer(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 size);//各種設定
+	void SetRot(D3DXVECTOR3 rot);
 	void HitDamage(int nDamage);	//ダメージ処理
 	void PickUpItem(void);			//アイテム取得処理
 	static void DeathFlag(void);	//死亡フラグ
@@ -91,6 +92,7 @@ public:
 	bool GetTurn(void) { return m_bTurn; }
 	bool GetHasKeyAll(void) { return m_bHasKeyAll; }
 	bool GetReloadMotion(void) { return m_bReloadMotion; }
+
 private:
 	bool CollisionItem(D3DXVECTOR3 pos1, D3DXVECTOR3 size1, D3DXVECTOR3 pos2, D3DXVECTOR3 size2);
 
@@ -137,6 +139,9 @@ private:
 	bool m_bTurn;						// ターンの判定
 
 	bool m_bReticle;					// レティクルの生成判定
+
+	int m_nLeftCnt;						//左向きカウント
+	int m_nRightCnt;					//右向きカウント
 
 	static bool m_bHasKeyAll;			// 鍵を全て持っているかの判定
 	int m_nSpinCnt;						//スピンのカウント

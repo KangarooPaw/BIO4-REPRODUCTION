@@ -141,7 +141,7 @@ void CBullet::Update(void)
 						if (CollisionBullet(m_pos, m_size, D3DXVECTOR3(m_Getpos.x, m_Getpos.y + 35.0f, m_Getpos.z), D3DXVECTOR3(m_Getsize.x, m_Getsize.y - 70.0f, m_Getsize.z)) == true)
 						{
 							// 敵を消す
-							((CEnemy*)pScene)->HitBullet(m_nDamage,0);//ヘッドショット
+							((CEnemy*)pScene)->HitBullet(m_nDamage*3,0);//ヘッドショット
 
 							CBlood::BloodSplash(m_pos, D3DXVECTOR3(SPLACH_BLOOD_SIZE_X, SPLACH_BLOOD_SIZE_Y, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_RGBA(255, 255, 255, 255));
 							// 弾を消す

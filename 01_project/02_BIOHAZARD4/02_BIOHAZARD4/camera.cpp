@@ -1,10 +1,10 @@
-//--------------------------------------
+//****************************************************************************************************------
 //カメラ処理
-//--------------------------------------
+//****************************************************************************************************------
 
-//--------------------------------------
+//****************************************************************************************************------
 //インクルードファイル
-//--------------------------------------
+//****************************************************************************************************------
 #include "manager.h"
 #include "renderer.h"
 #include "camera.h"
@@ -14,9 +14,9 @@
 #include "player.h"
 #include "game.h"
 #include "gate.h"
-//--------------------------------------
+//****************************************************************************************************------
 //インクリメント
-//--------------------------------------
+//****************************************************************************************************------
 CCamera::CCamera()
 {
 	posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -32,17 +32,17 @@ CCamera::CCamera()
 	m_nTurnCnt = 0;
 }
 
-//--------------------------------------
+//****************************************************************************************************------
 //デクリメント
-//--------------------------------------
+//****************************************************************************************************------
 CCamera::~CCamera()
 {
 
 }
 
-//--------------------------------------
+//****************************************************************************************************------
 //初期化処理
-//--------------------------------------
+//****************************************************************************************************------
 void CCamera::Init(void)
 {
 	posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -58,17 +58,17 @@ void CCamera::Init(void)
 	m_RotY = 0;
 }
 
-//--------------------------------------
+//****************************************************************************************************------
 //終了処理
-//--------------------------------------
+//****************************************************************************************************------
 void CCamera::Uninit(void)
 {
 
 }
 
-//--------------------------------------
+//****************************************************************************************************------
 //更新処理
-//--------------------------------------
+//****************************************************************************************************------
 void CCamera::Update(void)
 {	
 		//デバイスの取得
@@ -95,9 +95,9 @@ void CCamera::Update(void)
 			posR.y = GatePos.y + 50;
 			posR.z = GatePos.z;
 		}
-		//--------------------------------------
+		//****************************************************************************************************------
 		//カメラ描画
-		//--------------------------------------
+		//****************************************************************************************************------
 		D3DXMatrixIdentity(&mtxView);
 		D3DXMatrixLookAtLH(&mtxView, &posV, &posR, &vecU);
 		pDevice->SetTransform(D3DTS_VIEW, &mtxView);
@@ -107,9 +107,9 @@ void CCamera::Update(void)
 	}
 }
 
-//--------------------------------------
+//****************************************************************************************************------
 //キーボード処理
-//--------------------------------------
+//****************************************************************************************************------
 void CCamera::Keyboard(void)
 {
 	//キーボードの取得
@@ -273,9 +273,9 @@ void CCamera::Keyboard(void)
 
 }
 
-//--------------------------------------
+//****************************************************************************************************------
 //ゲームパッド処理
-//--------------------------------------
+//****************************************************************************************************------
 void CCamera::GamePad(void)
 {
 	//コントローラーの取得処理
@@ -321,7 +321,7 @@ void CCamera::GamePad(void)
 		posV.y = m_Distance*cosf(m_lTheta) + posR.y;
 		posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
 	}
-	else if (pPlayerDeath == false&&pPlayerMotion == false)
+	else if (pPlayerDeath == false && pPlayerMotion == false)
 	{
 		if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1) == false &&
 			pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) == false)
@@ -335,74 +335,50 @@ void CCamera::GamePad(void)
 			//--------------------------
 			//移動
 			//--------------------------		
-			//左スティックを左に倒す
-
-			if (pStick.lX <= -500)
+			//右スティックを左に倒す
+			if (pStick.lZ <= -500)
 			{
 				m_lPhi += D3DXToRadian(2);
+				pPlayerRot.y -= D3DXToRadian(2);
 			}
-			//左スティックを右に倒す
-			if (pStick.lX >= 500)
+			//右スティックを右に倒す
+			if (pStick.lZ >= 500)
 			{
 				m_lPhi -= D3DXToRadian(2);
+				pPlayerRot.y += D3DXToRadian(2);
 			}
-
+			CGame::GetPlayer()->SetRot(pPlayerRot);
 			//注視点
 			m_Distance = CAMERA_GAZE;	//距離
 			posR.x = m_Distance*cosf(pPlayerRot.y) + pPlayerPos.x;
 			posR.y = pPlayerPos.y + GAZE_Y;
 			posR.z = m_Distance*sinf(-pPlayerRot.y) + pPlayerPos.z;
-
 			//視点	
 			m_Distance = CAMERA_VIEW;	//距離
 			posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi)) + posR.x;
 			posV.y = m_Distance*cosf(m_lTheta) + posR.y;
 			posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi)) + posR.z;
-
-			//m_rotY = pPlayerRot.y;
 		}
 		//LTで銃を構える/LBでナイフを構える
 		else if (pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L2) ||
 			pInputJoystick->GetJoystickPress(pInputJoystick->BUTTON_L1))
 		{
 			//右スティックを左に倒す
-			if (pStick.lRx <= -500 || pStick.lZ <= -500)
+			if (pStick.lZ <= -500)
 			{
-				posR.x += cosf(pPlayerRot.y)*RETICLE_MOVE;
-				posR.z -= sinf(pPlayerRot.y)*RETICLE_MOVE;
-
-				m_lPhi += D3DXToRadian(1);
-				m_RotX++;
-				if (m_RotX >= MAX_ROT_Y)
-				{
-					posR.x -= cosf(pPlayerRot.y)*RETICLE_MOVE;
-					posR.z += sinf(pPlayerRot.y)*RETICLE_MOVE;
-
-					m_lPhi -= D3DXToRadian(1);
-					m_RotX = MAX_ROT_Y;
-				}
+				m_lPhi += D3DXToRadian(2);
+				pPlayerRot.y -= D3DXToRadian(2);
 			}
 			//右スティックを右に倒す
-			if (pStick.lRx >= 500 || pStick.lZ >= 500)
+			if (pStick.lZ >= 500)
 			{
-				posR.x -= cosf(pPlayerRot.y)*RETICLE_MOVE;
-				posR.z += sinf(pPlayerRot.y)*RETICLE_MOVE;
-
-				m_lPhi -= D3DXToRadian(1);
-				m_RotX--;
-				if (m_RotX <= MIN_ROT_Y)
-				{
-					posR.x += cosf(pPlayerRot.y)*RETICLE_MOVE;
-					posR.z -= sinf(pPlayerRot.y)*RETICLE_MOVE;
-
-					m_lPhi += D3DXToRadian(1);
-					m_RotX = MIN_ROT_Y;
-				}
+				m_lPhi -= D3DXToRadian(2);
+				pPlayerRot.y += D3DXToRadian(2);
 			}
+			CGame::GetPlayer()->SetRot(pPlayerRot);
 			//右スティックを上に倒す
 			if (pStick.lRy <= -500 || pStick.lRz <= -500)
 			{
-
 				m_lTheta += D3DXToRadian(1);
 				posR.y += cosf(m_lTheta);
 				m_RotY++;
@@ -427,7 +403,15 @@ void CCamera::GamePad(void)
 					m_RotY = MIN_ROT_X;
 				}
 			}
-
+			//注視点
+			m_Distance = CAMERA_GAZE;	//距離
+			posR.x = m_Distance*cosf(pPlayerRot.y)  + pPlayerPos.x;
+			posR.z = m_Distance*sinf(-pPlayerRot.y) + pPlayerPos.z;
+			//視点													   
+			m_Distance = CAMERA_VIEW;	//距離
+			posV.x = m_Distance*(sinf(m_lTheta)*cosf(m_lPhi))  + posR.x;
+			posV.y = m_Distance*cosf(m_lTheta) + posR.y;
+			posV.z = m_Distance*(sinf(m_lTheta)*sinf(m_lPhi))  + posR.z;
 			//10フレームだけ進める
 			if (m_nCount <= HOLD_FRAME)
 			{

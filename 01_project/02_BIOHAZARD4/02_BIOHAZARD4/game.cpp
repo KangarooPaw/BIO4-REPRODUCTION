@@ -40,13 +40,13 @@ CBulletUi *CGame::m_pBulletUi = NULL;
 CBulletUi *CGame::m_pBulletHaveUi = NULL;
 CKey *CGame::m_pKey  = NULL;
 CGate *CGame::m_pGate = NULL;
+int CGame::m_EnemyCount = 0;
 //*****************************************************************************
 //コンストラクタ
 //*****************************************************************************
 CGame::CGame()
 {
 	m_nCount = 0;
-	m_EnemyCount = 0;
 }
 
 //*****************************************************************************
@@ -146,10 +146,14 @@ void CGame::Update(void)
 	m_EnemyCount++;
 	if (m_EnemyCount == 600)
 	{
-		m_EnemyCount = 0;
-		float fPosX = float(rand() % 700 - 300);
-		float fPosZ = float(rand() % 700 - 300);
-		CEnemy::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+		if (m_EnemyCount <= 20)
+		{
+			m_nCount = 0;
+			float fPosX = float(rand() % 700 - 300);
+			float fPosZ = float(rand() % 700 - 300);
+			CEnemy::Create(D3DXVECTOR3(fPosX, 0.0f, fPosZ), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(ENEMY_SIZE_X, ENEMY_SIZE_Y, ENEMY_SIZE_Z), CEnemy::ENEMYSTATE_NOMAL);
+			m_EnemyCount++;
+		}
 	}
 }
 
@@ -182,3 +186,11 @@ CKey * CGame::GetKey(void)
 {
 	return m_pKey;
 }
+//------------------------------------------
+// 敵の総数減算
+//------------------------------------------
+void CGame::DeathEnemy(int nEnemy)
+{
+	m_EnemyCount -= nEnemy;
+}
+
